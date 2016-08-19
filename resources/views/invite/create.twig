@@ -1,0 +1,9 @@
+{% extends "app" %}
+
+{% block content %}
+<form action="/projects/{{ project.id }}/invite" method="post">
+  {{ csrf_field() }}
+  <input type="text" name="invite[email]" />
+  <button>Go</button>
+</form>
+{% endblock %}

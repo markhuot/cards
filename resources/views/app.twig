@@ -1,0 +1,23 @@
+<html>
+<head>
+  <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
+</head>
+<body>
+  <div spacing="3">
+    {% if project %}
+      <div class="project-header box-shadow" box="trbl" box-multiplier="2">
+        <h1 class="project-header__title"><a href="{{ project.uri }}">{{ project.name }}</a></h1>
+        <ul class="user-stack">
+          {% for user in project.users %}
+            <li class="user-initials"><a href="#">{{ user.initials }}</a></li>
+          {% endfor %}
+          <li class="user-initials empty"><a href="/projects/{{ project.id }}/invite">+</a></li>
+        </ul>
+      </div>
+    {% endif %}
+    <div class="project-header__guard">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</body>
+</html>

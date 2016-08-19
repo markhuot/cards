@@ -1,0 +1,19 @@
+{% extends "app" %}
+
+{% block content %}
+<div class="card-detail box-shadow" box="trbl" box-multiplier="2" spacing="2">
+  <h1 class="card-detail__title">{{ card.title }}</h1>
+  <div>
+    {{ card.description|markdown }}
+  </div>
+  <hr>
+  <ul>
+    <li>Assigned: <a href="#">Mark Huot</a></li>
+  </ul>
+  <hr>
+  <form>
+    <p><textarea placeholder="Comment..."></textarea></p>
+    <button>Leave comment</button>
+  </form>
+</div>
+{% endblock %}

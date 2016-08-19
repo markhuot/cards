@@ -1,0 +1,11 @@
+<ul>
+  {% for project in projects %}
+    <li><a href="{{ project.uri }}">{{ project.name }}</a></li>
+  {% endfor %}
+</ul>
+
+<form action="/projects" method="post">
+  {{ csrf_field() }}
+  <input type="text" name="project[name]" />
+  <button>Create project</button>
+</form>
