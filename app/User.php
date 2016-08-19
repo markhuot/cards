@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Project;
 
 class User extends Authenticatable
 {
@@ -43,5 +44,10 @@ class User extends Authenticatable
         })
         ->implode('')
       ;
+    }
+
+    public function projects()
+    {
+      return $this->belongsToMany(Project::class);
     }
 }

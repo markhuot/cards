@@ -24,6 +24,22 @@ Route::get('projects/{project}/invite', ['uses' => 'InviteController@create']);
 Route::post('projects/{project}/invite', ['uses' => 'InviteController@store']);
 Route::get('cards/{card}', ['uses' => 'CardController@show']);
 
-Auth::routes();
+// Auth::routes();
+// Authentication Routes...
+Route::get('login', ['uses' => 'Auth\LoginController@showLoginForm', 'name' => 'login']);
+Route::post('login', ['uses' => 'Auth\LoginController@login']);
+Route::post('logout', ['uses' => 'Auth\LoginController@logout']);
+
+// Registration Routes...
+Route::get('register', ['uses' => 'Auth\RegisterController@showRegistrationForm']);
+Route::post('register', ['uses' => 'Auth\RegisterController@register']);
+Route::get('register/{hash}', ['uses' => 'Auth\RegisterController@showRegistrationInviteForm']);
+Route::post('register/{hash}', ['uses' => 'Auth\RegisterController@registerInvite']);
+
+// Password Reset Routes...
+Route::get('password/reset', ['uses' => 'Auth\ForgotPasswordController@showLinkRequestForm']);
+Route::post('password/email', ['uses' => 'Auth\ForgotPasswordController@sendResetLinkEmail']);
+Route::get('password/reset/{token}', ['uses' => 'Auth\ResetPasswordController@showResetForm']);
+Route::post('password/reset', ['uses' => 'Auth\ResetPasswordController@reset']);
 
 Route::get('/home', 'HomeController@index');

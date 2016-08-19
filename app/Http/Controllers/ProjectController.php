@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Project;
+use Gate;
 
 class ProjectController extends Controller
 {
@@ -12,10 +13,10 @@ class ProjectController extends Controller
     $this->middleware('auth');
   }
 
-  public function index()
+  public function index(Request $request)
   {
     return view('project.index')
-      ->with('projects', Project::all())
+      ->with('projects', $request->user()->projects)
     ;
   }
 
@@ -29,8 +30,12 @@ class ProjectController extends Controller
     return redirect($project->uri);
   }
 
-  public function show(Project $project)
+  public function show(Request $request, Project $project)
   {
+    if ($request->user()->cannot('see', $project)) {
+      abort(404);
+    }
+
     return view('project.show')
       ->with('project', $project)
     ;

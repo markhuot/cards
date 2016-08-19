@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Invite;
 use Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -67,5 +69,42 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationInviteForm($hash)
+    {
+      $invite = Invite::where('hash', '=', $hash)->firstOrFail();
+      return view('auth.register-invite')
+        ->with('invite', $invite)
+      ;
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function registerInvite(Request $request, $hash)
+    {
+      $invite = Invite::where('hash', '=', $hash)->firstOrFail();
+
+      $validator = Validator::make($request->all(), [
+          'name' => 'required|max:255',
+          'email' => 'required|email|in:'.$invite->invitee_email,
+          'password' => 'required|min:6|confirmed',
+      ])->validate();
+
+      $user = $this->create($request->all());
+      $this->guard()->login($user);
+
+      $invite->project->users()->attach($user);
+
+      return redirect($this->redirectPath());
     }
 }

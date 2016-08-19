@@ -25,19 +25,16 @@ class InviteController extends Controller
 
   public function store(Request $request, Project $project)
   {
-    $user = new User;
-    $user->email = $request->input('invite.email');
-    $user->password = str_random(32);
-    $user->save();
+    $email = $request->input('invite.email');
 
     $invite = new Invite;
     $invite->inviter_id = $request->user()->id;
-    $invite->invitee_id = $user->id;
     $invite->project_id = $project->id;
+    $invite->invitee_email = $email;
     $invite->hash = str_random(32);
     $invite->save();
 
-     Mail::to($user)->send(new InviteUser($invite));
+     Mail::to($email)->send(new InviteUser($invite));
 
     return redirect($project->uri);
   }
@@ -45,15 +42,15 @@ class InviteController extends Controller
   public function join(Request $request, $hash)
   {
     if (!$request->user()) {
-      return redirect('auth/register/'.$hash);
+      return redirect('register/'.$hash);
     }
 
     $invite = Invite::where('hash', '=', $hash)->firstOrFail();
-    if ($invite->invitee->id != $request->user()->id) {
+    if ($invite->invitee_email != $request->user()->email) {
       abort(404);
     }
 
-    $invite->project->users()->attach($invite->invitee);
+    $invite->project->users()->attach($request->user());
     $invite->delete();
 
     return redirect($invite->project->uri);

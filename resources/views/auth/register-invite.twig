@@ -1,0 +1,8 @@
+<form action="/register/{{ invite.hash }}" method="post">
+  {{ csrf_field() }}
+  <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" autofocus placeholder="name">
+  <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="email">
+  <input id="password" type="password" class="form-control" name="password" placeholder="password">
+  <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="password confirmation">
+  <button type="submit" class="btn btn-primary">Register</button>
+</form>
