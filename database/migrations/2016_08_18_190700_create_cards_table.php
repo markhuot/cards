@@ -17,7 +17,7 @@ class CreateCardsTable extends Migration
       $table->increments('id');
       $table->integer('stack_id');
       $table->integer('user_id');
-      $table->boolean('complete')->default('false');
+      $table->boolean('complete')->default(false);
       $table->string('title');
       $table->text('description')->nullable();
       $table->integer('order')->unsigned();
