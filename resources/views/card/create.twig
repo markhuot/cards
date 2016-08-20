@@ -7,6 +7,16 @@
     <div spacing>
       <p><input type="text" name="card[title]" class="card-detail__title" placeholder="Title..."></p>
       <p><textarea name="card[description]" placeholder="Description..."></textarea></p>
+      <p>
+        <ul>
+          {% for user in project.users %}
+            <li>
+              <input type="checkbox" name="card[assignee_id][]" id="assigned-{{ user.id }}" value="{{ user.id }}">
+              <label for="assigned-{{ user.id }}">{{ user.name }}</label>
+            </li>
+          {% endfor %}
+        </ul>
+      </p>
     </div>
     <button>Save</button>
   </form>

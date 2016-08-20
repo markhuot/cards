@@ -18,7 +18,6 @@ class CreateCardAssignmentsTable extends Migration
       $table->string('source_type');
       $table->integer('source_id')->unsigned();
       $table->integer('user_id')->unsigned();
-      $table->string('link');
       $table->timestamps();
     });
   }

@@ -28,6 +28,8 @@ class CardController extends Controller
     $card->user = $request->user();
     $stack->cards()->save($card);
 
+    $card->assignee_id = $request->input('card.assignee_id');
+
     $request->user()->follow($card);
 
     return redirect($project->uri);

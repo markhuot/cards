@@ -13,6 +13,7 @@ class Card extends Model
   protected $fillable = [
     'title',
     'description',
+    'asignee_id',
   ];
 
   protected static function boot()
@@ -53,7 +54,21 @@ class Card extends Model
 
   public function assignees()
   {
-    return $this->morphMany(Asignee::class, 'source');
+    return $this->morphMany(Assignee::class, 'source');
+  }
+
+  public function setAssigneeIdAttribute(array $userIds)
+  {
+    $sourceType = get_class($this);
+    $sourceId = $this->id;
+    $assignees = collect($userIds)->map(function($userId) use ($sourceType, $sourceId) {
+      return Assignee::firstOrNew([
+        'source_type' => $sourceType,
+        'source_id' => $sourceId,
+        'user_id' => $userId,
+      ]);
+    });
+    $this->assignees()->saveMany($assignees);
   }
 
   public function followers()
