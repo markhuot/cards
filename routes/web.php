@@ -23,6 +23,7 @@ Route::post('projects/{project}/stacks/{stack}/cards', ['uses' => 'CardControlle
 Route::get('projects/{project}/invite', ['uses' => 'InviteController@create']);
 Route::post('projects/{project}/invite', ['uses' => 'InviteController@store']);
 Route::get('cards/{card}', ['uses' => 'CardController@show']);
+Route::post('cards/{card}/comments', ['uses' => 'CommentController@store']);
 
 // Auth::routes();
 // Authentication Routes...

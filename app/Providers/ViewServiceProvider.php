@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use App\Twig\MarkdownExtension;
+use App\Twig\UnderscoreExtension;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -13,6 +14,7 @@ class ViewServiceProvider extends ServiceProvider
   public function boot()
   {
     app('twig')->addExtension(new MarkdownExtension);
+    app('twig')->addExtension(new UnderscoreExtension);
   }
 
   /**

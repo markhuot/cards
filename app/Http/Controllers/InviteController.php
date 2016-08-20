@@ -13,7 +13,7 @@ class InviteController extends Controller
 
   public function __construct()
   {
-    $this->middleware('auth')->except('join');
+    $this->middleware('auth');
   }
 
   public function create(Project $project)
@@ -41,13 +41,9 @@ class InviteController extends Controller
 
   public function join(Request $request, $hash)
   {
-    if (!$request->user()) {
-      return redirect('register/'.$hash);
-    }
-
     $invite = Invite::where('hash', '=', $hash)->firstOrFail();
     if ($invite->invitee_email != $request->user()->email) {
-      abort(404);
+      abort(401, 'Email mismatch');
     }
 
     $invite->project->users()->attach($request->user());

@@ -50,4 +50,20 @@ class User extends Authenticatable
     {
       return $this->belongsToMany(Project::class);
     }
+
+    public function follow($source)
+    {
+      $follower = Follower::firstOrCreate([
+        'source_type' => get_class($source),
+        'source_id' => $source->id,
+        'user_id' => $this->id,
+      ]);
+
+      return $this;
+    }
+
+    public function getUriAttribute()
+    {
+      return '/users/'.$this->id;
+    }
 }

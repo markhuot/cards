@@ -1,6 +1,14 @@
-<form action="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards" method="post">
-  {{ csrf_field() }}
-  <input type="text" name="card[title]">
-  <textarea name="card[description]"></textarea>
-  <button>Save</button>
-</form>
+{% extends "app" %}
+
+{% block content %}
+<div class="card-detail box-shadow" box="2" spacing="2">
+  <form action="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards" method="post">
+    {{ csrf_field() }}
+    <div spacing>
+      <p><input type="text" name="card[title]" class="card-detail__title" placeholder="Title..."></p>
+      <p><textarea name="card[description]" placeholder="Description..."></textarea></p>
+    </div>
+    <button>Save</button>
+  </form>
+</div>
+{% endblock %}

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCardsTable extends Migration
+class CreateCommentsTable extends Migration
 {
   /**
    * Run the migrations.
@@ -13,14 +13,12 @@ class CreateCardsTable extends Migration
    */
   public function up()
   {
-    Schema::create('cards', function (Blueprint $table) {
+    Schema::create('comments', function (Blueprint $table) {
       $table->increments('id');
-      $table->integer('stack_id');
-      $table->integer('user_id');
-      $table->boolean('complete')->default('false');
-      $table->string('title');
-      $table->text('description')->nullable();
-      $table->integer('order')->unsigned();
+      $table->string('source_type');
+      $table->integer('source_id')->unsigned();
+      $table->integer('user_id')->unsigned();
+      $table->text('content');
       $table->timestamps();
     });
   }
@@ -32,6 +30,6 @@ class CreateCardsTable extends Migration
    */
   public function down()
   {
-    Schema::dropIfExists('cards');
+    Schema::dropIfExists('comments');
   }
 }

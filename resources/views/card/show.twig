@@ -1,19 +1,36 @@
 {% extends "app" %}
 
 {% block content %}
-<div class="card-detail box-shadow" box="trbl" box-multiplier="2" spacing="2">
-  <h1 class="card-detail__title">{{ card.title }}</h1>
-  <div>
+<div class="card-detail box-shadow" box="2" spacing="2">
+  <h1 class="card-detail__title" spacing>
+    <span>{{ card.title }}</span>
+    <small class="meta">By <strong>{{ card.user.name }}</strong> on <strong>{{ card.created_at.toDayDateTimeString }}</strong></small>
+  </h1>
+  <div class="card-detail__description longform">
     {{ card.description|markdown }}
   </div>
   <hr>
-  <ul>
-    <li>Assigned: <a href="#">Mark Huot</a></li>
+  <ul class="card-detail__meta">
+    <li>Assigned: <strong><a href="#">Mark Huot</a></strong></li>
+    <li>Followers: {{ card.followers.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</li>
+    <li>Stack: <strong>{{ card.stack.name }}</strong></li>
   </ul>
+  {% if card.comments.count %}
   <hr>
-  <form>
-    <p><textarea placeholder="Comment..."></textarea></p>
-    <button>Leave comment</button>
+    <ul spacing="2">
+      {% for comment in card.comments %}
+        <li spacing>
+          {{ comment.content|markdown }}
+          <p class="meta">By <strong>{{ comment.user.name }}</strong> {{ comment.created_at.diffForHumans }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  <hr>
+  <form action="/cards/{{ card.id }}/comments" method="post">
+    {{ csrf_field() }}
+    <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a new comment..." required></textarea>
+    <button class="on-previous-active">Leave comment</button>
   </form>
 </div>
 {% endblock %}

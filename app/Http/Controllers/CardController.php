@@ -25,7 +25,10 @@ class CardController extends Controller
   public function store(Request $request, Project $project, Stack $stack)
   {
     $card = new Card($request->input('card'));
+    $card->user = $request->user();
     $stack->cards()->save($card);
+
+    $request->user()->follow($card);
 
     return redirect($project->uri);
   }

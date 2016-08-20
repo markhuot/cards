@@ -72,39 +72,19 @@ class RegisterController extends Controller
     }
 
     /**
-     * Show the application registration form.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showRegistrationInviteForm($hash)
-    {
-      $invite = Invite::where('hash', '=', $hash)->firstOrFail();
-      return view('auth.register-invite')
-        ->with('invite', $invite)
-      ;
-    }
-
-    /**
      * Handle a registration request for the application.
+     * Overrides the default action to redirect to `intended`, where the
+     * default always redirects to the same location
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function registerInvite(Request $request, $hash)
+    public function register(Request $request)
     {
-      $invite = Invite::where('hash', '=', $hash)->firstOrFail();
+        $this->validator($request->all())->validate();
 
-      $validator = Validator::make($request->all(), [
-          'name' => 'required|max:255',
-          'email' => 'required|email|in:'.$invite->invitee_email,
-          'password' => 'required|min:6|confirmed',
-      ])->validate();
+        $this->guard()->login($this->create($request->all()));
 
-      $user = $this->create($request->all());
-      $this->guard()->login($user);
-
-      $invite->project->users()->attach($user);
-
-      return redirect($this->redirectPath());
+        return redirect()->intended($this->redirectPath());
     }
 }

@@ -5,14 +5,14 @@
   <div class="stacks">
     {% for stack in project.stacks %}
       <div class="stack" spacing>
-        <h1 class="stack__header box-shadow" box="trbl" style="background-color:#{{ stack.color }};">
+        <h1 class="stack__header box-shadow" box style="background-color:#{{ stack.color }};">
           {{ stack.name }}
           <small><a href="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards/create">Add card</a></small>
         </h1>
         <ul spacing>
           {% for card in stack.cards %}
             <li>
-              <div class="card box-shadow" box="trbl">
+              <div class="card box-shadow" box>
                 <a href="{{ card.uri }}">{{ card.title }}</a>
               </div>
             </li>
@@ -20,7 +20,7 @@
         </ul>
       </div>
     {% endfor %}
-    <div class="stack new" box="trbl" box-multiplier="2">
+    <div class="stack new" box="2">
       <form action="/projects/{{ project.id }}/stacks" method="post">
         {{ csrf_field() }}
         <input type="text" name="stack[name]" />
