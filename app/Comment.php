@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Attachment;
 use App\User;
 
 class Comment extends Model
@@ -23,6 +24,11 @@ class Comment extends Model
   public function setUserAttribute(User $user)
   {
     $this->attributes['user_id'] = $user->id;
+  }
+
+  public function attachments()
+  {
+    return $this->morphMany(Attachment::class, 'source');
   }
 
 }

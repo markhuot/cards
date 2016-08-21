@@ -12,9 +12,20 @@
         <ul spacing>
           {% for card in stack.cards %}
             <li>
-              <div class="card box-shadow" box>
-                <a href="{{ card.uri }}">{{ card.title }}</a>
-              </div>
+              <a class="card box-shadow" box href="{{ card.uri }}" spacing>
+                <p class="card__title">{{ card.title }}</p>
+                <p class="card__description">{{ card.description[0:75]|trim }}&hellip;</p>
+                {% for attachment in card.cardAndCommentAttachments() %}
+                  {{ dump(attachment) }}
+                {% endfor %}
+                {% if card.comments.count or card.asignees.count %}
+                  <hr>
+                  <div class="meta clearfix">
+                    <p class="card__assignees">{{ card.assignees.pluck('user.name').implode(', ') }}</p>
+                    <p class="card__comments">{{ card.comments.count }}</p>
+                  </div>
+                {% endif %}
+              </a>
             </li>
           {% endfor %}
         </ul>

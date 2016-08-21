@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Attachment;
 use App\Stack;
 use App\Comment;
 use App\User;
@@ -74,6 +75,22 @@ class Card extends Model
   public function followers()
   {
     return $this->morphMany(Follower::class, 'source');
+  }
+
+  public function cardAndCommentAttachments()
+  {
+    $card = $this;
+    $cardType = get_class($this);
+    $cardId = $this->id;
+
+    return Attachment::orWhere(function($query) use ($cardType, $cardId) {
+      $query->where('source_type', '=', $cardType);
+      $query->where('source_id', '=', $cardId);
+    })
+    ->orWhere(function($query) use ($card) {
+      $query->where('source_type', '=', Comment::class);
+      $query->where('source_id', 'IN', $card->comments->pluck('id')->toArray());
+    })->get();
   }
 
 }

@@ -82,18 +82,39 @@ $spacingMultipliers: (
   box-shadow: 0 1px 1px rgba(0,0,0,0.2);
 }
 
+@keyframes blink-animation {
+  50% {
+    opacity: 0
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .project-header {
   background: #fff;
-  text-align: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
 
   &__title {
-    font-weight: 300;
+    font-weight: 500;
     font-size: 24px;
     display: inline-block;
+    position: relative;
+
+    &:after {
+      content: "";
+      background-color: #50c3ff;
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      right: -10px;
+      width: 2px;
+      opacity: 1;
+      animation: blink-animation 2s linear infinite normal;
+    }
   }
 
   &__guard {
@@ -140,6 +161,39 @@ $spacingMultipliers: (
   background: #fff;
   border-radius: 1px;
   white-space: normal;
+  display: block;
+
+  &__description {
+    font-size: 14px;
+    color: #ccc;
+    font-weight: 300;
+  }
+
+  &__assignees {
+    float: left;
+  }
+
+  &__comments {
+    float: right;
+    background: #50c3ff;
+    padding: 2px 5px;
+    font-size: 9px;
+    color: #fff;
+    font-weight: 500;
+    position: relative;
+
+    &:after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 5px;
+      border-color: transparent transparent transparent #50c3ff;
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+    }
+  }
 }
 
 .user-stack {
@@ -232,7 +286,8 @@ $spacingMultipliers: (
     height: 10em;
     outline: none;
 
-    & + .on-previous-active {
+    & + .on-previous-active,
+    & + .on-previous-active + .on-previous-active {
       display: block;
     }
   }

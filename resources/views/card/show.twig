@@ -22,14 +22,23 @@
         <li spacing>
           {{ comment.content|markdown }}
           <p class="meta">By <strong>{{ comment.user.name }}</strong> {{ comment.created_at.diffForHumans }}</p>
+          {% if comment.attachments.count %}
+            <div>
+              {% for attachment in comment.attachments %}
+                <img src="http://placehold.it/50x50">
+                {{ attachment.link }}
+              {% endfor %}
+            </div>
+          {% endif %}
         </li>
       {% endfor %}
     </ul>
   {% endif %}
   <hr>
-  <form action="/cards/{{ card.id }}/comments" method="post">
+  <form action="/cards/{{ card.id }}/comments" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
     <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a new comment..." required></textarea>
+    <input class="on-previous-active" type="file" name="comment[attachment][]">
     <button class="on-previous-active">Leave comment</button>
   </form>
 </div>
