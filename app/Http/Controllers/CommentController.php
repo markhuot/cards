@@ -15,7 +15,7 @@ class CommentController extends Controller
     $comment->user = $request->user();
     $card->comments()->save($comment);
 
-    if ($attachments = $request->file('comment.attachment')) {
+    if ($attachments = $request->file('comment.attachment') && count($attachments)) {
       foreach ($attachments as $file) {
         $path = $file->store('attachments/project/'.$card->stack->project->id);
         $attachment = new Attachment;
