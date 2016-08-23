@@ -4,10 +4,10 @@
 <div class="page">
   <div class="stacks">
     {% for stack in project.stacks %}
-      <div class="stack" spacing>
-        <h1 class="stack__header box-shadow" box style="background-color:#{{ stack.color }};">
-          {{ stack.name }}
-          <small><a href="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards/create">Add card</a></small>
+      <div class="stack" spacing="2">
+        <h1 class="stack__header">
+          {{ stack.name }} <span class="stack__header__light">({{ stack.cards.count }})</span>
+          <small class="stack__header__light"><a href="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards/create">Add card</a></small>
         </h1>
         <ul spacing>
           {% for card in stack.cards %}
@@ -15,11 +15,10 @@
               <a class="card box-shadow" box href="{{ card.uri }}" spacing>
                 <p class="card__title">{{ card.title }}</p>
                 <p class="card__description">{{ card.description[0:75]|trim }}&hellip;</p>
-                {% for attachment in card.cardAndCommentAttachments() %}
-                  {{ dump(attachment) }}
+                {% for attachment in card.allAttachments() %}
+                  <img src="http://placehold.it/32x32">
                 {% endfor %}
                 {% if card.comments.count or card.asignees.count %}
-                  <hr>
                   <div class="meta clearfix">
                     <p class="card__assignees">{{ card.assignees.pluck('user.name').implode(', ') }}</p>
                     <p class="card__comments">{{ card.comments.count }}</p>

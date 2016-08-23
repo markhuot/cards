@@ -1,0 +1,14 @@
+0.0.0.0:2015
+tls off
+root /var/www/html/public
+gzip
+rewrite {
+  r .*
+  ext /
+  to /index.php?{query}
+}
+fastcgi / php:9000 {
+  ext .php
+  split .php
+  index index.php
+}

@@ -1,0 +1,12 @@
+version: "2"
+services:
+  web:
+    build: containers/caddy
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - 2015:2015
+  php:
+    image: php:fpm
+    volumes:
+      - ./:/var/www/html

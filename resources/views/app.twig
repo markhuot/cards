@@ -4,21 +4,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-  <div spacing="3">
-    {% if project %}
-      <div class="project-header box-shadow" box="2">
-        <h2 class="project-header__title"><a href="{{ project.uri }}">{{ project.name }}</a></h1>
-        <ul class="user-stack">
-          {% for user in project.users %}
-            <li><a href="#" class="user-initials" title="{{ user.name }}">{{ user.initials }}</a></li>
-          {% endfor %}
-          <li class="user-initials empty"><a href="/projects/{{ project.id }}/invite">+</a></li>
-        </ul>
-      </div>
-    {% endif %}
-    <div class="project-header__guard">
-      {% block content %}{% endblock %}
+  {% if project %}
+    <div class="project-header box-shadow" box="2">
+      <h2 class="project-header__title"><a href="{{ project.uri }}">{{ project.name }}</a></h1>
+      <ul class="user-stack">
+        {% for user in project.users %}
+          <li><a href="#" class="user-initials" title="{{ user.name }}">{{ user.initials }}</a></li>
+        {% endfor %}
+        <li class="user-initials empty"><a href="/projects/{{ project.id }}/invite">+</a></li>
+      </ul>
     </div>
+  {% endif %}
+  <div class="project-header__guard">
+    {% block content %}{% endblock %}
   </div>
 </body>
 </html>

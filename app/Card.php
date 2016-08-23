@@ -77,7 +77,7 @@ class Card extends Model
     return $this->morphMany(Follower::class, 'source');
   }
 
-  public function cardAndCommentAttachments()
+  public function allAttachments()
   {
     $card = $this;
     $cardType = get_class($this);
@@ -89,7 +89,7 @@ class Card extends Model
     })
     ->orWhere(function($query) use ($card) {
       $query->where('source_type', '=', Comment::class);
-      $query->where('source_id', 'IN', $card->comments->pluck('id')->toArray());
+      $query->whereIn('source_id', $card->comments->pluck('id')->toArray());
     })->get();
   }
 

@@ -10,7 +10,7 @@
     {{ card.description|markdown }}
   </div>
   <hr>
-  <ul class="card-detail__meta">
+  <ul class="card-detail__meta" spacing>
     <li>Assigned: {{ card.assignees.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</li>
     <li>Followers: {{ card.followers.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</li>
     <li>Stack: <strong>{{ card.stack.name }}</strong></li>
