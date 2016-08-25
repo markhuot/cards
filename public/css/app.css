@@ -6,7 +6,8 @@
 
 body {
   background: #f5f8fa;
-  font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; }
+  font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+  color: #444; }
 
 a {
   color: inherit;
@@ -80,8 +81,7 @@ hr {
       margin-bottom: 0; } }
   .stack__header {
     font-weight: 600;
-    font-size: 16px;
-    color: #444; }
+    font-size: 16px; }
     .stack__header__light {
       font-weight: 300;
       color: #999; }
@@ -146,8 +146,8 @@ hr {
   margin-left: 10px; }
   .user-initials.empty {
     background: none;
-    border: 2px dashed gray;
-    color: gray; }
+    border: 2px dashed #ccc;
+    color: #ccc; }
 
 .card-detail {
   background: #fff;
@@ -180,6 +180,16 @@ hr {
   .meta strong, .card-detail__meta strong {
     font-weight: 400;
     color: #999; }
+
+.byline {
+  font-size: 14px;
+  color: #ccc;
+  font-weight: 300; }
+  .byline strong {
+    color: #444;
+    font-weight: 600; }
+  .byline a:hover {
+    text-decoration: underline; }
 
 .on-previous-active {
   display: none; }
@@ -256,8 +266,30 @@ hr {
     display: none; }
   .show-card-edit:checked + .card-prompt + .card-edit {
     display: block; }
+  .show-card-edit:focus + .card-prompt label {
+    text-decoration: underline; }
 
 .card-edit {
   display: none; }
+
+.text-button {
+  color: #50c3ff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer; }
+  .text-button:hover {
+    text-decoration: underline; }
+
+.button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  padding: 10px 15px;
+  background: #50c3ff;
+  border-radius: 1px;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 300; }
 
 /*# sourceMappingURL=app.css.map */

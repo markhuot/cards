@@ -10,6 +10,7 @@
 body {
   background: #f5f8fa;
   font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+  color: #444;
 }
 
 a {
@@ -116,7 +117,6 @@ $spacingMultipliers: (
   &__header {
     font-weight: 600;
     font-size: 16px;
-    color: #444;
 
     &__light {
       font-weight: 300;
@@ -201,8 +201,8 @@ $spacingMultipliers: (
 
   &.empty {
     background: none;
-    border: 2px dashed gray;
-    color: gray;
+    border: 2px dashed #ccc;
+    color: #ccc;
   }
 }
 
@@ -255,6 +255,23 @@ $spacingMultipliers: (
   strong {
     font-weight: 400;
     color: #999;
+  }
+}
+
+.byline {
+  font-size: 14px;
+  color: #ccc;
+  font-weight: 300;
+
+  strong {
+    color: #444;
+    font-weight: 600;
+  }
+
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -352,8 +369,34 @@ $spacingMultipliers: (
   &:checked + .card-prompt + .card-edit {
     display: block;
   }
+
+  &:focus + .card-prompt label {
+    text-decoration: underline;
+  }
 }
 
 .card-edit {
   display: none;
+}
+
+.text-button {
+  color: #50c3ff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.button {
+  appearance: none;
+  border: none;
+  padding: 10px 15px;
+  background: #50c3ff;
+  border-radius: 1px;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 300;
 }

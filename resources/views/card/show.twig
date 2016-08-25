@@ -1,8 +1,8 @@
 {% extends "app" %}
 
 {% block content %}
-<div spacing="3">
-  <div class="card-detail box-shadow" box="2" spacing="2">
+<div class="card-detail box-shadow" box="2" spacing="3">
+  <div spacing="2">
     <h1 class="card-detail__title" spacing>
       <span>{{ card.title }}</span>
       <small class="meta">By
@@ -18,14 +18,22 @@
       {{ card.description|markdown }}
     </div>
   </div>
-
+  {#<hr>
+  <ul class="card-detail__meta" spacing>
+    <li>Assigned: {{ card.assignees.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</li>
+    <li>Followers: {{ card.followers.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</li>
+    <li>Stack: <strong>{{ card.stack.name }}</strong></li>
+  </ul>#}
   {% if card.comments.count %}
     <hr>
-    <ul spacing="2">
+    <ul spacing="3">
       {% for comment in card.comments %}
-        <li class="card-detail box-shadow" box="2" spacing>
+        <li id="comment{{ comment.id }}" spacing>
+          <p class="byline">
+            <strong>{{ comment.user.name }}</strong>
+            <a href="#comment{{ comment.id }}">{{ comment.created_at.diffForHumans }}</a>
+          </p>
           {{ comment.content|markdown }}
-          <p class="meta">By <strong>{{ comment.user.name }}</strong> {{ comment.created_at.diffForHumans }}</p>
           {% if comment.attachments.count %}
             <div>
               {% for attachment in comment.attachments %}
@@ -38,41 +46,37 @@
       {% endfor %}
     </ul>
   {% endif %}
-
   <hr>
-
-  <div class="card-detail box-shadow" box="2" spacing>
-    <form action="/cards/{{ card.id }}/comments" method="post" enctype="multipart/form-data">
-      {{ csrf_field() }}
-      <div spacing>
-        <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a new comment..."></textarea>
-        <input class="comment-form__upload" type="file" name="comment[attachment][]">
-        <div class="fon-previous-active" spacing>
-          <hr>
-          <input type="checkbox" id="show-card-edit" class="show-card-edit">
-          <p class="card-prompt"><label for="show-card-edit">Edit card details&hellip;</label></p>
-          <div class="card-edit">
-            <p><label class="comment-form__label">Stack</label></p>
-            <ul>
-              {% for stack in card.stack.project.stacks %}
-                <li><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}><label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
-              {% endfor %}
-            </ul>
-            <p><label class="comment-form__label">Assignee</label></p>
-            <ul>
-              {% for user in card.stack.project.users %}
-                <li class="checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('user.id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
-              {% endfor %}
-            </ul>
-          </div>
-          <hr>
-          <p class="clearfix">
-            <button class="comment-form__submit">Leave comment</button>
-          </p>
-          <p class="meta">A notification will be sent to {{ card.followers.pluck('user.name').implode(', ') }}</p>
+  <form action="/cards/{{ card.id }}/comments" method="post" enctype="multipart/form-data">
+    {{ csrf_field() }}
+    <div spacing>
+      <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a new comment..."></textarea>
+      <input class="comment-form__upload" type="file" name="comment[attachment][]">
+      <div class="fon-previous-active" spacing>
+        <hr>
+        <input type="checkbox" id="show-card-edit" class="show-card-edit">
+        <p class="card-prompt"><label for="show-card-edit" class="text-button">Edit card details&hellip;</label></p>
+        <div class="card-edit">
+          <p><label class="comment-form__label">Stack</label></p>
+          <ul>
+            {% for stack in card.stack.project.stacks %}
+              <li><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}><label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
+            {% endfor %}
+          </ul>
+          <p><label class="comment-form__label">Assignee</label></p>
+          <ul>
+            {% for user in card.stack.project.users %}
+              <li class="checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('user.id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
+            {% endfor %}
+          </ul>
         </div>
+        <hr>
+        <p class="clearfix">
+          <button class="button" class="comment-form__submit">Leave comment</button>
+        </p>
+        <p class="meta">A notification will be sent to {{ card.followers.pluck('user.name').implode(', ') }}</p>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
 {% endblock %}
