@@ -11,6 +11,10 @@ class CommentController extends Controller
 
   public function store(Request $request, Card $card)
   {
+    $card->assignee_id = $request->input('card.assignee_id');
+    $card->stack_id = $request->input('card.stack_id');
+    $card->save();
+
     $comment = new Comment($request->input('comment', []));
     $comment->user = $request->user();
     $card->comments()->save($comment);

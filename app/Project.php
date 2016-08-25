@@ -26,4 +26,9 @@ class Project extends Model
     return $this->belongsToMany(User::class);
   }
 
+  public function cards()
+  {
+    return Card::whereIn('stack_id', $this->stacks->pluck('id'));
+  }
+
 }

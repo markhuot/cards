@@ -1,6 +1,18 @@
+{% extends "app" %}
+
+{% block content %}
 <ul>
   {% for project in projects %}
-    <li><a href="{{ project.uri }}">{{ project.name }}</a></li>
+    <li class="">
+      <a href="{{ project.uri }}" class="project-preview box-shadow" spacing box>
+        <p>{{ project.name }} ({{ project.cards().count }})</p>
+        <ul class="stacks-preview clearfix">
+          {% for stack in project.stacks %}
+            <li class="stack-preview" box style="height: {{ stack.size()*100 }}%">{{ stack.name }}</li>
+          {% endfor %}
+        </ul>
+      </a>
+    </li>
   {% endfor %}
 </ul>
 
@@ -9,3 +21,4 @@
   <input type="text" name="project[name]" />
   <button>Create project</button>
 </form>
+{% endblock %}

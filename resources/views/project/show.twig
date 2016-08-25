@@ -12,18 +12,21 @@
         <ul spacing>
           {% for card in stack.cards %}
             <li>
-              <a class="card box-shadow" box href="{{ card.uri }}" spacing>
-                <p class="card__title">{{ card.title }}</p>
-                <p class="card__description">{{ card.description[0:75]|trim }}&hellip;</p>
-                {% for attachment in card.allAttachments() %}
-                  <img src="http://placehold.it/32x32">
-                {% endfor %}
-                {% if card.comments.count or card.asignees.count %}
-                  <div class="meta clearfix">
-                    <p class="card__assignees">{{ card.assignees.pluck('user.name').implode(', ') }}</p>
-                    <p class="card__comments">{{ card.comments.count }}</p>
-                  </div>
-                {% endif %}
+              <a class="card box-shadow" box href="{{ card.uri }}">
+                {% if card.hot %}<p class="card__hot">&#x1f525;&#xFE0E;</p>{% endif %}
+                <div spacing>
+                  <p class="card__title">{{ card.title }}</p>
+                  {% if card.description %}<p class="card__description">{{ card.description[0:75]|trim }}{{ card.description|length > 75 ? '&hellip;' }}</p>{% endif %}
+                  {% for attachment in card.allAttachments() %}
+                    <img src="http://placehold.it/32x32">
+                  {% endfor %}
+                  {% if card.comments.count or card.asignees.count %}
+                    <div class="meta clearfix">
+                      <p class="card__assignees">{{ card.assignees.pluck('user.name').implode(', ') }}</p>
+                      <p class="card__comments">{{ card.comments.count }}</p>
+                    </div>
+                  {% endif %}
+                </div>
               </a>
             </li>
           {% endfor %}

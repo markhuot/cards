@@ -7,6 +7,7 @@ use App\Comment;
 use App\User;
 use App\Assignee;
 use App\Follwer;
+use Carbon\Carbon;
 
 class Card extends Model
 {
@@ -58,7 +59,7 @@ class Card extends Model
     return $this->morphMany(Assignee::class, 'source');
   }
 
-  public function setAssigneeIdAttribute(array $userIds)
+  public function setAssigneeIdAttribute(array $userIds=null)
   {
     $sourceType = get_class($this);
     $sourceId = $this->id;
@@ -91,6 +92,11 @@ class Card extends Model
       $query->where('source_type', '=', Comment::class);
       $query->whereIn('source_id', $card->comments->pluck('id')->toArray());
     })->get();
+  }
+
+  public function getHotAttribute()
+  {
+    return $this->updated_at > Carbon::now()->subHour();
   }
 
 }

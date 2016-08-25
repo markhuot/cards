@@ -36,4 +36,15 @@ class Stack extends Model
     return $this->hasMany(Card::class);
   }
 
+  public function getCardsCountAttribute()
+  {
+    return $this->cards->count();
+  }
+
+  public function size()
+  {
+    $max = $this->project->stacks->pluck('cards_count')->max();
+    return $this->cards_count / $max;
+  }
+
 }

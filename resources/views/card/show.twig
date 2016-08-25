@@ -1,25 +1,29 @@
 {% extends "app" %}
 
 {% block content %}
-<div class="card-detail box-shadow" box="2" spacing="2">
-  <h1 class="card-detail__title" spacing>
-    <span>{{ card.title }}</span>
-    <small class="meta">By <strong>{{ card.user.name }}</strong> on <strong>{{ card.created_at.toDayDateTimeString }}</strong></small>
-  </h1>
-  <div class="card-detail__description longform">
-    {{ card.description|markdown }}
+<div spacing="3">
+  <div class="card-detail box-shadow" box="2" spacing="2">
+    <h1 class="card-detail__title" spacing>
+      <span>{{ card.title }}</span>
+      <small class="meta">By
+        <strong>{{ card.user.name }}</strong>
+        on
+        <strong>{{ card.created_at.toDayDateTimeString }}</strong>
+        {% if card.assignees.count %}
+          &rarr; Assigned to <strong>{{ card.assignees.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</strong>
+        {% endif %}
+      </small>
+    </h1>
+    <div class="card-detail__description longform">
+      {{ card.description|markdown }}
+    </div>
   </div>
-  <hr>
-  <ul class="card-detail__meta" spacing>
-    <li>Assigned: {{ card.assignees.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</li>
-    <li>Followers: {{ card.followers.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</li>
-    <li>Stack: <strong>{{ card.stack.name }}</strong></li>
-  </ul>
+
   {% if card.comments.count %}
-  <hr>
+    <hr>
     <ul spacing="2">
       {% for comment in card.comments %}
-        <li spacing>
+        <li class="card-detail box-shadow" box="2" spacing>
           {{ comment.content|markdown }}
           <p class="meta">By <strong>{{ comment.user.name }}</strong> {{ comment.created_at.diffForHumans }}</p>
           {% if comment.attachments.count %}
@@ -34,12 +38,41 @@
       {% endfor %}
     </ul>
   {% endif %}
+
   <hr>
-  <form action="/cards/{{ card.id }}/comments" method="post" enctype="multipart/form-data">
-    {{ csrf_field() }}
-    <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a new comment..." required></textarea>
-    <input class="on-previous-active" type="file" name="comment[attachment][]">
-    <button class="on-previous-active">Leave comment</button>
-  </form>
+
+  <div class="card-detail box-shadow" box="2" spacing>
+    <form action="/cards/{{ card.id }}/comments" method="post" enctype="multipart/form-data">
+      {{ csrf_field() }}
+      <div spacing>
+        <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a new comment..."></textarea>
+        <input class="comment-form__upload" type="file" name="comment[attachment][]">
+        <div class="fon-previous-active" spacing>
+          <hr>
+          <input type="checkbox" id="show-card-edit" class="show-card-edit">
+          <p class="card-prompt"><label for="show-card-edit">Edit card details&hellip;</label></p>
+          <div class="card-edit">
+            <p><label class="comment-form__label">Stack</label></p>
+            <ul>
+              {% for stack in card.stack.project.stacks %}
+                <li><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}><label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
+              {% endfor %}
+            </ul>
+            <p><label class="comment-form__label">Assignee</label></p>
+            <ul>
+              {% for user in card.stack.project.users %}
+                <li class="checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('user.id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <hr>
+          <p class="clearfix">
+            <button class="comment-form__submit">Leave comment</button>
+          </p>
+          <p class="meta">A notification will be sent to {{ card.followers.pluck('user.name').implode(', ') }}</p>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

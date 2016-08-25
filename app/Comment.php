@@ -11,6 +11,10 @@ class Comment extends Model
     'content',
   ];
 
+  protected $touches = [
+    'source',
+  ];
+
   public function source()
   {
     return $this->morphTo();
