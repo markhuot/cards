@@ -35,4 +35,19 @@ class Comment extends Model
     return $this->morphMany(Attachment::class, 'source');
   }
 
+  public function getCountTasksAttribute()
+  {
+    return preg_match_all('/^- \[(x| )\]/sm', $this->content);
+  }
+
+  public function getCountTasksCompleteAttribute()
+  {
+    return preg_match_all('/^- \[x\]/sm', $this->content);
+  }
+
+  public function getPercentTasksCompleteAttribute()
+  {
+    return $this->countTasksComplete / $this->countTasks;
+  }
+
 }

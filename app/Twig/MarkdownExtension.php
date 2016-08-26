@@ -3,7 +3,13 @@
 use Twig_Extension;
 use Twig_SimpleFilter;
 use Twig_Markup;
-use cebe\markdown\GithubMarkdown as MarkdownParser;
+// use App\Markdown\MyMarkdown as MarkdownParser;
+// use cebe\markdown\GithubMarkdown as MarkdownParser;
+use League\CommonMark\Environment as CommonMarkEnvironment;
+use League\CommonMark\CommonMarkConverter;
+use App\Markdown\ListParser;
+use App\Markdown\ListItem;
+use App\Markdown\ListItemRenderer;
 
 class MarkdownExtension extends Twig_Extension {
 
@@ -21,8 +27,15 @@ class MarkdownExtension extends Twig_Extension {
 
   public function parse($content)
   {
-    $parser = new MarkdownParser();
-    return new Twig_Markup($parser->parse($content), 'utf-8');
+    $environment = CommonMarkEnvironment::createCommonMarkEnvironment();
+    $environment->addBlockParser(new ListParser);
+    $environment->addBlockRenderer(ListItem::class, new ListItemRenderer);
+
+    $config = [];
+
+    $converter = new CommonMarkConverter($config, $environment);
+
+    return new Twig_Markup($converter->convertToHtml($content), 'utf-8');
   }
 
 }

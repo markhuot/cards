@@ -99,4 +99,41 @@ class Card extends Model
     return $this->updated_at > Carbon::now()->subHour();
   }
 
+  public function getCountTasksAttribute()
+  {
+    return preg_match_all('/^- \[(x| )\]/sm', $this->description);
+  }
+
+  public function getCountAllTasksAttribute()
+  {
+    return $this->countTasks + $this->comments->sum('countTasks');
+  }
+
+  public function getCountTasksCompleteAttribute()
+  {
+    return preg_match_all('/^- \[x\]/sm', $this->description);
+  }
+
+  public function getCountAllTasksCompleteAttribute()
+  {
+    return $this->countTasksComplete + $this->comments->sum('countTasksComplete');
+  }
+
+  public function getPercentTasksCompleteAttribute()
+  {
+    $complete = $this->countTasks;
+    $total = $this->countTasksComplete;
+
+    return $complete / $total;
+  }
+
+  public function getPercentAllTasksCompleteAttribute()
+  {
+    if ($this->countAllTasks > 0) {
+      return $this->countAllTasksComplete / $this->countAllTasks;
+    }
+
+    return 0;
+  }
+
 }
