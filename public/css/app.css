@@ -213,7 +213,8 @@ hr {
   box-shadow: none;
   font-size: 16px;
   height: 10em;
-  width: 100%; }
+  width: 100%;
+  background: none; }
 
 .project-preview {
   width: 200px;

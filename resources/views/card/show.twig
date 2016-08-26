@@ -49,14 +49,13 @@
   <hr>
   <form action="/cards/{{ card.id }}/comments" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
-    <div spacing="2">
-      <div>
-        <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a new comment..."></textarea>
-        <input class="comment-form__upload" type="file" name="comment[attachment][]">
+    <div spacing>
+      <div style="background: #fff8e8; border: 1px solid #ccc;">
+        <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a comment..." box></textarea>
+        <p box><input class="comment-form__upload" type="file" name="comment[attachment][]"></p>
       </div>
-      <div spacing="2">
-        <div spacing>
-          <hr>
+      <div spacing>
+        <div>
           <input type="checkbox" id="show-card-edit" class="show-card-edit">
           <p class="card-prompt"><label for="show-card-edit" class="text-button">Edit card details&hellip;</label></p>
           <div class="card-edit" spacing>
@@ -73,7 +72,6 @@
               {% endfor %}
             </ul>
           </div>
-          <hr>
         </div>
         <div spacing>
           <p class="clearfix">
