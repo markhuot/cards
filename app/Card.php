@@ -96,7 +96,7 @@ class Card extends Model
 
   public function getHotAttribute()
   {
-    return $this->updated_at > Carbon::now()->subHour();
+    return $this->updated_at > Carbon::now()->subMinute();
   }
 
   public function getCountTasksAttribute()

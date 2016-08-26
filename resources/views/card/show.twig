@@ -54,16 +54,16 @@
         <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a new comment..."></textarea>
         <input class="comment-form__upload" type="file" name="comment[attachment][]">
       </div>
-      <div class="fon-previous-active" spacing="2">
+      <div spacing="2">
         <div spacing>
           <hr>
           <input type="checkbox" id="show-card-edit" class="show-card-edit">
           <p class="card-prompt"><label for="show-card-edit" class="text-button">Edit card details&hellip;</label></p>
-          <div class="card-edit">
+          <div class="card-edit" spacing>
             <p><label class="comment-form__label">Stack</label></p>
-            <ul>
+            <ul class="stack-chooser clearfix">
               {% for stack in card.stack.project.stacks %}
-                <li><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}><label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
+                <li class="stack-chooser__item checkbox-pill"><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}> <label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
               {% endfor %}
             </ul>
             <p><label class="comment-form__label">Assignee</label></p>

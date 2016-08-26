@@ -44,6 +44,10 @@ class Stack extends Model
   public function size()
   {
     $max = $this->project->stacks->pluck('cards_count')->max();
+    if ($max == 0) {
+      return 0;
+    }
+    
     return $this->cards_count / $max;
   }
 

@@ -241,14 +241,17 @@ hr {
     background-color: #50c3ff; }
     .checkbox-pill input:checked + label:before {
       content: "\2022"; }
+  .checkbox-pill input[type="checkbox"]:checked + label:before {
+    content: "\2713"; }
+  .checkbox-pill input:focus + label {
+    text-decoration: underline; }
 
 .checkbox-pill label {
   position: relative;
-  border: 1px solid #ccc;
   background: #999;
   display: inline-block;
-  border-radius: 15px;
-  padding: 0 5px 0 15px;
+  border-radius: 100px;
+  padding: 3px 10px 3px 20px;
   overflow: hidden;
   font-size: 14px;
   font-weight: 300;
@@ -259,14 +262,15 @@ hr {
     position: absolute;
     left: 0;
     top: 0;
-    width: 15px;
+    width: 20px;
     height: 100%;
-    text-align: center; }
+    text-align: center;
+    line-height: 20px; }
 
 .show-card-edit {
   position: absolute;
   left: -9999px; }
-  .show-card-edit:checked + .card-prompt {
+  .show-card-edit:checked, .show-card-edit:checked + .card-prompt {
     display: none; }
   .show-card-edit:checked + .card-prompt + .card-edit {
     display: block; }
@@ -290,7 +294,7 @@ hr {
   appearance: none;
   border: none;
   padding: 10px 15px;
-  background: #50c3ff;
+  background: #32a942;
   border-radius: 1px;
   font-size: 16px;
   color: #fff;
@@ -313,5 +317,28 @@ hr {
     border-radius: 2px;
     height: 2px;
     min-width: 10px; }
+
+.stack-chooser__item {
+  float: left;
+  margin-right: 50px;
+  position: relative; }
+  .stack-chooser__item:after {
+    content: "\2192";
+    color: #999;
+    font-weight: 600;
+    position: absolute;
+    top: 0;
+    right: -50px;
+    width: 50px;
+    height: 100%;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    text-align: center; }
+  .stack-chooser__item:last-child:after {
+    display: none; }
 
 /*# sourceMappingURL=app.css.map */

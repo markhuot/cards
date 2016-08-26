@@ -328,19 +328,29 @@ $spacingMultipliers: (
     &:checked + label {
       border-color: #50c3ff;
       background-color: #50c3ff;
+
       &:before {
         content: "\2022";
       }
     }
+
+    &[type="checkbox"]:checked + label:before {
+      content: "\2713";
+    }
+
+    &:focus + label {
+      text-decoration: underline;
+    }
   }
 
   label {
+    $dotSize: 20px;
+
     position: relative;
-    border: 1px solid #ccc;
     background: #999;
     display: inline-block;
-    border-radius: 15px;
-    padding: 0 5px 0 15px;
+    border-radius: 100px;
+    padding: 3px 10px 3px $dotSize;
     overflow: hidden;
     font-size: 14px;
     font-weight: 300;
@@ -352,9 +362,10 @@ $spacingMultipliers: (
       position: absolute;
       left: 0;
       top: 0;
-      width: 15px;
+      width: $dotSize;
       height: 100%;
       text-align: center;
+      line-height: $dotSize;
     }
   }
 }
@@ -363,7 +374,7 @@ $spacingMultipliers: (
   position: absolute;
   left: -9999px;
 
-  &:checked + .card-prompt {
+  &:checked, &:checked + .card-prompt {
     display: none;
   }
 
@@ -395,7 +406,7 @@ $spacingMultipliers: (
   appearance: none;
   border: none;
   padding: 10px 15px;
-  background: #50c3ff;
+  background: #32a942;
   border-radius: 1px;
   font-size: 16px;
   color: #fff;
@@ -422,5 +433,34 @@ $spacingMultipliers: (
     border-radius: $height;
     height: $height;
     min-width: 10px;
+  }
+}
+
+.stack-chooser {
+  &__item {
+    $arrowWidth: 50px;
+
+    float: left;
+    margin-right: $arrowWidth;
+    position: relative;
+
+    &:after {
+      content: "\2192";
+      color: #999;
+      font-weight: 600;
+      position: absolute;
+      top: 0;
+      right: $arrowWidth * -1;
+      width: $arrowWidth;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    &:last-child:after {
+      display: none;
+    }
   }
 }
