@@ -108,11 +108,17 @@ hr {
   border-radius: 1px;
   white-space: normal;
   display: block;
-  position: relative; }
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
   .card__description {
     font-size: 14px;
     color: #ccc;
     font-weight: 300; }
+  .card__assignees {
+    float: left; }
   .card.hot:after {
     content: "";
     width: 5px;
@@ -122,8 +128,9 @@ hr {
     top: 5px;
     right: 5px;
     border-radius: 5px; }
-  .card__assignees {
-    float: left; }
+  .card.dragging {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+    z-index: 100; }
 
 .user-stack {
   float: right; }

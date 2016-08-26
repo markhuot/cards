@@ -1,4 +1,5 @@
 const elixir = require('laravel-elixir');
+const gulp = require('gulp');
 
 require('laravel-elixir-vue');
 
@@ -15,6 +16,10 @@ require('laravel-elixir-vue');
 
 elixir(mix => {
     mix.sass('app.scss')
-       .webpack('app.js')
        .version('css/app.css');
+});
+
+gulp.task('js', function() {
+  gulp.src('./resources/assets/js/app.js')
+      .pipe(gulp.dest('./public/js'));
 });
