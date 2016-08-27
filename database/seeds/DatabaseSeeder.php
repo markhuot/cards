@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Project;
 use App\Stack;
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
       $user = new User;
       $user->name = 'Mark Huot';
       $user->email = 'mark@markhuot.com';
-      $user->password = 'password';
+      $user->password = Hash::make('password');
       $user->save();
     }
 
