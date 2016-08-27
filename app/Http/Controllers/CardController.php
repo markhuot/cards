@@ -26,6 +26,7 @@ class CardController extends Controller
   {
     $card = new Card($request->input('card'));
     $card->user = $request->user();
+    $card->order = 0;
     $stack->cards()->save($card);
 
     $card->assignee_id = $request->input('card.assignee_id');

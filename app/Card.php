@@ -22,11 +22,11 @@ class Card extends Model
   {
     parent::boot();
 
-    static::creating(function($model) {
-      if (!$model->order && $model->stack) {
-        $model->order = $model->stack->cards()->max('order');
-      }
-    });
+    // static::creating(function($model) {
+    //   if (!$model->order && $model->stack) {
+    //     $model->order = $model->stack->cards()->max('order');
+    //   }
+    // });
   }
 
   public function stack()
