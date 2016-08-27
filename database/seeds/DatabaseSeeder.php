@@ -18,50 +18,35 @@ class DatabaseSeeder extends Seeder
   {
     // $this->call(UsersTableSeeder::class);
 
-    $user = User::find(1);
-    if (!$user) {
-      $user = new User;
-      $user->name = 'Mark Huot';
-      $user->email = 'mark@markhuot.com';
-      $user->password = Hash::make('password');
-      $user->save();
-    }
+    $user = new User;
+    $user->name = 'Mark Huot';
+    $user->email = 'mark@markhuot.com';
+    $user->password = Hash::make('password');
+    $user->save();
 
-    $project = Project::find(1);
-    if (!$project) {
-      $project = new Project;
-      $project->name = 'Project Manhattan';
-      $project->save();
+    $project = new Project;
+    $project->name = 'Project Manhattan';
+    $project->save();
 
-      $project->users()->attach($user);
-    }
+    $project->users()->attach($user);
 
-    $backlog = Stack::find(1);
-    if (!$backlog) {
-      $backlog = new Stack;
-      $backlog->project_id = $project->getKey();
-      $backlog->name = 'Backlog';
-      $backlog->order = 0;
-      $backlog->save();
-    }
+    $backlog = new Stack;
+    $backlog->project_id = $project->getKey();
+    $backlog->name = 'Backlog';
+    $backlog->order = 0;
+    $backlog->save();
 
-    $releasePlanning = Stack::find(2);
-    if (!$releasePlanning) {
-      $releasePlanning = new Stack;
-      $releasePlanning->project_id = $project->getKey();
-      $releasePlanning->name = 'Release Planning';
-      $releasePlanning->order = 1;
-      $releasePlanning->save();
-    }
+    $releasePlanning = new Stack;
+    $releasePlanning->project_id = $project->getKey();
+    $releasePlanning->name = 'Release Planning';
+    $releasePlanning->order = 1;
+    $releasePlanning->save();
 
-    $inProgress = Stack::find(3);
-    if (!$inProgress) {
-      $inProgress = new Stack;
-      $inProgress->project_id = $project->getKey();
-      $inProgress->name = 'In Progress';
-      $inProgress->order = 2;
-      $inProgress->save();
-    }
+    $inProgress = new Stack;
+    $inProgress->project_id = $project->getKey();
+    $inProgress->name = 'In Progress';
+    $inProgress->order = 2;
+    $inProgress->save();
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
