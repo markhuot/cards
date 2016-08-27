@@ -130,7 +130,15 @@ hr {
     border-radius: 5px; }
   .card.dragging {
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
-    z-index: 100; }
+    z-index: 100;
+    opacity: 0.5; }
+
+#drag-placeholder {
+  border-top: 1px dashed red;
+  height: 0;
+  margin-bottom: -11px;
+  position: relative;
+  top: -5px; }
 
 .user-stack {
   float: right; }

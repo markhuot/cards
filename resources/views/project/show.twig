@@ -4,7 +4,7 @@
 <div class="page">
   <div class="stacks">
     {% for stack in project.stacks %}
-      <div class="stack" spacing="2">
+      <div class="stack" spacing="2" data-stack-id="{{ stack.id }}">
         <h1 class="stack__header">
           {{ stack.name }} <span class="stack__header__light">({{ stack.cards.count }})</span>
           <small class="stack__header__light"><a href="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards/create">Add card</a></small>
@@ -12,7 +12,7 @@
         <ul spacing>
           {% for card in stack.cards %}
             <li>
-              <a class="card {{ card.hot ? 'hot' }} box-shadow" box href="{{ card.uri }}">
+              <a class="card {{ card.hot ? 'hot' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}">
                 <div spacing>
                   <p class="card__title">{{ card.title }}</p>
                   {% if card.description %}<p class="card__description">{{ card.description[0:75]|trim }}{{ card.description|length > 75 ? '&hellip;' }}</p>{% endif %}

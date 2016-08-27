@@ -43,4 +43,21 @@ class CardController extends Controller
     ;
   }
 
+  public function move(Request $request, Card $card)
+  {
+    $card->stack_id = $request->input('card.stack_id');
+    $card->timestamps = false;
+    $card->order = $request->input('card.order');
+    $card->save();
+
+    foreach ($request->input('stack') as $req) {
+      $card = Card::find($req['card_id']);
+      $card->timestamps = false;
+      $card->order = $req['order'];
+      $card->save();
+    }
+
+    return ['ok'];
+  }
+
 }
