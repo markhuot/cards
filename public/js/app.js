@@ -79,16 +79,24 @@ function dragEnd (event) {
 
   var data = {'card': {}, 'stack':[]};
 
+  dragging.parentNode.parentNode.removeChild(dragging.parentNode);
+
   var placeholder = document.getElementById('drag-placeholder');
-  var stack = closest(placeholder, 'stack');
+  var listItem = document.createElement('li');
+  listItem.appendChild(dragging);
+  placeholder.parentNode.insertBefore(listItem, placeholder);
+  placeholder.parentNode.removeChild(placeholder);
+
+  var stack = closest(dragging, 'stack');
   data.card.stack_id = stack.dataset.stackId;
-  data.card.order = indexOfNode(placeholder);
   var stackCards = stack.querySelectorAll('.card');
   for (var i = 0, len = stackCards.length; i < len; i++) {
     var stackCard = stackCards[i];
+    var index = indexOfNode(stackCard.parentNode);
+    console.debug(stackCard, index);
     data.stack.push({
       'card_id': stackCard.dataset.cardId,
-      'order': indexOfNode(stackCard.parentNode)
+      'order': index
     });
   }
   var uri = '/cards/' + dragging.dataset.cardId + '/move';
@@ -101,16 +109,12 @@ function dragEnd (event) {
   };
   r.send(serialize(data));
 
-  placeholder.parentNode.insertBefore(dragging, placeholder);
-
   dragging.classList.remove('dragging');
-  dragging.style.position = 'static';
+  dragging.style.position = 'relative';
+  dragging.style.top = 0;
+  dragging.style.left = 0;
   dragging.style.width = 'auto';
   dragging = false;
-
-  if (placeholder) {
-    placeholder.parentNode.removeChild(placeholder);
-  }
 }
 
 document.body.addEventListener('mouseup', dragEnd);

@@ -48,7 +48,6 @@ class CardController extends Controller
   {
     $card->stack_id = $request->input('card.stack_id');
     $card->timestamps = false;
-    $card->order = $request->input('card.order');
     $card->save();
 
     foreach ($request->input('stack') as $req) {
