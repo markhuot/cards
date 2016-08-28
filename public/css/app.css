@@ -55,6 +55,7 @@ hr {
   left: 0;
   width: 100%;
   height: 70px;
+  z-index: 999;
   display: -webkit-box;
   display: flex;
   -webkit-box-pack: justify;
@@ -73,14 +74,13 @@ hr {
       .project-header__guard {
         padding-top: 100px; } }
 
-.stacks {
-  white-space: nowrap; }
+@media (min-width: 701px) {
+  .stacks {
+    white-space: nowrap; } }
 
 .stack {
   display: inline-block;
   width: 100%;
-  height: calc(100vh - 100px);
-  overflow: auto;
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
@@ -88,6 +88,8 @@ hr {
   vertical-align: top; }
   @media (min-width: 701px) {
     .stack {
+      height: calc(100vh - 100px);
+      overflow: auto;
       width: 300px;
       margin-left: 0;
       margin-right: 20px;
