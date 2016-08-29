@@ -49,6 +49,9 @@
   <hr>
   <form action="/cards/{{ card.id }}/comments" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
+    {% if errors.count > 0 %}
+      {{ dump(errors) }}
+    {% endif %}
     <div spacing="2">
       <div spacing>
         <div style="background: #fff8e8; border: 1px solid #ccc;">
@@ -68,7 +71,7 @@
             <p><label class="comment-form__label">Assignee</label></p>
             <ul>
               {% for user in card.stack.project.users %}
-                <li class="checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('user.id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
+                <li class="checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
               {% endfor %}
             </ul>
           </div>

@@ -1,6 +1,7 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use App\Attachment;
 use App\Stack;
 use App\Comment;
@@ -12,41 +13,22 @@ use Carbon\Carbon;
 class Card extends Model
 {
 
+  protected $relationHasChanged = false;
+
   protected $fillable = [
     'title',
     'description',
     'asignee_id',
   ];
 
-  protected static function boot()
-  {
-    parent::boot();
-
-    // static::creating(function($model) {
-    //   if (!$model->order && $model->stack) {
-    //     $model->order = $model->stack->cards()->max('order');
-    //   }
-    // });
-  }
-
   public function stack()
   {
     return $this->belongsTo(Stack::class);
   }
 
-  public function getUriAttribute()
-  {
-    return '/cards/'.$this->getKey();
-  }
-
   public function comments()
   {
     return $this->morphMany(Comment::class, 'source');
-  }
-
-  public function setUserAttribute(User $user)
-  {
-    $this->attributes['user_id'] = $user->id;
   }
 
   public function user()
@@ -56,21 +38,32 @@ class Card extends Model
 
   public function assignees()
   {
-    return $this->morphMany(Assignee::class, 'source');
+    return $this->morphToMany(User::class, 'assignee');
+  }
+
+  public function isChanging()
+  {
+    return count($this->getDirty()) > 0 || $this->relationHasChanged;
+  }
+
+  public function getUriAttribute()
+  {
+    return '/cards/'.$this->getKey();
+  }
+
+  public function setUserAttribute(User $user)
+  {
+    $this->attributes['user_id'] = $user->id;
+  }
+
+  public function setStackAttribute(Stack $stack)
+  {
+    $this->attributes['stack_id'] = $stack->id;
   }
 
   public function setAssigneeIdAttribute(array $userIds=null)
   {
-    $sourceType = get_class($this);
-    $sourceId = $this->id;
-    $assignees = collect($userIds)->map(function($userId) use ($sourceType, $sourceId) {
-      return Assignee::firstOrNew([
-        'source_type' => $sourceType,
-        'source_id' => $sourceId,
-        'user_id' => $userId,
-      ]);
-    });
-    $this->assignees()->saveMany($assignees);
+    $this->assignees()->sync($userIds);
   }
 
   public function followers()

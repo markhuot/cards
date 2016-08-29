@@ -1,36 +1,27 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests;
+use App\Http\Request;
+use App\Http\Requests\StoreCardComment;
 use App\Attachment;
 use App\Comment;
 use App\Card;
+use App\User;
+use App\Stack;
 
 class CommentController extends Controller
 {
 
-  public function store(Request $request, Card $card)
+  public function store(StoreCardComment $request, Card $card)
   {
-    $card->assignee_id = $request->input('card.assignee_id');
+    $card->assignee_id = $request->input('card.assignee_id', []);
     $card->stack_id = $request->input('card.stack_id');
     $card->save();
 
-    $comment = new Comment($request->input('comment', []));
+    $comment = new Comment($request->input('comment'));
     $comment->user = $request->user();
     $card->comments()->save($comment);
 
-    if (($attachments=$request->file('comment.attachment')) && count(array_filter($attachments)) > 0) {
-      foreach ($attachments as $file) {
-        $path = $file->store('attachments/project/'.$card->stack->project->id);
-        $attachment = new Attachment;
-        $attachment->source_type = get_class($comment);
-        $attachment->source_id = $comment->id;
-        $attachment->user = $request->user();
-        $attachment->type = 'image';
-        $attachment->link = $path;
-        $comment->attachments()->save($attachment);
-      }
-    }
+    $comment->attachments = $request->file('comment.attachment', []);
 
     $request->user()->follow($card);
 

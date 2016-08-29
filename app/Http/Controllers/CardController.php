@@ -25,9 +25,10 @@ class CardController extends Controller
   public function store(Request $request, Project $project, Stack $stack)
   {
     $card = new Card($request->input('card'));
+    $card->stack = $stack;
     $card->user = $request->user();
-    $card->order = 0;
-    $stack->cards()->save($card);
+    $card->order = $stack->cards()->max('order') + 1;
+    $card->save();
 
     $card->assignee_id = $request->input('card.assignee_id');
 

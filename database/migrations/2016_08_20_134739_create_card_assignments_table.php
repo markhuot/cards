@@ -15,8 +15,8 @@ class CreateCardAssignmentsTable extends Migration
   {
     Schema::create('assignees', function (Blueprint $table) {
       $table->increments('id');
-      $table->string('source_type');
-      $table->integer('source_id')->unsigned();
+      $table->string('assignee_type');
+      $table->integer('assignee_id')->unsigned();
       $table->integer('user_id')->unsigned();
       $table->timestamps();
     });

@@ -35,6 +35,20 @@ class Comment extends Model
     return $this->morphMany(Attachment::class, 'source');
   }
 
+  public function setAttachmentsAttribute(array $attachments)
+  {
+    foreach ($attachments as $file) {
+      $path = $file->store('attachments');
+      $attachment = new Attachment;
+      $attachment->source_type = get_class($this);
+      $attachment->source_id = $this->id;
+      $attachment->user = app('request')->user();
+      $attachment->type = 'image';
+      $attachment->link = $path;
+      $this->attachments()->save($attachment);
+    }
+  }
+
   public function getCountTasksAttribute()
   {
     return preg_match_all('/^- \[(x| )\]/sm', $this->content);
@@ -49,5 +63,6 @@ class Comment extends Model
   {
     return $this->countTasksComplete / $this->countTasks;
   }
+
 
 }
