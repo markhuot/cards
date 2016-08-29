@@ -23,7 +23,9 @@ class StoreCardComment extends FormRequest
       $requestAssignees = \Request::input('card.assignee_id');
       $unchangedAssignees = $requestAssignees == $cardAssignees;
 
-      if ($value == false && $card->isClean() && $unchangedAssignees) {
+      $noAttachments = count(array_filter(\Request::file('comment.attachment', []))) == 0;
+
+      if ($value == false && $card->isClean() && $unchangedAssignees && $noAttachments) {
         return false;
       }
 

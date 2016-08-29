@@ -37,7 +37,7 @@ class Comment extends Model
 
   public function setAttachmentsAttribute(array $attachments)
   {
-    foreach ($attachments as $file) {
+    foreach (array_filter($attachments) as $file) {
       $path = $file->store('attachments');
       $attachment = new Attachment;
       $attachment->source_type = get_class($this);
