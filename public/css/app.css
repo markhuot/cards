@@ -41,7 +41,7 @@ hr {
   clear: both; }
 
 .page {
-  max-width: 1800px;
+  margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px; }
 
@@ -70,9 +70,6 @@ hr {
     float: left; }
   .project-header__guard {
     padding-top: 70px; }
-    @media (min-width: 901px) {
-      .project-header__guard {
-        padding-top: 100px; } }
 
 @media (min-width: 701px) {
   .stacks {
@@ -179,7 +176,8 @@ hr {
       margin-left: auto;
       margin-right: auto;
       padding-left: 40px;
-      padding-right: 40px; } }
+      padding-right: 40px;
+      margin-top: 30px; } }
   .card-detail__title {
     font-weight: 500;
     font-size: 24px;
