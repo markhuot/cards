@@ -105,6 +105,14 @@ class DatabaseSeeder extends Seeder
     $card->save();
 
     $card = new Card;
+    $card->stack_id = $inProgress->getKey();
+    $card->user_id = $user->getKey();
+    $card->title = 'Comment meta';
+    $card->description = "Comments should keep track of what changed about a card with each save.\n\n- [x] add `comments.meta` field\n\n- [ ] store json of the change\n\n- [ ] add a `CommentMetaRenderer` class that prints a string version of the change";
+    $card->order = 1;
+    $card->save();
+
+    $card = new Card;
     $card->stack_id = $releasePlanning->getKey();
     $card->user_id = $user->getKey();
     $card->title = 'Markdown parsing needs syntax highlighting';
