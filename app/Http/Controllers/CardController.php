@@ -61,4 +61,20 @@ class CardController extends Controller
     return ['ok'];
   }
 
+  public function check(Request $request, Card $card)
+  {
+    $lineNo = $request->input('line') - 1;
+    $value = $request->input('value') ? 'x' : ' ';
+
+    $lines = preg_split('/(\r\n|\r|\n)/', $card->description);
+    $line = $lines[$lineNo];
+
+    if (preg_match('/^- \[(x| )\]/', $line)) {
+      $lines[$lineNo] = substr_replace($line, $value, 3, 1);
+    }
+
+    $card->description = implode("\r\n", $lines);
+    $card->save();
+  }
+
 }

@@ -161,3 +161,34 @@ function insertPlaceholder (card, before) {
     li.parentNode.appendChild(placeholder);
   }
 }
+
+document.body.addEventListener('click', function (event) {
+  if (event.target.getAttribute('name') != 'line') { return; }
+
+  var lineNo = event.target.getAttribute('value');
+  var card = closest(event.target, 'card-detail__description');
+  var comment = closest(event.target, 'comment-detail');
+  var uri = '';
+
+  if (card) {
+    uri = '/cards/' + card.dataset.cardId + '/check'
+  }
+  else if (comment) {
+    uri = '/comments/' + comment.dataset.commentId + '/check'
+  }
+  else {
+    throw "Could not find the source object of this task list.";
+  }
+
+  var r = new XMLHttpRequest();
+  r.open('POST', uri, true);
+  r.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+  r.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+  r.onreadystatechange = function () {
+    if (r.readyState != 4 || r.status != 200) return;
+  };
+  r.send(serialize({
+    'line': lineNo,
+    'value': event.target.checked ? 1 : 0
+  }));
+});

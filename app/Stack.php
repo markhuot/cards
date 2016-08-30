@@ -23,7 +23,12 @@ class Stack extends Model
 
   public function getUriAttribute()
   {
-    return 'projects/' . $this->project->getKey().'/stacks/'.$this->getKey();
+    return '/projects/' . $this->project->getKey().'/stacks/'.$this->getKey();
+  }
+
+  public function getLabelAttribute()
+  {
+    return $this->name;
   }
 
   public function project()

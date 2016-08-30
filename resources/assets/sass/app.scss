@@ -43,7 +43,9 @@ $baseSpacing: 10;
 $spacingMultipliers: (
   1,
   2,
-  3
+  3,
+  4,
+  0.25
 );
 
 @each $multiplier in $spacingMultipliers {
@@ -286,6 +288,8 @@ $spacingMultipliers: (
   }
 
   a {
+    margin-right: 20px;
+
     &:hover {
       text-decoration: underline;
     }
@@ -304,6 +308,7 @@ $spacingMultipliers: (
   height: 10em;
   width: 100%;
   background: none;
+  line-height: 1.5;
 }
 
 .project-preview {
@@ -326,6 +331,29 @@ $spacingMultipliers: (
   text-indent: -9999px;
   margin-right: 10px;
   border-radius: 1px;
+}
+
+.comment-meta {
+  // font-style: italic;
+  // text-align: center;
+  display: inline;
+
+  &__item {
+    display: inline;
+  }
+
+  &__added {
+    // color: green;
+    // opacity: 0.4;
+    // font-weight: 600;
+  }
+
+  &__removed {
+    // color: red;
+    // opacity: 0.4;
+    // font-weight: 600;
+    text-decoration: line-through;
+  }
 }
 
 .comment-form {
@@ -366,7 +394,7 @@ $spacingMultipliers: (
     position: relative;
     background: #999;
     display: inline-block;
-    border-radius: 100px;
+    border-radius: 4px;
     padding: 3px 10px 3px $dotSize;
     overflow: hidden;
     font-size: 14px;

@@ -35,6 +35,12 @@ hr {
 [spacing="3"] > * + * {
   margin-top: 30; }
 
+[spacing="4"] > * + * {
+  margin-top: 40; }
+
+[spacing="0.25"] > * + * {
+  margin-top: 2.5; }
+
 .clearfix:after, .stacks:after, .card-detail__meta:after {
   content: "";
   display: table;
@@ -207,8 +213,10 @@ hr {
   .byline strong {
     color: #444;
     font-weight: 600; }
-  .byline a:hover {
-    text-decoration: underline; }
+  .byline a {
+    margin-right: 20px; }
+    .byline a:hover {
+      text-decoration: underline; }
 
 .on-previous-active {
   display: none; }
@@ -222,7 +230,8 @@ hr {
   font-size: 16px;
   height: 10em;
   width: 100%;
-  background: none; }
+  background: none;
+  line-height: 1.5; }
 
 .project-preview {
   width: 200px;
@@ -242,6 +251,13 @@ hr {
   text-indent: -9999px;
   margin-right: 10px;
   border-radius: 1px; }
+
+.comment-meta {
+  display: inline; }
+  .comment-meta__item {
+    display: inline; }
+  .comment-meta__removed {
+    text-decoration: line-through; }
 
 .comment-form__label {
   font-size: 14px;
@@ -266,7 +282,7 @@ hr {
   position: relative;
   background: #999;
   display: inline-block;
-  border-radius: 100px;
+  border-radius: 4px;
   padding: 3px 10px 3px 20px;
   overflow: hidden;
   font-size: 14px;

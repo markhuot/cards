@@ -14,7 +14,7 @@
         {% endif %}
       </small>
     </h1>
-    <div class="card-detail__description longform">
+    <div class="card-detail__description longform" data-card-id="{{ card.id }}">
       {{ card.description|markdown }}
     </div>
   </div>
@@ -28,11 +28,28 @@
     <hr>
     <ul spacing="3">
       {% for comment in card.comments %}
-        <li id="comment{{ comment.id }}" spacing>
-          <p class="byline">
-            <strong>{{ comment.user.name }}</strong>
-            <a href="#comment{{ comment.id }}">{{ comment.created_at.diffForHumans }}</a>
-          </p>
+        <li class="comment-detail" id="comment{{ comment.id }}" spacing data-comment-id="{{ comment.id }}">
+          <div spacing="0.25">
+            <div class="byline"><strong>{{ comment.user.name }}</strong></div>
+            <div class="meta">
+              Posted <strong><a href="#comment{{ comment.id }}">{{ comment.created_at.diffForHumans }}</a></strong>
+              {% if comment.meta %}
+                <ul class="comment-meta meta">
+                  {% for change in comment.meta %}
+                    <li class="comment-meta__item">
+                      {{ change.label }}
+                      {% for added in change.added %}
+                        <strong class="comment-meta__added">+{{ added.label }}</strong>
+                      {% endfor %}
+                      {% for removed in change.removed %}
+                        <span class="comment-meta__removed">-{{ removed.label }}</span>
+                      {% endfor %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          </div>
           {{ comment.content|markdown }}
           {% if comment.attachments.count %}
             <div>

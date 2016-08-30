@@ -9,11 +9,12 @@ use App\User;
 use App\Assignee;
 use App\Follwer;
 use Carbon\Carbon;
+use App\ModelTraits\Auditable;
 
 class Card extends Model
 {
 
-  protected $relationHasChanged = false;
+  use Auditable;
 
   protected $fillable = [
     'title',
@@ -41,11 +42,6 @@ class Card extends Model
     return $this->morphToMany(User::class, 'assignee');
   }
 
-  public function isChanging()
-  {
-    return count($this->getDirty()) > 0 || $this->relationHasChanged;
-  }
-
   public function getUriAttribute()
   {
     return '/cards/'.$this->getKey();
@@ -63,6 +59,7 @@ class Card extends Model
 
   public function setAssigneeIdAttribute(array $userIds=null)
   {
+    $this->auditSyncing('assignees', $userIds);
     $this->assignees()->sync($userIds);
   }
 
