@@ -131,31 +131,27 @@ document.body.addEventListener('mousemove', function (event) {
     for (var i = 0, len = cards.length; i < len; i++) {
       var card = cards[i];
 
-      if (card.classList.contains('dragging')) {
-        continue;
-      }
-
       if (event.clientX > card.offsetLeft && event.clientX < card.offsetLeft + card.offsetWidth &&
           event.clientY > card.offsetTop && event.clientY < card.offsetTop + card.offsetHeight) {
-        var stack = closest(card, 'card-stack');
+        var cardStack = closest(card, 'card-stack');
         var index = indexOfNode(card.parentNode);
         if (event.clientY > card.offsetTop + (card.offsetHeight / 2)) {
           index += 1;
         }
-        insertPlaceholder(card, stack, index);
+        insertPlaceholder(cardStack, index);
         foundPosition = true;
         break;
       }
     }
 
     if (!foundPosition) {
-      for (var i=0, len = stacks.length; i < len; i++) {
+      for (i = 0, len = stacks.length; i < len; i++) {
         var stack = stacks[i];
         var cardStack = stack.querySelectorAll('.card-stack')[0];
         if (event.clientX > stack.offsetLeft && event.clientX < stack.offsetLeft + stack.offsetWidth &&
             event.clientY > stack.offsetTop && event.clientY < stack.offsetTop + stack.offsetHeight &&
             event.clientY > cardStack.offsetTop + cardStack.offsetHeight) {
-          insertPlaceholder(card, cardStack, cardStack.querySelectorAll('.card').length);
+          insertPlaceholder(cardStack, cardStack.querySelectorAll('.card').length);
           foundPosition = true;
           break;
         }
@@ -164,7 +160,7 @@ document.body.addEventListener('mousemove', function (event) {
   }
 });
 
-function insertPlaceholder (card, stack, index) {
+function insertPlaceholder (stack, index) {
   var placeholder = document.getElementById('drag-placeholder');
   if (!placeholder) {
     placeholder = document.createElement('li');

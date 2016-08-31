@@ -92,14 +92,14 @@ hr {
   @media (min-width: 701px) {
     .stack {
       height: calc(100vh - 100px);
-      overflow: auto;
       width: 300px;
       margin-left: 0;
       margin-right: 20px;
       margin-bottom: 0; } }
   .stack__header {
     font-weight: 600;
-    font-size: 16px; }
+    font-size: 16px;
+    height: 20px; }
     .stack__header__light {
       font-weight: 300;
       color: #999; }
@@ -141,6 +141,12 @@ hr {
   .card.dragging {
     box-shadow: none;
     opacity: 0.5; }
+
+@media (min-width: 701px) {
+  .card-stack {
+    padding: 10px 0;
+    max-height: calc(100vh - 140px);
+    overflow: auto; } }
 
 #drag-placeholder {
   border-top: 1px dashed red;

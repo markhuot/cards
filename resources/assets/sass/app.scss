@@ -119,7 +119,7 @@ $spacingMultipliers: (
 
   @include media('>700px') {
     height: calc(100vh - 100px);
-    overflow: auto;
+    // overflow: auto;
     // float: left;
     width: 300px;
     margin-left: 0;
@@ -130,6 +130,7 @@ $spacingMultipliers: (
   &__header {
     font-weight: 600;
     font-size: 16px;
+    height: 20px;
 
     &__light {
       font-weight: 300;
@@ -191,6 +192,14 @@ $spacingMultipliers: (
   &.dragging {
     box-shadow: none;
     opacity: 0.5;
+  }
+}
+
+@include media('>700px') {
+  .card-stack {
+    padding: 10px 0;
+    max-height: calc(100vh - 140px);
+    overflow: auto;
   }
 }
 
