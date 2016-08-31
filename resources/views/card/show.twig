@@ -1,16 +1,16 @@
 {% extends "app" %}
 
 {% block content %}
-<div class="card-detail box-shadow" box="2" spacing="3">
+<div class="card-detail box-shadow" box="2" spacing="4">
   <div spacing="2">
-    <h1 class="card-detail__title" spacing>
+    <h1 class="card-detail__title" spacing="0.25">
       <span>{{ card.title }}</span>
       <small class="meta">By
         <strong>{{ card.user.name }}</strong>
         on
         <strong>{{ card.created_at.toDayDateTimeString }}</strong>
         {% if card.assignees.count %}
-          &rarr; Assigned to <strong>{{ card.assignees.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</strong>
+          &rarr; Assigned to <strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong>
         {% endif %}
       </small>
     </h1>
@@ -50,7 +50,9 @@
               {% endif %}
             </div>
           </div>
-          {{ comment.content|markdown }}
+          <div class="longform">
+            {{ comment.content|markdown }}
+          </div>
           {% if comment.attachments.count %}
             <div>
               {% for attachment in comment.attachments %}
@@ -71,7 +73,7 @@
     {% endif %}
     <div spacing="2">
       <div spacing>
-        <div style="background: #fff8e8; border: 1px solid #ccc;">
+        <div class="user-input">
           <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a comment..." box></textarea>
           <p box><input class="comment-form__upload" type="file" name="comment[attachment][]"></p>
         </div>

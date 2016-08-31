@@ -30,7 +30,7 @@ class CardController extends Controller
     $card->order = $stack->cards()->max('order') + 1;
     $card->save();
 
-    $card->assignee_id = $request->input('card.assignee_id');
+    $card->assignee_id = $request->input('card.assignee_id', []);
 
     $request->user()->follow($card);
 

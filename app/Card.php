@@ -22,6 +22,21 @@ class Card extends Model
     'asignee_id',
   ];
 
+  protected static function boot()
+  {
+    static::creating(function($model) {
+      if (!$model->local_id) {
+        $localId = $model->stack->project->cards()->max('local_id');
+        if ($localId == false) {
+          $model->local_id = 1000;
+        }
+        else {
+          $model->local_id = $localId + 1;
+        }
+      }
+    });
+  }
+
   public function stack()
   {
     return $this->belongsTo(Stack::class);
@@ -57,7 +72,7 @@ class Card extends Model
     $this->attributes['stack_id'] = $stack->id;
   }
 
-  public function setAssigneeIdAttribute(array $userIds=null)
+  public function setAssigneeIdAttribute(array $userIds)
   {
     $this->auditSyncing('assignees', $userIds);
     $this->assignees()->sync($userIds);

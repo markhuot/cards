@@ -105,8 +105,13 @@ hr {
       color: #999; }
     .stack__header small {
       float: right; }
-  .stack.new {
-    border: 2px dashed gray; }
+  .stack__create-form {
+    background: rgba(0, 0, 0, 0.025);
+    border-radius: 2px; }
+  .stack__new-title {
+    width: 100%;
+    font-size: 16px;
+    border: none; }
 
 .card {
   background: #fff;
@@ -120,10 +125,10 @@ hr {
   user-select: none; }
   .card__description {
     font-size: 14px;
-    color: #ccc;
-    font-weight: 300; }
-  .card__assignees {
-    float: left; }
+    color: #666; }
+  .card__meta > * {
+    margin-right: 10px;
+    display: inline-block; }
   .card.hot:after {
     content: "";
     width: 5px;
@@ -134,8 +139,7 @@ hr {
     right: 5px;
     border-radius: 5px; }
   .card.dragging {
-    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
-    z-index: 100;
+    box-shadow: none;
     opacity: 0.5; }
 
 #drag-placeholder {
@@ -143,7 +147,25 @@ hr {
   height: 0;
   margin-bottom: -11px;
   position: relative;
-  top: -5px; }
+  top: -5px;
+  z-index: 100; }
+
+#drag-proxy {
+  background: #fff;
+  width: 100px;
+  height: 100px;
+  margin-top: -75px;
+  margin-left: -50px;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  cursor: move;
+  z-index: 101;
+  border-radius: 10px;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2); }
 
 .user-stack {
   float: right; }
@@ -172,6 +194,24 @@ hr {
     border: 2px dashed #ccc;
     color: #ccc; }
 
+.longform {
+  line-height: 1.5em; }
+  .longform p + *, .longform ul + *, .longform ol + *, .longform dl + *, .longform h1 + *, .longform h2 + *, .longform h3 + *, .longform h4 + *, .longform h5 + *, .longform h6 + *, .longform pre + * {
+    margin-top: 10px; }
+  .longform ul, .longform ol, .longform dl {
+    margin-left: 40px; }
+  .longform ul li {
+    list-style: square; }
+  .longform ol li {
+    list-style: decimal; }
+  .longform li {
+    font-size: 14px; }
+  .longform code {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background: whiteSmoke;
+    padding: 0 2px; }
+
 .card-detail {
   background: #fff;
   border-radius: 1px;
@@ -188,8 +228,6 @@ hr {
     font-weight: 500;
     font-size: 24px;
     display: block; }
-  .card-detail__description {
-    line-height: 2em; }
   @media (min-width: 701px) {
     .card-detail__meta > * {
       float: left;
@@ -232,6 +270,10 @@ hr {
   width: 100%;
   background: none;
   line-height: 1.5; }
+
+.user-input {
+  background: rgba(255, 248, 232, 0.5);
+  border: 1px solid #ccc; }
 
 .project-preview {
   width: 200px;

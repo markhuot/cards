@@ -141,8 +141,15 @@ $spacingMultipliers: (
     }
   }
 
-  &.new {
-    border: 2px dashed gray;
+  &__create-form {
+    background: rgba(0,0,0,0.025);
+    border-radius: 2px;
+  }
+
+  &__new-title {
+    width: 100%;
+    font-size: 16px;
+    border: none;
   }
 }
 
@@ -156,12 +163,16 @@ $spacingMultipliers: (
 
   &__description {
     font-size: 14px;
-    color: #ccc;
-    font-weight: 300;
+    color: #666;
   }
 
-  &__assignees {
-    float: left;
+  &__meta {
+
+  }
+
+  &__meta > * {
+    margin-right: 10px;
+    display: inline-block;
   }
 
   &.hot:after {
@@ -178,8 +189,7 @@ $spacingMultipliers: (
   }
 
   &.dragging {
-    box-shadow: 0 1px 10px rgba(0,0,0,0.2);
-    z-index: 100;
+    box-shadow: none;
     opacity: 0.5;
   }
 }
@@ -190,6 +200,22 @@ $spacingMultipliers: (
   margin-bottom: -11px;
   position: relative;
   top: -5px;
+  z-index: 100;
+}
+
+#drag-proxy {
+  background: #fff;
+  width: 100px;
+  height: 100px;
+  margin-top: -75px;
+  margin-left: -50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: move;
+  z-index: 101;
+  border-radius: 10px;
+  box-shadow: 0 1px 10px rgba(0,0,0,0.2);
 }
 
 .user-stack {
@@ -222,6 +248,39 @@ $spacingMultipliers: (
   }
 }
 
+.longform {
+  line-height: 1.5em;
+
+  p, ul, ol, dl, h1, h2, h3, h4, h5, h6, pre {
+    & + * {
+      margin-top: 10px;
+    }
+  }
+
+  ul, ol, dl {
+    margin-left: 40px;
+  }
+
+  ul li {
+    list-style: square;
+  }
+
+  ol li {
+    list-style: decimal;
+  }
+
+  li {
+    font-size: 14px;
+  }
+
+  code {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background: whiteSmoke;
+    padding: 0 2px;
+  }
+}
+
 .card-detail {
   background: #fff;
   border-radius: 1px;
@@ -240,10 +299,6 @@ $spacingMultipliers: (
     font-weight: 500;
     font-size: 24px;
     display: block;
-  }
-
-  &__description {
-    line-height: 2em;
   }
 
   &__meta {
@@ -309,6 +364,11 @@ $spacingMultipliers: (
   width: 100%;
   background: none;
   line-height: 1.5;
+}
+
+.user-input {
+  background: rgba(255, 248, 232, 0.5);
+  border: 1px solid #ccc;
 }
 
 .project-preview {

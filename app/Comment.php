@@ -124,7 +124,7 @@ class Comment extends Model
    */
   public function getMetaAttribute()
   {
-    $changes = json_decode($this->attributes['meta'], true);
+    $changes = json_decode($this->attributes['meta'], true) ?: [];
 
     foreach ($changes as &$change) {
       switch ($change['key']) {

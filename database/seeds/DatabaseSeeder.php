@@ -49,6 +49,12 @@ class DatabaseSeeder extends Seeder
     $inProgress->order = 2;
     $inProgress->save();
 
+    $complete = new Stack;
+    $complete->project_id = $project->getKey();
+    $complete->name = 'Complete';
+    $complete->order = 2;
+    $complete->save();
+
     $card = new Card;
     $card->stack_id = $backlog->getKey();
     $card->user_id = $user->getKey();
@@ -97,7 +103,7 @@ class DatabaseSeeder extends Seeder
     $card->save();
 
     $card = new Card;
-    $card->stack_id = $inProgress->getKey();
+    $card->stack_id = $complete->getKey();
     $card->user_id = $user->getKey();
     $card->title = 'Drag and drop';
     $card->description = "Cards should be able to drag/drop across stacks.";
@@ -109,6 +115,42 @@ class DatabaseSeeder extends Seeder
     $card->user_id = $user->getKey();
     $card->title = 'Comment meta';
     $card->description = "Comments should keep track of what changed about a card with each save.\n\n- [x] add `comments.meta` field\n- [ ] store json of the change\n- [ ] add a `CommentMetaRenderer` class that prints a string version of the change";
+    $card->order = 1;
+    $card->save();
+
+    $comment = new Comment;
+    $comment->source_type = get_class($card);
+    $comment->source_id = $card->getKey();
+    $comment->user_id = $user->getKey();
+    $comment->content = "This is a test of the comment system? there's not a lot to it, just the text of the comment. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    $comment->save();
+
+    $comment = new Comment;
+    $comment->source_type = get_class($card);
+    $comment->source_id = $card->getKey();
+    $comment->user_id = $user->getKey();
+    $comment->content = "This is a comment with a task list, you can check things now.\n\n- [ ] this is unchecked\n- [x] this is checked";
+    $comment->save();
+
+    $comment = new Comment;
+    $comment->source_type = get_class($card);
+    $comment->source_id = $card->getKey();
+    $comment->user_id = $user->getKey();
+    $comment->content = "Laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n- this is just a regular old list, it's not very fancy. aboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n- there are short list items\n-and longer list items aboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    $comment->save();
+
+    $comment = new Comment;
+    $comment->source_type = get_class($card);
+    $comment->source_id = $card->getKey();
+    $comment->user_id = $user->getKey();
+    $comment->content = "What about numbered lists?\n\n1. this is something that goes first\n2.Then a second thing\n3. finally a third thing\n\nAnd then some closing text.";
+    $comment->save();
+
+    $card = new Card;
+    $card->stack_id = $inProgress->getKey();
+    $card->user_id = $user->getKey();
+    $card->title = 'Card ID';
+    $card->description = "Cards should be easily identified by a numeric id.";
     $card->order = 1;
     $card->save();
 
@@ -141,6 +183,14 @@ class DatabaseSeeder extends Seeder
     $card->user_id = $user->getKey();
     $card->title = 'Arbitrary card details';
     $card->description = "I'd like to add card estimates or story points, but it seems overly specific. Maybe, instead, add a settings screen where you can ask for any number of additional fields on a card. Could be integer, boolean, or text fields… maybe some day enhanced fields like star ratings and chat logs.";
+    $card->order = 1;
+    $card->save();
+
+    $card = new Card;
+    $card->stack_id = $complete->getKey();
+    $card->user_id = $user->getKey();
+    $card->title = 'Drag should use proxy';
+    $card->description = "Currently dragging a card uses the actual card element, causing a jump in content. A proxy element should be used so a drag does not cause a reflow of content.";
     $card->order = 1;
     $card->save();
   }
