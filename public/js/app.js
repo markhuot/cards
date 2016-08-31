@@ -13,7 +13,7 @@ function indexOfNode (el, debug) {
   el = el.previousSibling;
 
   while (el) {
-    if (el.nodeType != Node.TEXT_NODE && !el.dataset.ignoreForIndex) {
+    if (el.nodeType != Node.TEXT_NODE /*&& !el.dataset.ignoreForIndex*/) {
       index++;
     }
     el = el.previousSibling;
@@ -36,12 +36,26 @@ function serialize (obj, prefix) {
   return str.join('&');
 }
 
+/** send post **/
+function xhrPost(uri, data) {
+  var r = new XMLHttpRequest();
+  r.open('POST', uri, true);
+  r.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+  r.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+  r.onreadystatechange = function () {
+    if (r.readyState != 4 || r.status != 200) return;
+  };
+  r.send(serialize(data));
+}
+
 var csrfToken = document.getElementById('csrf-token').getAttribute('content');
 var activeClicks = [];
 var dragging = false;
 var proxy = false;
 var cards = [];
 var stacks = [];
+var targetStack = false;
+var targetIndex = false;
 
 document.body.addEventListener('dragstart', function (event) {
   event.preventDefault();
@@ -76,42 +90,34 @@ function dragEnd (event) {
   var data = {'card': {}, 'stack':[]};
 
   var placeholder = document.getElementById('drag-placeholder');
-  if (!placeholder) {
-    dragging.classList.remove('dragging');
-    proxy.parentNode.removeChild(proxy);
+  if (placeholder) {
+    placeholder.parentNode.removeChild(placeholder);
 
-    dragging = false;
-    proxy = false;
-    return false;
+    if (targetStack.children[targetIndex]) {
+      targetStack.insertBefore(dragging.parentNode, targetStack.children[targetIndex]);
+    }
+    else if (targetIndex >= targetStack.children.length) {
+      targetStack.appendChild(dragging.parentNode);
+    }
+
+    var stack = closest(targetStack, 'stack');
+    data.card.stack_id = stack.dataset.stackId;
+
+    var stackCards = stack.querySelectorAll('.card');
+    for (var i = 0, len = stackCards.length; i < len; i++) {
+      var stackCard = stackCards[i];
+      var index = indexOfNode(stackCard.parentNode, true);
+      data.stack.push({
+        'card_id': stackCard.dataset.cardId,
+        'order': index
+      });
+    }
+
+    xhrPost('/cards/' + dragging.dataset.cardId + '/move', data);
   }
-
-  placeholder.parentNode.insertBefore(dragging.parentNode, placeholder);
-
-  placeholder.parentNode.removeChild(placeholder);
-  proxy.parentNode.removeChild(proxy);
-
-  var stack = closest(dragging, 'stack');
-  data.card.stack_id = stack.dataset.stackId;
-  var stackCards = stack.querySelectorAll('.card');
-  for (var i = 0, len = stackCards.length; i < len; i++) {
-    var stackCard = stackCards[i];
-    var index = indexOfNode(stackCard.parentNode, true);
-    data.stack.push({
-      'card_id': stackCard.dataset.cardId,
-      'order': index
-    });
-  }
-  var uri = '/cards/' + dragging.dataset.cardId + '/move';
-  var r = new XMLHttpRequest();
-  r.open('POST', uri, true);
-  r.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-  r.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-  r.onreadystatechange = function () {
-    if (r.readyState != 4 || r.status != 200) return;
-  };
-  r.send(serialize(data));
 
   dragging.classList.remove('dragging');
+  proxy.parentNode.removeChild(proxy);
 
   dragging = false;
   proxy = false;
@@ -122,7 +128,6 @@ document.body.addEventListener('click', dragEnd);
 
 document.body.addEventListener('mousemove', function (event) {
   if (dragging) {
-    proxy.style.position = 'absolute';
     proxy.style.left = event.clientX;
     proxy.style.top = event.clientY;
 
@@ -161,28 +166,30 @@ document.body.addEventListener('mousemove', function (event) {
 });
 
 function insertPlaceholder (stack, index) {
+  targetStack = stack;
+  targetIndex = index;
+
   var placeholder = document.getElementById('drag-placeholder');
   if (!placeholder) {
-    placeholder = document.createElement('li');
+    placeholder = document.createElement('div');
     placeholder.id = 'drag-placeholder';
-    placeholder.dataset.ignoreForIndex = true;
+    document.body.appendChild(placeholder);
   }
 
-  var children = [];
-  for (var i=0, len=stack.children.length; i<len; i++) {
-    if (stack.children[i].id != 'drag-placeholder') {
-      children.push(stack.children[i]);
-    }
+  if (stack.children[index]) {
+    placeholder.style.top = stack.children[index].offsetTop - 5 /* 5px = .5 of the margin-top */;
+    placeholder.style.left = stack.children[index].offsetLeft;
+    placeholder.style.width = stack.children[index].offsetWidth;
   }
-
-  if (index == 0) {
-    stack.insertBefore(placeholder, stack.firstChild);
+  else if (index > 0 && index >= stack.children.length) {
+    placeholder.style.top = stack.children[stack.children.length-1].offsetTop + stack.children[stack.children.length-1].offsetHeight + 5 /* 5px = .5 of the margin-top */;
+    placeholder.style.left = stack.children[stack.children.length-1].offsetLeft;
+    placeholder.style.width = stack.children[stack.children.length-1].offsetWidth;
   }
-  else if (children[index]) {
-    stack.insertBefore(placeholder, children[index]);
-  }
-  else {
-    stack.appendChild(placeholder);
+  else if (index == 0) {
+    placeholder.style.top = stack.offsetTop + stack.offsetHeight;
+    placeholder.style.left = stack.offsetLeft;
+    placeholder.style.width = stack.offsetWidth;
   }
 }
 
@@ -190,29 +197,18 @@ document.body.addEventListener('click', function (event) {
   if (event.target.getAttribute('name') != 'line') { return; }
 
   var lineNo = event.target.getAttribute('value');
-  var card = closest(event.target, 'card-detail__description');
-  var comment = closest(event.target, 'comment-detail');
-  var uri = '';
+  var source = closest(event.target, 'card-detail__description');
+  var uri = '/cards/';
 
-  if (card) {
-    uri = '/cards/' + card.dataset.cardId + '/check'
-  }
-  else if (comment) {
-    uri = '/comments/' + comment.dataset.commentId + '/check'
-  }
-  else {
-    throw "Could not find the source object of this task list.";
+  if (!source) {
+    source = closest(event.target, 'comment-detail');
+    uri = '/comments/';
   }
 
-  var r = new XMLHttpRequest();
-  r.open('POST', uri, true);
-  r.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-  r.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
-  r.onreadystatechange = function () {
-    if (r.readyState != 4 || r.status != 200) return;
-  };
-  r.send(serialize({
+  uri += source.dataset.id + '/check'
+
+  xhrPost(uri, {
     'line': lineNo,
     'value': event.target.checked ? 1 : 0
-  }));
+  });
 });

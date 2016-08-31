@@ -144,7 +144,6 @@ hr {
 
 @media (min-width: 701px) {
   .card-stack {
-    padding: 10px 0;
     max-height: calc(100vh - 140px);
     overflow: auto; } }
 
@@ -152,7 +151,7 @@ hr {
   border-top: 1px dashed red;
   height: 0;
   margin-bottom: -11px;
-  position: relative;
+  position: absolute;
   top: -5px;
   z-index: 100; }
 
@@ -171,7 +170,8 @@ hr {
   cursor: move;
   z-index: 101;
   border-radius: 10px;
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+  position: absolute; }
 
 .user-stack {
   float: right; }
@@ -275,7 +275,8 @@ hr {
   height: 10em;
   width: 100%;
   background: none;
-  line-height: 1.5; }
+  line-height: 1.5;
+  border-bottom: 1px dashed #ccc; }
 
 .user-input {
   background: rgba(255, 248, 232, 0.5);

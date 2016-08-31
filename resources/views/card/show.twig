@@ -14,7 +14,7 @@
         {% endif %}
       </small>
     </h1>
-    <div class="card-detail__description longform" data-card-id="{{ card.id }}">
+    <div class="card-detail__description longform" data-id="{{ card.id }}">
       {{ card.description|markdown }}
     </div>
   </div>
@@ -28,7 +28,7 @@
     <hr>
     <ul spacing="3">
       {% for comment in card.comments %}
-        <li class="comment-detail" id="comment{{ comment.id }}" spacing data-comment-id="{{ comment.id }}">
+        <li class="comment-detail" id="comment{{ comment.id }}" spacing data-id="{{ comment.id }}">
           <div spacing="0.25">
             <div class="byline"><strong>{{ comment.user.name }}</strong></div>
             <div class="meta">
