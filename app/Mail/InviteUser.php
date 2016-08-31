@@ -33,6 +33,8 @@ class InviteUser extends Mailable
    */
   public function build()
   {
-    return $this->view('emails.invite.user');
+    return $this->view('emails.invite.user')
+      ->with('invite', $this->invite)
+    ;
   }
 }

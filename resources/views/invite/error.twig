@@ -1,0 +1,11 @@
+{% extends "app" %}
+
+{% block content %}
+<div class="card-detail box-shadow" box="2" spacing="4">
+  <div spacing="2">
+    <h1 class="card-detail__title">
+      You&rsquo;re already a member of the project &ldquo;<a href="{{ invite.project.uri}}">{{ invite.project.name }}</a>.&rdquo;
+    </h1>
+    <p class="longform"><a href="{{ invite.project.uri}}">Go there now</a></p>
+</div>
+{% endblock %}

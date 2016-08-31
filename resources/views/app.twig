@@ -12,8 +12,12 @@
         {% for user in project.users %}
           <li><a href="#" class="user-initials" title="{{ user.name }}">{{ user.initials }}</a></li>
         {% endfor %}
-        <li class="user-initials empty"><a href="/projects/{{ project.id }}/invite">+</a></li>
+        <li><a class="user-initials empty" href="/projects/{{ project.id }}/invite">+</a></li>
       </ul>
+    </div>
+  {% else %}
+    <div class="project-header box-shadow" box="2">
+      <h2 class="project-header__title">All projects</h1>
     </div>
   {% endif %}
   <div class="project-header__guard">

@@ -118,6 +118,8 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
 
+    $card->assignees()->sync([$user->getKey()]);
+
     $comment = new Comment;
     $comment->source_type = get_class($card);
     $comment->source_id = $card->getKey();
@@ -147,7 +149,7 @@ class DatabaseSeeder extends Seeder
     $comment->save();
 
     $card = new Card;
-    $card->stack_id = $inProgress->getKey();
+    $card->stack_id = $complete->getKey();
     $card->user_id = $user->getKey();
     $card->title = 'Card ID';
     $card->description = "Cards should be easily identified by a numeric id.";
@@ -163,7 +165,7 @@ class DatabaseSeeder extends Seeder
     $card->save();
 
     $card = new Card;
-    $card->stack_id = $releasePlanning->getKey();
+    $card->stack_id = $complete->getKey();
     $card->user_id = $user->getKey();
     $card->title = 'Javascript?';
     $card->description = "Currently the app doesn't use _any_ Javascript. It may be worth adding some to ease the comment leaving experience.";

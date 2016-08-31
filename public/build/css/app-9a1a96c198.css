@@ -41,7 +41,7 @@ hr {
 [spacing="0.25"] > * + * {
   margin-top: 2.5; }
 
-.clearfix:after, .stacks:after, .card-detail__meta:after {
+.clearfix:after {
   content: "";
   display: table;
   clear: both; }
@@ -57,11 +57,9 @@ hr {
 .project-header {
   background: #fff;
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 70px;
-  z-index: 999;
+  z-index: 50;
   display: -webkit-box;
   display: flex;
   -webkit-box-pack: justify;
@@ -72,8 +70,7 @@ hr {
   .project-header__title {
     font-weight: 500;
     font-size: 24px;
-    color: #50c3ff;
-    float: left; }
+    color: #50c3ff; }
   .project-header__guard {
     padding-top: 70px; }
 
@@ -84,38 +81,29 @@ hr {
 .stack {
   display: inline-block;
   width: 100%;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
   vertical-align: top; }
   @media (min-width: 701px) {
     .stack {
       height: calc(100vh - 100px);
       width: 300px;
-      margin-left: 0;
-      margin-right: 20px;
-      margin-bottom: 0; } }
+      margin: 0 20px 0 0; } }
   .stack__header {
     font-weight: 600;
     font-size: 16px;
     height: 20px; }
-    .stack__header__light {
-      font-weight: 300;
-      color: #999; }
     .stack__header small {
       float: right; }
-  .stack__create-form {
-    background: rgba(0, 0, 0, 0.025);
-    border-radius: 2px; }
-  .stack__new-title {
+
+.create-form {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 2px; }
+  .create-form__input {
     width: 100%;
-    font-size: 16px;
-    border: none; }
+    font-size: 16px; }
 
 .card {
   background: #fff;
-  border-radius: 1px;
+  border-radius: 2px;
   white-space: normal;
   display: block;
   position: relative;
@@ -142,44 +130,49 @@ hr {
     box-shadow: none;
     opacity: 0.5; }
 
-@media (min-width: 701px) {
-  .card-stack {
-    max-height: calc(100vh - 140px);
-    overflow: auto; } }
+.card-stack {
+  padding-bottom: 10px; }
+  @media (min-width: 701px) {
+    .card-stack {
+      max-height: calc(100vh - 140px);
+      overflow: auto; } }
 
 #drag-placeholder {
-  border-top: 1px dashed red;
+  border-top: 2px solid #50c3ff;
   height: 0;
-  margin-bottom: -11px;
   position: absolute;
-  top: -5px;
   z-index: 100; }
+  #drag-placeholder:before, #drag-placeholder:after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    left: -6px;
+    top: -5px;
+    background: #50c3ff;
+    border-radius: 8px; }
+  #drag-placeholder:after {
+    left: auto;
+    right: -6px; }
 
 #drag-proxy {
   background: #fff;
   width: 100px;
-  height: 100px;
-  margin-top: -75px;
+  margin-top: -40px;
   margin-left: -50px;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+  text-align: center;
+  padding: 10px 0 25px 0;
   cursor: move;
   z-index: 101;
   border-radius: 10px;
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
   position: absolute; }
 
-.user-stack {
-  float: right; }
-  .user-stack li {
-    float: left; }
+.user-stack li {
+  display: inline-block; }
 
 .user-initials {
-  border-radius: 1px;
+  border-radius: 2px;
   display: -webkit-box;
   display: flex;
   -webkit-box-pack: center;
@@ -192,8 +185,7 @@ hr {
   color: #fff;
   width: 28px;
   height: 28px;
-  background: gray;
-  float: left;
+  background: #999;
   margin-left: 10px; }
   .user-initials.empty {
     background: none;
@@ -217,11 +209,14 @@ hr {
     border-radius: 2px;
     background: whiteSmoke;
     padding: 0 2px; }
+  .longform a {
+    color: #50c3ff; }
+    .longform a:hover {
+      text-decoration: underline; }
 
 .card-detail {
   background: #fff;
   border-radius: 1px;
-  overflow: hidden;
   max-width: 900px; }
   @media (min-width: 901px) {
     .card-detail {
@@ -232,38 +227,22 @@ hr {
       margin-top: 30px; } }
   .card-detail__title {
     font-weight: 500;
-    font-size: 24px;
-    display: block; }
-  @media (min-width: 701px) {
-    .card-detail__meta > * {
-      float: left;
-      width: 33%; }
-      .card-detail__meta > *:nth-child(1), .card-detail__meta > *:nth-child(2), .card-detail__meta > *:nth-child(3) {
-        margin-top: 0; } }
+    font-size: 24px; }
 
-.meta, .card-detail__meta {
-  font-size: 14px;
-  color: #ccc;
-  font-weight: 300;
-  display: block; }
-  .meta strong, .card-detail__meta strong {
-    font-weight: 400;
-    color: #999; }
-
-.byline {
+.meta {
   font-size: 14px;
   color: #ccc;
   font-weight: 300; }
-  .byline strong {
-    color: #444;
-    font-weight: 600; }
-  .byline a {
-    margin-right: 20px; }
-    .byline a:hover {
-      text-decoration: underline; }
+  .meta strong {
+    font-weight: 400;
+    color: #999; }
+  .meta a:hover {
+    text-decoration: underline; }
 
-.on-previous-active {
-  display: none; }
+.byline {
+  font-size: 14px;
+  color: #444;
+  font-weight: 600; }
 
 .invisible-textarea {
   -webkit-appearance: none;
@@ -283,22 +262,30 @@ hr {
   border: 1px solid #ccc; }
 
 .project-preview {
-  width: 200px;
-  height: 200px;
-  float: left;
-  background: #fff;
-  border-radius: 1px; }
+  width: 100%;
+  display: inline-block;
+  border-radius: 1px;
+  margin: 0 30px 30px 0; }
+  .project-preview--stacks {
+    background: #fff; }
+  @media (min-width: 701px) {
+    .project-preview {
+      width: 200px;
+      height: 200px;
+      float: left; } }
 
 .stacks-preview {
-  height: 100px; }
+  height: 100px;
+  white-space: nowrap;
+  overflow: hidden; }
 
 .stack-preview {
   width: 30px;
   background: #50c3ff;
   height: 20px;
-  float: left;
+  display: inline-block;
   text-indent: -9999px;
-  margin-right: 10px;
+  margin-right: 5px;
   border-radius: 1px; }
 
 .comment-meta {
@@ -308,9 +295,8 @@ hr {
   .comment-meta__removed {
     text-decoration: line-through; }
 
-.comment-form__label {
+.label {
   font-size: 14px;
-  text-transform: uppercase;
   color: #999;
   font-weight: 500; }
 
@@ -421,5 +407,11 @@ hr {
     text-align: center; }
   .stack-chooser__item:last-child:after {
     display: none; }
+
+.create-invite__email {
+  font-size: 24px;
+  font-weight: 300;
+  width: 100%;
+  width: 100%; }
 
 /*# sourceMappingURL=app.css.map */

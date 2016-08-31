@@ -36,20 +36,23 @@ class InviteController extends Controller
 
      Mail::to($email)->send(new InviteUser($invite));
 
-    return redirect($project->uri);
+    return redirect()->back()->withMessage('invite', 'all done');
   }
 
-  public function join(Request $request, $hash)
+  public function join(Request $request, Invite $invite)
   {
-    $invite = Invite::where('hash', '=', $hash)->firstOrFail();
-    if ($invite->invitee_email != $request->user()->email) {
-      abort(401, 'Email mismatch');
+    if ($request->user()->projects()->pluck('projects.id')->contains($invite->project->id)) {
+      return view('invite.error')
+        ->with('invite', $invite)
+      ;
     }
 
     $invite->project->users()->attach($request->user());
     $invite->delete();
 
-    return redirect($invite->project->uri);
+    return redirect($invite->project->uri)
+      ->with('message', 'You\'ve joined the project!')
+    ;
   }
 
 }

@@ -1,51 +1,49 @@
 {% extends "app" %}
 
 {% block content %}
-<div class="page">
-  <div class="stacks">
-    {% for stack in project.stacks %}
-      <div class="stack" spacing="2" data-stack-id="{{ stack.id }}">
-        <h1 class="stack__header">
-          {{ stack.name }} <span class="stack__header__light">({{ stack.cards.count }})</span>
-          <small class="stack__header__light"><a href="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards/create">Add card</a></small>
-        </h1>
-        <ul class="card-stack" spacing>
-          {% for card in stack.cards %}
-            <li>
-              <a class="card {{ card.hot ? 'hot' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
-                <div spacing>
-                  <p class="card__title">{{ card.title }}</p>
-                  {% if card.description %}<p class="card__description">{{ card.description[0:75]|trim }}{{ card.description|length > 75 ? '&hellip;' }}</p>{% endif %}
-                  {% for attachment in card.allAttachments() %}
-                    <img src="http://placehold.it/32x32">
-                  {% endfor %}
-                  <div class="card__meta meta clearfix">
-                    <p class="card__local-id">#<strong>{{ card.local_id }}</strong></p>
-                    {% if card.assignees.count %}<p class="card__assignees">&rarr; <strong>{{ card.assignees.pluck('label').implode(', ') }}</strong></p>{% endif %}
-                    {#<p class="card__comments">{{ card.comments.count }}</p>#}
-                  </div>
+<div class="page stacks" spacing="4">
+  {% for stack in project.stacks %}
+    <div class="stack" spacing="2" data-stack-id="{{ stack.id }}">
+      <h1 class="stack__header">
+        {{ stack.name }} <span class="meta">({{ stack.cards.count }})</span>
+        <small class="meta"><a href="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards/create">Add card</a></small>
+      </h1>
+      <ul class="card-stack" spacing>
+        {% for card in stack.cards %}
+          <li>
+            <a class="card {{ card.hot ? 'hot' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
+              <div spacing>
+                <p class="card__title">{{ card.title }}</p>
+                {% if card.description %}<p class="card__description">{{ card.description[0:75]|trim }}{{ card.description|length > 75 ? '&hellip;' }}</p>{% endif %}
+                {% for attachment in card.allAttachments() %}
+                  <img src="http://placehold.it/32x32">
+                {% endfor %}
+                <div class="card__meta meta clearfix">
+                  <p class="card__local-id">#<strong>{{ card.local_id }}</strong></p>
+                  {% if card.assignees.count %}<p class="card__assignees">&rarr; <strong>{{ card.assignees.pluck('label').implode(', ') }}</strong></p>{% endif %}
+                  {#<p class="card__comments">{{ card.comments.count }}</p>#}
                 </div>
-                {% if card.countAllTasks > 0 %}
-                <p class="progress"><span class="progress__bar" style="width: {{ card.percentAllTasksComplete*100 }}%">{{ card.percentAllTasksComplete }}</span></p>
-                {% endif %}
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
+              </div>
+              {% if card.countAllTasks > 0 %}
+              <p class="progress"><span class="progress__bar" style="width: {{ card.percentAllTasksComplete*100 }}%">{{ card.percentAllTasksComplete }}</span></p>
+              {% endif %}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+  <form class="stack" action="/projects/{{ project.id }}/stacks" method="post">
+    {{ csrf_field() }}
+    <div spacing="2">
+      <h1 class="stack__header">
+        <label for="new-stack-name">Add a new stack&hellip;</label>
+      </h1>
+      <div spacing box class="create-form">
+        <p><input id="new-stack-name" class="create-form__input user-input" type="text" name="stack[name]" placeholder="Stack name..." box /></p>
+        <p><button class="button">Save Stack</button></p>
       </div>
-    {% endfor %}
-    <form class="stack" action="/projects/{{ project.id }}/stacks" method="post">
-      {{ csrf_field() }}
-      <div spacing="2">
-        <h1 class="stack__header">
-          <label for="new-stack-name">Add a new stack&hellip;</label>
-        </h1>
-        <div spacing box class="stack__create-form">
-          <p><input id="new-stack-name" class="stack__new-title user-input" type="text" name="stack[name]" placeholder="Stack name..." box /></p>
-          <p><button class="button">Save Stack</button></p>
-        </div>
-      </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
 {% endblock %}

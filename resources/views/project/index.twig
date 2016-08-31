@@ -1,24 +1,29 @@
 {% extends "app" %}
 
 {% block content %}
-<ul>
-  {% for project in projects %}
-    <li class="">
-      <a href="{{ project.uri }}" class="project-preview box-shadow" spacing box>
-        <p>{{ project.name }} ({{ project.cards().count }})</p>
-        <ul class="stacks-preview clearfix">
-          {% for stack in project.stacks %}
-            <li class="stack-preview" box style="height: {{ stack.size()*100 }}%">{{ stack.name }}</li>
-          {% endfor %}
-        </ul>
-      </a>
-    </li>
-  {% endfor %}
-</ul>
+<div class="page">
+  <ul>
+    {% for project in projects %}
+      <li>
+        <a href="{{ project.uri }}" class="project-preview project-preview--stacks box-shadow clearfix" spacing box>
+          <p>{{ project.name }} <small class="meta">({{ project.cards().count }})</small></p>
+          <ul class="stacks-preview clearfix">
+            {% for stack in project.stacks %}
+              <li class="stack-preview" box style="height: {{ stack.size()*100 }}%">{{ stack.name }}</li>
+            {% endfor %}
+          </ul>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
 
-<form action="/projects" method="post">
-  {{ csrf_field() }}
-  <input type="text" name="project[name]" />
-  <button>Create project</button>
-</form>
+  <form action="/projects" method="post">
+    {{ csrf_field() }}
+    <div spacing box class="project-preview create-form">
+      <label for="project-create-name">Project Name</label>
+      <input id="project-create-name" type="text" name="project[name]" class="create-form__input user-input" box placeholder="TGS with Tracy Jordan" />
+      <button class="button">Create project</button>
+    </div>
+  </form>
+</div>
 {% endblock %}

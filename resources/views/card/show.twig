@@ -3,17 +3,19 @@
 {% block content %}
 <div class="card-detail box-shadow" box="2" spacing="4">
   <div spacing="2">
-    <h1 class="card-detail__title" spacing="0.25">
-      <span>{{ card.title }}</span>
-      <small class="meta">By
+    <div spacing="0.25">
+      <h1 class="card-detail__title">
+        <span>{{ card.title }}</span>
+      </h1>
+      <p class="meta">By
         <strong>{{ card.user.name }}</strong>
         on
         <strong>{{ card.created_at.toDayDateTimeString }}</strong>
         {% if card.assignees.count %}
           &rarr; Assigned to <strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong>
         {% endif %}
-      </small>
-    </h1>
+      </p>
+    </div>
     <div class="card-detail__description longform" data-id="{{ card.id }}">
       {{ card.description|markdown }}
     </div>
@@ -30,7 +32,7 @@
       {% for comment in card.comments %}
         <li class="comment-detail" id="comment{{ comment.id }}" spacing data-id="{{ comment.id }}">
           <div spacing="0.25">
-            <div class="byline"><strong>{{ comment.user.name }}</strong></div>
+            <div class="byline">{{ comment.user.name }}</div>
             <div class="meta">
               Posted <strong><a href="#comment{{ comment.id }}">{{ comment.created_at.diffForHumans }}</a></strong>
               {% if comment.meta %}
@@ -81,18 +83,22 @@
           <input type="checkbox" id="show-card-edit" class="show-card-edit">
           <p class="card-prompt"><label for="show-card-edit" class="text-button">Edit card details&hellip;</label></p>
           <div class="card-edit" spacing>
-            <p><label class="comment-form__label">Stack</label></p>
-            <ul class="stack-chooser clearfix">
-              {% for stack in card.stack.project.stacks %}
-                <li class="stack-chooser__item checkbox-pill"><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}> <label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
-              {% endfor %}
-            </ul>
-            <p><label class="comment-form__label">Assignee</label></p>
-            <ul>
-              {% for user in card.stack.project.users %}
-                <li class="checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
-              {% endfor %}
-            </ul>
+            <div spacing="0.25">
+              <p><label class="label">Stack</label></p>
+              <ul class="stack-chooser clearfix">
+                {% for stack in card.stack.project.stacks %}
+                  <li class="stack-chooser__item checkbox-pill"><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}> <label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div spacing="0.25">
+              <p><label class="label">Assignee</label></p>
+              <ul>
+                {% for user in card.stack.project.users %}
+                  <li class="checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

@@ -7,6 +7,16 @@ use App\User;
 class Invite extends Model
 {
 
+  /**
+   * Get the route key for the model.
+   *
+   * @return string
+   */
+  public function getRouteKeyName()
+  {
+      return 'hash';
+  }
+
   public function inviter()
   {
     return $this->belongsTo(User::class);

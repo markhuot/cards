@@ -128,21 +128,24 @@ document.body.addEventListener('click', dragEnd);
 
 document.body.addEventListener('mousemove', function (event) {
   if (dragging) {
-    proxy.style.left = event.clientX;
-    proxy.style.top = event.clientY;
-
     var foundPosition = false;
+    var mouseX = event.pageX;
+    var mouseY = event.pageY;
+
+    proxy.style.left = mouseX;
+    proxy.style.top = mouseY;
 
     for (var i = 0, len = cards.length; i < len; i++) {
       var card = cards[i];
+      var cardStack = closest(card, 'card-stack');
 
-      if (event.clientX > card.offsetLeft && event.clientX < card.offsetLeft + card.offsetWidth &&
-          event.clientY > card.offsetTop && event.clientY < card.offsetTop + card.offsetHeight) {
-        var cardStack = closest(card, 'card-stack');
+      if (mouseX > card.offsetLeft && mouseX < card.offsetLeft + card.offsetWidth &&
+          mouseY > card.offsetTop - cardStack.scrollTop && mouseY < card.offsetTop - cardStack.scrollTop + card.offsetHeight) {
         var index = indexOfNode(card.parentNode);
-        if (event.clientY > card.offsetTop + (card.offsetHeight / 2)) {
+        if (mouseY > card.offsetTop - cardStack.scrollTop + (card.offsetHeight / 2)) {
           index += 1;
         }
+        console.debug(card.dataset.cardId, index);
         insertPlaceholder(cardStack, index);
         foundPosition = true;
         break;
@@ -153,9 +156,9 @@ document.body.addEventListener('mousemove', function (event) {
       for (i = 0, len = stacks.length; i < len; i++) {
         var stack = stacks[i];
         var cardStack = stack.querySelectorAll('.card-stack')[0];
-        if (event.clientX > stack.offsetLeft && event.clientX < stack.offsetLeft + stack.offsetWidth &&
-            event.clientY > stack.offsetTop && event.clientY < stack.offsetTop + stack.offsetHeight &&
-            event.clientY > cardStack.offsetTop + cardStack.offsetHeight) {
+        if (mouseX > stack.offsetLeft && mouseX < stack.offsetLeft + stack.offsetWidth &&
+            mouseY > stack.offsetTop && mouseY < stack.offsetTop + stack.offsetHeight &&
+            mouseY > cardStack.offsetTop + cardStack.offsetHeight) {
           insertPlaceholder(cardStack, cardStack.querySelectorAll('.card').length);
           foundPosition = true;
           break;
@@ -177,12 +180,12 @@ function insertPlaceholder (stack, index) {
   }
 
   if (stack.children[index]) {
-    placeholder.style.top = stack.children[index].offsetTop - 5 /* 5px = .5 of the margin-top */;
+    placeholder.style.top = stack.children[index].offsetTop - stack.scrollTop - 5 /* 5px = .5 of the margin-top */;
     placeholder.style.left = stack.children[index].offsetLeft;
     placeholder.style.width = stack.children[index].offsetWidth;
   }
   else if (index > 0 && index >= stack.children.length) {
-    placeholder.style.top = stack.children[stack.children.length-1].offsetTop + stack.children[stack.children.length-1].offsetHeight + 5 /* 5px = .5 of the margin-top */;
+    placeholder.style.top = stack.children[stack.children.length-1].offsetTop - stack.scrollTop + stack.children[stack.children.length-1].offsetHeight + 5 /* 5px = .5 of the margin-top */;
     placeholder.style.left = stack.children[stack.children.length-1].offsetLeft;
     placeholder.style.width = stack.children[stack.children.length-1].offsetWidth;
   }

@@ -1,5 +1,8 @@
 @import "include-media";
 
+$blue: #50c3ff;
+$green: #32a942;
+
 * {
   margin: 0;
   padding: 0;
@@ -76,13 +79,13 @@ $spacingMultipliers: (
 }
 
 .project-header {
+  $header-height: 70px;
+
   background: #fff;
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 70px;
-  z-index: 999;
+  height: $header-height;
+  z-index: 50;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -91,18 +94,15 @@ $spacingMultipliers: (
   &__title {
     font-weight: 500;
     font-size: 24px;
-    color: #50c3ff;
-    float: left;
+    color: $blue;
   }
 
   &__guard {
-    padding-top: 70px;
+    padding-top: $header-height;
   }
 }
 
 .stacks {
-  @extend .clearfix;
-
   @include media('>700px') {
     white-space: nowrap;
   }
@@ -111,20 +111,12 @@ $spacingMultipliers: (
 .stack {
   display: inline-block;
   width: 100%;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
   vertical-align: top;
 
   @include media('>700px') {
     height: calc(100vh - 100px);
-    // overflow: auto;
-    // float: left;
     width: 300px;
-    margin-left: 0;
-    margin-right: 20px;
-    margin-bottom: 0;
+    margin: 0 20px 0 0;
   }
 
   &__header {
@@ -132,31 +124,25 @@ $spacingMultipliers: (
     font-size: 16px;
     height: 20px;
 
-    &__light {
-      font-weight: 300;
-      color: #999;
-    }
-
     small {
       float: right;
     }
   }
+}
 
-  &__create-form {
-    background: rgba(0,0,0,0.025);
-    border-radius: 2px;
-  }
+.create-form {
+  background: rgba(0,0,0,0.05);
+  border-radius: 2px;
 
-  &__new-title {
+  &__input {
     width: 100%;
     font-size: 16px;
-    border: none;
   }
 }
 
 .card {
   background: #fff;
-  border-radius: 1px;
+  border-radius: 2px;
   white-space: normal;
   display: block;
   position: relative;
@@ -165,10 +151,6 @@ $spacingMultipliers: (
   &__description {
     font-size: 14px;
     color: #666;
-  }
-
-  &__meta {
-
   }
 
   &__meta > * {
@@ -195,31 +177,49 @@ $spacingMultipliers: (
   }
 }
 
-@include media('>700px') {
-  .card-stack {
+.card-stack {
+  padding-bottom: 10px;
+
+  @include media('>700px') {
     max-height: calc(100vh - 140px);
     overflow: auto;
   }
 }
 
 #drag-placeholder {
-  border-top: 1px dashed red;
+  $placeholder-color: $blue;
+  $placeholder-size: 8px;
+  $line-width: 2px;
+
+  border-top: $line-width solid $placeholder-color;
   height: 0;
-  margin-bottom: -11px;
   position: absolute;
-  top: -5px;
   z-index: 100;
+
+  &:before, &:after {
+    content: "";
+    position: absolute;
+    width: $placeholder-size;
+    height: $placeholder-size;
+    left: -$placeholder-size + 2;
+    top: -($placeholder-size/2) - ($line-width/2);
+    background: $placeholder-color;
+    border-radius: $placeholder-size;
+  }
+
+  &:after {
+    left: auto;
+    right: -$placeholder-size + 2;
+  }
 }
 
 #drag-proxy {
   background: #fff;
   width: 100px;
-  height: 100px;
-  margin-top: -75px;
+  margin-top: -40px;
   margin-left: -50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  padding: 10px 0 25px 0;
   cursor: move;
   z-index: 101;
   border-radius: 10px;
@@ -228,15 +228,13 @@ $spacingMultipliers: (
 }
 
 .user-stack {
-  float: right;
-
   li {
-    float: left;
+    display: inline-block;
   }
 }
 
 .user-initials {
-  border-radius: 1px;
+  border-radius: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -246,8 +244,7 @@ $spacingMultipliers: (
   color: #fff;
   width: 28px;
   height: 28px;
-  background: gray;
-  float: left;
+  background: #999;
   margin-left: 10px;
 
   &.empty {
@@ -288,12 +285,19 @@ $spacingMultipliers: (
     background: whiteSmoke;
     padding: 0 2px;
   }
+
+  a {
+    color: $blue;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .card-detail {
   background: #fff;
   border-radius: 1px;
-  overflow: hidden;
   max-width: 900px;
 
   @include media('>900px') {
@@ -307,25 +311,6 @@ $spacingMultipliers: (
   &__title {
     font-weight: 500;
     font-size: 24px;
-    display: block;
-  }
-
-  &__meta {
-    @extend .clearfix;
-    @extend .meta;
-
-    @include media('>700px') {
-      & > * {
-        float: left;
-        width: 33%;
-
-        &:nth-child(1),
-        &:nth-child(2),
-        &:nth-child(3) {
-          margin-top: 0;
-        }
-      }
-    }
   }
 }
 
@@ -333,35 +318,23 @@ $spacingMultipliers: (
   font-size: 14px;
   color: #ccc;
   font-weight: 300;
-  display: block;
 
   strong {
     font-weight: 400;
     color: #999;
   }
-}
-
-.byline {
-  font-size: 14px;
-  color: #ccc;
-  font-weight: 300;
-
-  strong {
-    color: #444;
-    font-weight: 600;
-  }
 
   a {
-    margin-right: 20px;
-
     &:hover {
       text-decoration: underline;
     }
   }
 }
 
-.on-previous-active {
-  display: none;
+.byline {
+  font-size: 14px;
+  color: #444;
+  font-weight: 600;
 }
 
 .invisible-textarea {
@@ -382,24 +355,35 @@ $spacingMultipliers: (
 }
 
 .project-preview {
-  width: 200px;
-  height: 200px;
-  float: left;
-  background: #fff;
+  width: 100%;
+  display: inline-block;
   border-radius: 1px;
+  margin: 0 30px 30px 0;
+
+  &--stacks {
+    background: #fff;
+  }
+
+  @include media('>700px') {
+    width: 200px;
+    height: 200px;
+    float: left;
+  }
 }
 
 .stacks-preview {
   height: 100px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .stack-preview {
   width: 30px;
-  background: #50c3ff;
+  background: $blue;
   height: 20px;
-  float: left;
+  display: inline-block;
   text-indent: -9999px;
-  margin-right: 10px;
+  margin-right: 5px;
   border-radius: 1px;
 }
 
@@ -426,13 +410,10 @@ $spacingMultipliers: (
   }
 }
 
-.comment-form {
-  &__label {
-    font-size: 14px;
-    text-transform: uppercase;
-    color: #999;
-    font-weight: 500;
-  }
+.label {
+  font-size: 14px;
+  color: #999;
+  font-weight: 500;
 }
 
 .checkbox-pill {
@@ -441,8 +422,8 @@ $spacingMultipliers: (
     left: -9999px;
 
     &:checked + label {
-      border-color: #50c3ff;
-      background-color: #50c3ff;
+      border-color: $blue;
+      background-color: $blue;
 
       &:before {
         content: "\2022";
@@ -507,7 +488,7 @@ $spacingMultipliers: (
 }
 
 .text-button {
-  color: #50c3ff;
+  color: $blue;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -521,7 +502,7 @@ $spacingMultipliers: (
   appearance: none;
   border: none;
   padding: 10px 15px;
-  background: #32a942;
+  background: $green;
   border-radius: 1px;
   font-size: 16px;
   color: #fff;
@@ -542,7 +523,7 @@ $spacingMultipliers: (
 
   &__bar {
     display: block;
-    background: #50c3ff;
+    background: $blue;
     overflow: hidden;
     text-indent: -9999px;
     border-radius: $height;
@@ -577,5 +558,14 @@ $spacingMultipliers: (
     &:last-child:after {
       display: none;
     }
+  }
+}
+
+.create-invite {
+  &__email {
+    font-size: 24px;
+    font-weight: 300;
+    width: 100%;
+    width: 100%;
   }
 }
