@@ -20,7 +20,8 @@
                 {% endfor %}
                 <div class="card__meta meta clearfix">
                   <p class="card__local-id">#<strong>{{ card.local_id }}</strong></p>
-                  {% if card.assignees.count %}<p class="card__assignees">&rarr; <strong>{{ card.assignees.pluck('label').implode(', ') }}</strong></p>{% endif %}
+                  {% if card.assignees.count %}<p class="card__assignees">&rarr;&nbsp;<strong>{{ card.assignees.pluck('label').implode(', ') }}</strong></p>{% endif %}
+                  {% if card.tags.count %}<p class="card__tags">&#x2691;&nbsp;<strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p>{% endif %}
                   {#<p class="card__comments">{{ card.comments.count }}</p>#}
                 </div>
               </div>

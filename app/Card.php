@@ -7,7 +7,8 @@ use App\Stack;
 use App\Comment;
 use App\User;
 use App\Assignee;
-use App\Follwer;
+use App\Follower;
+use App\Tag;
 use Carbon\Carbon;
 use App\ModelTraits\Auditable;
 
@@ -50,6 +51,25 @@ class Card extends Model
   public function user()
   {
     return $this->belongsTo(User::class);
+  }
+
+  public function tags()
+  {
+    return $this->belongsToMany(Tag::class);
+  }
+
+  public function getTagStringAttribute()
+  {
+    return $this->tags->pluck('name')->implode(' ');
+  }
+
+  public function setTagStringAttribute($value)
+  {
+    $tags = collect(preg_split('/\s+/', $value))->map(function ($tagName) {
+      return Tag::firstOrCreate(['name' => $tagName]);
+    });
+
+    $this->tags()->sync($tags->pluck('id')->all());
   }
 
   public function assignees()

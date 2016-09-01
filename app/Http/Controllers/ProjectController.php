@@ -36,7 +36,15 @@ class ProjectController extends Controller
       abort(404);
     }
 
+    if (($q=$request->q) && substr($q, 0, 1) == '#') {
+      $card = $project->cards()->where('local_id', '=', substr($q, 1))->first();
+      if ($card) {
+        return redirect('cards/'.$card->id);
+      }
+    }
+
     return view('project.show')
+      ->with('q', $request->q)
       ->with('project', $project)
     ;
   }

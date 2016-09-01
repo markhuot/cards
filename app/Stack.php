@@ -38,7 +38,18 @@ class Stack extends Model
 
   public function cards()
   {
-    return $this->hasMany(Card::class)->orderBy('order', 'asc');
+    $relation = $this->hasMany(Card::class)->orderBy('order', 'asc');
+
+    if ($q=app('request')->q) {
+      if (substr($q, 0, 4) == 'tag:') {
+        $tagName = substr($q, 4);
+        $relation->whereHas('tags', function($query) use ($tagName) {
+          $query->where('name', '=', $tagName);
+        });
+      }
+    }
+
+    return $relation;
   }
 
   public function getCardsCountAttribute()

@@ -67,6 +67,14 @@ hr {
   -webkit-box-align: center;
   align-items: center;
   overflow: hidden; }
+  .project-header a:hover {
+    text-decoration: underline; }
+  .project-header input {
+    font: inherit;
+    color: inherit;
+    border: none; }
+    .project-header input::-webkit-input-placeholder {
+      color: inherit; }
   .project-header__title {
     font-weight: 500;
     font-size: 24px;
@@ -114,9 +122,11 @@ hr {
   .card__description {
     font-size: 14px;
     color: #666; }
+  .card:hover .card__title, .card:focus .card__title {
+    text-decoration: underline; }
   .card__meta > * {
     margin-right: 10px;
-    display: inline-block; }
+    display: inline; }
   .card.hot:after {
     content: "";
     width: 5px;
@@ -194,7 +204,7 @@ hr {
 
 .longform {
   line-height: 1.5em; }
-  .longform p + *, .longform ul + *, .longform ol + *, .longform dl + *, .longform h1 + *, .longform h2 + *, .longform h3 + *, .longform h4 + *, .longform h5 + *, .longform h6 + *, .longform pre + * {
+  .longform p + *, .longform ul + *, .longform ol + *, .longform dl + *, .longform h1 + *, .longform h2 + *, .longform h3 + *, .longform h4 + *, .longform h5 + *, .longform h6 + *, .longform pre + *, .longform blockquote + * {
     margin-top: 10px; }
   .longform ul, .longform ol, .longform dl {
     margin-left: 40px; }
@@ -213,6 +223,13 @@ hr {
     color: #50c3ff; }
     .longform a:hover {
       text-decoration: underline; }
+  .longform blockquote {
+    font-size: 18px;
+    color: #50c3ff;
+    margin-left: -10px;
+    margin-right: -10px;
+    font-style: italic;
+    font-weight: 100; }
 
 .card-detail {
   background: #fff;
@@ -333,6 +350,9 @@ hr {
     height: 100%;
     text-align: center;
     line-height: 20px; }
+
+.inline-pills {
+  display: inline-block; }
 
 .show-card-edit {
   position: absolute;

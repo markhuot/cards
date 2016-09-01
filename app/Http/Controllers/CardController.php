@@ -40,6 +40,7 @@ class CardController extends Controller
   public function show(Card $card)
   {
     return view('card.show')
+      ->with('q', '#'.$card->local_id)
       ->with('card', $card)
       ->with('project', $card->stack->project)
     ;

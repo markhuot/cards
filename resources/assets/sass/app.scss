@@ -91,6 +91,22 @@ $spacingMultipliers: (
   align-items: center;
   overflow: hidden;
 
+  a {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  input {
+    font: inherit;
+    color: inherit;
+    border: none;
+
+    &::-webkit-input-placeholder {
+      color: inherit;
+    }
+  }
+
   &__title {
     font-weight: 500;
     font-size: 24px;
@@ -153,9 +169,15 @@ $spacingMultipliers: (
     color: #666;
   }
 
+  &:hover, &:focus {
+    .card__title {
+      text-decoration: underline;
+    }
+  }
+
   &__meta > * {
     margin-right: 10px;
-    display: inline-block;
+    display: inline;
   }
 
   &.hot:after {
@@ -257,7 +279,7 @@ $spacingMultipliers: (
 .longform {
   line-height: 1.5em;
 
-  p, ul, ol, dl, h1, h2, h3, h4, h5, h6, pre {
+  p, ul, ol, dl, h1, h2, h3, h4, h5, h6, pre, blockquote {
     & + * {
       margin-top: 10px;
     }
@@ -292,6 +314,15 @@ $spacingMultipliers: (
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  blockquote {
+    font-size: 18px;
+    color: $blue;
+    margin-left: -10px;
+    margin-right: -10px;
+    font-style: italic;
+    font-weight: 100;
   }
 }
 
@@ -464,6 +495,10 @@ $spacingMultipliers: (
       line-height: $dotSize;
     }
   }
+}
+
+.inline-pills {
+  display: inline-block;
 }
 
 .show-card-edit {

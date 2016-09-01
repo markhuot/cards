@@ -71,4 +71,37 @@ class User extends Authenticatable
     {
       return $this->name;
     }
+
+    public function getColorAttribute()
+    {
+      // $h = collect(array_map('ord', preg_split('//', $this->name)))->sum() % 360;
+      // $s = 80;
+      // $l = 30;
+      // return "hsl({$h}, {$s}%, {$l}%)";
+
+      $colors = [];
+      $colors[] = "#FFB300"; // Vivid Yellow
+      $colors[] = "#803E75"; // Strong Purple
+      $colors[] = "#FF6800"; // Vivid Orange
+      $colors[] = "#A6BDD7"; // Very Light Blue
+      $colors[] = "#C10020"; // Vivid Red
+      $colors[] = "#CEA262"; // Grayish Yellow
+      $colors[] = "#817066"; // Medium Gray
+      $colors[] = "#007D34"; // Vivid Green
+      $colors[] = "#F6768E"; // Strong Purplish Pink
+      $colors[] = "#00538A"; // Strong Blue
+      $colors[] = "#FF7A5C"; // Strong Yellowish Pink
+      $colors[] = "#53377A"; // Strong Violet
+      $colors[] = "#FF8E00"; // Vivid Orange Yellow
+      $colors[] = "#B32851"; // Strong Purplish Red
+      $colors[] = "#F4C800"; // Vivid Greenish Yellow
+      $colors[] = "#7F180D"; // Strong Reddish Brown
+      $colors[] = "#93AA00"; // Vivid Yellowish Green
+      $colors[] = "#593315"; // Deep Yellowish Brown
+      $colors[] = "#F13A13"; // Vivid Reddish Orange
+      $colors[] = "#232C16"; // Dark Olive Green
+
+      $index = collect(array_map('ord', preg_split('//', $this->name)))->sum() % count($colors);
+      return $colors[$index];
+    }
 }
