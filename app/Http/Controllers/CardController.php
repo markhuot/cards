@@ -54,9 +54,8 @@ class CardController extends Controller
 
     foreach ($request->input('stack') as $req) {
       $card = Card::find($req['card_id']);
-      $card->timestamps = false;
       $card->order = $req['order'];
-      $card->save();
+      $card->save(['touch' => false]);
     }
 
     return ['ok'];
