@@ -9,7 +9,7 @@
         <small class="meta"><a href="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards/create">Add card</a></small>
       </h1>
       <ul class="card-stack" spacing>
-        {% for card in stack.cards %}
+        {% for card in stack.search(q) %}
           <li>
             <a class="card {{ card.hot ? 'hot' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
               <div spacing>

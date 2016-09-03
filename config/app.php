@@ -176,6 +176,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ElasticsearchServiceProvider::class,
 
         // Add .twig views
         TwigBridge\ServiceProvider::class,

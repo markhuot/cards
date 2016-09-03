@@ -118,4 +118,21 @@ return [
 
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Elasticsearch
+    |--------------------------------------------------------------------------
+    |
+    | Elasticsearch is a search server based on Lucene. It provides a
+    | distributed, multitenant-capable full-text search engine with a RESTful
+    | web interface and schema-free JSON documents.
+    |
+    */
+
+    'elasticsearch' => [
+
+        'hosts' => array_filter(preg_split('/,/', env('ELASTICSEARCH_HOSTS', 'localhost'))),
+
+    ],
+
 ];

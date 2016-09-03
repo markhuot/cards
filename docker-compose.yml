@@ -10,3 +10,7 @@ services:
     image: php:fpm
     volumes:
       - ./:/var/www/html
+  elasticsearch:
+    image: elasticsearch
+    ports:
+      - 9200:9200

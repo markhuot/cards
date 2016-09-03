@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use App\Project;
 use App\Card;
+use Elasticsearch\Client as Search;
 
 class Stack extends Model
 {
@@ -38,18 +39,31 @@ class Stack extends Model
 
   public function cards()
   {
-    $relation = $this->hasMany(Card::class)->orderBy('order', 'asc');
+    return $this->hasMany(Card::class)->orderBy('order', 'asc');
+  }
 
-    if ($q=app('request')->q) {
-      if (substr($q, 0, 4) == 'tag:') {
-        $tagName = substr($q, 4);
-        $relation->whereHas('tags', function($query) use ($tagName) {
-          $query->where('name', '=', $tagName);
-        });
-      }
+  public function search($q)
+  {
+    if (!$q) {
+      return $this->cards;
     }
 
-    return $relation;
+    $elasticsearch = resolve(Search::class);
+    $result = $elasticsearch->search([
+      "index" => "cards",
+      "type" => "card",
+      "body" => [
+        "query" => [
+          "query_string" => [
+            "query" => 'stack_id:'.$this->id.' AND ('.$q.')',
+          ],
+        ],
+      ],
+    ]);
+
+    $ids = array_pluck($result['hits']['hits'], '_source.id');
+
+    return Card::find($ids);
   }
 
   public function getCardsCountAttribute()

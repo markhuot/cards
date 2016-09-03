@@ -68,6 +68,11 @@ $spacingMultipliers: (
   }
 }
 
+.visually-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
 .page {
   margin-top: 30px;
   margin-left: 20px;
@@ -502,9 +507,6 @@ $spacingMultipliers: (
 }
 
 .show-card-edit {
-  position: absolute;
-  left: -9999px;
-
   &:checked, &:checked + .card-prompt {
     display: none;
   }

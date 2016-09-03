@@ -36,6 +36,39 @@ class Card extends Model
         }
       }
     });
+
+    static::saving(function($model) {
+      $model->saveToSearchIndex();
+    });
+  }
+
+  public function saveToSearchIndex()
+  {
+    $elasticsearch = resolve(\Elasticsearch\Client::class);
+    $result = $elasticsearch->index([
+      'index' => 'cards',
+      'type' => 'card',
+      'id' => 'card:'.$this->getKey(),
+      'body' => $this->toSearchableArray(),
+    ]);
+  }
+
+  public function toSearchableArray()
+  {
+    $array = [];
+
+    $array['text'] = collect($this->toArray())->only([
+      'title',
+      'description',
+    ]);
+
+    $array['id'] = $this->id;
+    $array['stack'] = $this->stack->name;
+    $array['stack_id'] = $this->stack->id;
+    $array['assignee'] = $this->assignees->pluck('name');
+    $array['tag'] = $this->tags->pluck('name');
+
+    return $array;
   }
 
   public function stack()

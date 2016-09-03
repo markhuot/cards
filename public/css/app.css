@@ -46,6 +46,10 @@ hr {
   display: table;
   clear: both; }
 
+.visually-hidden {
+  position: absolute;
+  left: -9999px; }
+
 .page {
   margin-top: 30px;
   margin-left: 20px;
@@ -354,15 +358,14 @@ hr {
 .inline-pills {
   display: inline-block; }
 
-.show-card-edit {
-  position: absolute;
-  left: -9999px; }
-  .show-card-edit:checked, .show-card-edit:checked + .card-prompt {
-    display: none; }
-  .show-card-edit:checked + .card-prompt + .card-edit {
-    display: block; }
-  .show-card-edit:focus + .card-prompt label {
-    text-decoration: underline; }
+.show-card-edit:checked, .show-card-edit:checked + .card-prompt {
+  display: none; }
+
+.show-card-edit:checked + .card-prompt + .card-edit {
+  display: block; }
+
+.show-card-edit:focus + .card-prompt label {
+  text-decoration: underline; }
 
 .card-edit {
   display: none; }
