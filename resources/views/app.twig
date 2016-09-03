@@ -10,7 +10,7 @@
       <h1 class="project-header__title">
         <form action="{{ project.uri }}" method="get" class="project-header__form">
           {% if q %}<a class="project-header__back" href="{{ project.uri }}" title="Back" box="2">&lsaquo;</a>{% endif %}
-          <input name="q" placeholder="{{ project.name }}" value="{{ q }}" box="2">
+          <input name="q" placeholder="{{ project.name }}" value="{{ q }}" box="2" autocomplete="off">
           <button class="button visually-hidden">Go</button>
         </form>
       </h1>

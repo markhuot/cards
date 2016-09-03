@@ -115,13 +115,13 @@ hr {
     height: 20px; }
     .stack__header small {
       float: right; }
+  @media (max-width: 699px) {
+    .stack.empty {
+      display: none; } }
 
 .create-form {
   background: rgba(0, 0, 0, 0.05);
   border-radius: 2px; }
-  .create-form__input {
-    width: 100%;
-    font-size: 16px; }
 
 .card {
   background: #fff;
@@ -292,7 +292,9 @@ hr {
 
 .user-input {
   background: rgba(255, 248, 232, 0.5);
-  border: 1px solid #ccc; }
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 100%; }
 
 .project-preview {
   width: 100%;
@@ -445,8 +447,6 @@ hr {
 
 .create-invite__email {
   font-size: 24px;
-  font-weight: 300;
-  width: 100%;
-  width: 100%; }
+  font-weight: 300; }
 
 /*# sourceMappingURL=app.css.map */

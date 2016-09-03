@@ -3,13 +3,14 @@
 {% block content %}
 <div class="page stacks" spacing="4">
   {% for stack in project.stacks %}
-    <div class="stack" spacing="2" data-stack-id="{{ stack.id }}">
+    {% set cards = stack.search(q) %}
+    <div class="stack {{ cards.count == 0 ? 'empty' }}" spacing="2" data-stack-id="{{ stack.id }}">
       <h1 class="stack__header">
-        {{ stack.name }} <span class="meta">({{ stack.cards.count }})</span>
+        {{ stack.name }} <span class="meta">({{ cards.count }})</span>
         <small class="meta"><a href="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards/create">Add card</a></small>
       </h1>
       <ul class="card-stack" spacing>
-        {% for card in stack.search(q) %}
+        {% for card in cards %}
           <li>
             <a class="card {{ card.hot ? 'hot' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
               <div spacing>

@@ -168,16 +168,17 @@ $spacingMultipliers: (
       float: right;
     }
   }
+
+  @include media('<700px') {
+    &.empty {
+      display: none;
+    }
+  }
 }
 
 .create-form {
   background: rgba(0,0,0,0.05);
   border-radius: 2px;
-
-  &__input {
-    width: 100%;
-    font-size: 16px;
-  }
 }
 
 .card {
@@ -409,6 +410,8 @@ $spacingMultipliers: (
 .user-input {
   background: rgba(255, 248, 232, 0.5);
   border: 1px solid #ccc;
+  font-size: 16px;
+  width: 100%;
 }
 
 .project-preview {
@@ -623,7 +626,5 @@ $spacingMultipliers: (
   &__email {
     font-size: 24px;
     font-weight: 300;
-    width: 100%;
-    width: 100%;
   }
 }
