@@ -6,15 +6,15 @@
 </head>
 <body>
   {% if project %}
-    <div class="project-header box-shadow" box="2">
+    <div class="project-header box-shadow">
       <h1 class="project-header__title">
-        <form action="{{ project.uri }}" method="get">
-          {# <a href="{{ project.uri }}">{{ project.name }}</a> #}
-          <input name="q" placeholder="{{ project.name }}" value="{{ q }}">
+        <form action="{{ project.uri }}" method="get" class="project-header__form">
+          {% if q %}<a class="project-header__back" href="{{ project.uri }}" title="Back" box="2">&lsaquo;</a>{% endif %}
+          <input name="q" placeholder="{{ project.name }}" value="{{ q }}" box="2">
           <button class="button visually-hidden">Go</button>
         </form>
       </h1>
-      <ul class="user-stack">
+      <ul class="user-stack" box="2">
         {% for user in project.users %}
           <li><a href="#" class="user-initials" title="{{ user.name }}" style="background: {{ user.color }};">{{ user.initials }}</a></li>
         {% endfor %}

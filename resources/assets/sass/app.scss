@@ -102,20 +102,39 @@ $spacingMultipliers: (
     }
   }
 
-  input {
-    font: inherit;
-    color: inherit;
-    border: none;
-
-    &::-webkit-input-placeholder {
-      color: inherit;
-    }
-  }
-
   &__title {
     font-weight: 500;
     font-size: 24px;
     color: $blue;
+    width: 100%;
+  }
+
+  &__form {
+    display: flex;
+  }
+
+  &__back {
+
+  }
+
+  input {
+    font: inherit;
+    color: inherit;
+    border: none;
+    width: 100%;
+
+    &::-webkit-input-placeholder {
+      color: inherit;
+    }
+
+    &:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+  }
+
+  &__back + input[box] {
+    padding-left: 0;
   }
 
   &__guard {
@@ -255,6 +274,8 @@ $spacingMultipliers: (
 }
 
 .user-stack {
+  white-space: nowrap;
+
   li {
     display: inline-block;
   }
