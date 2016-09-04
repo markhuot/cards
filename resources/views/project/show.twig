@@ -23,7 +23,7 @@
                 <p class="card__title">{{ card.title }}</p>
                 {% if card.description %}<p class="card__description">{{ card.description[0:75]|trim }}{{ card.description|length > 75 ? '&hellip;' }}</p>{% endif %}
                 {% for attachment in card.allAttachments() %}
-                  <img src="http://placehold.it/32x32">
+                  <img src="{{ attachment.uri }}/thumb?s=32">
                 {% endfor %}
                 <div class="card__meta meta clearfix">
                   <p class="card__local-id">#<strong>{{ card.local_id }}</strong></p>
@@ -33,7 +33,7 @@
                 </div>
               </div>
               {% if card.countAllTasks > 0 %}
-              <p class="progress"><span class="progress__bar" style="width: {{ card.percentAllTasksComplete*100 }}%">{{ card.percentAllTasksComplete }}</span></p>
+                <p class="progress"><span class="progress__bar" style="width: {{ card.percentAllTasksComplete*100 }}%">{{ card.percentAllTasksComplete }}</span></p>
               {% endif %}
             </a>
           </li>

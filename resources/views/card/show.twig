@@ -52,8 +52,7 @@
           {% if comment.attachments.count %}
             <div>
               {% for attachment in comment.attachments %}
-                <img src="http://placehold.it/50x50">
-                {{ attachment.link }}
+                <a href="{{ attachment.uri }}"><img src="{{ attachment.uri }}/thumb?s=32"></a>
               {% endfor %}
             </div>
           {% endif %}

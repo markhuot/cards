@@ -31,6 +31,7 @@ class CardController extends Controller
     $card->save();
 
     $card->assignee_id = $request->input('card.assignee_id', []);
+    $card->attachments = $request->file('card.attachment', []);
 
     $request->user()->follow($card);
 

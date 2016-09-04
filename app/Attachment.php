@@ -10,4 +10,9 @@ class Attachment extends Model
     $this->attributes['user_id'] = $user->id;
   }
 
+  public function getUriAttribute()
+  {
+    return '/attachments/'.$this->getKey();
+  }
+
 }

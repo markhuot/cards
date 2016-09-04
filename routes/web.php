@@ -30,6 +30,9 @@ Route::post('cards/{card}/move', ['uses' => 'CardController@move']);
 Route::post('cards/{card}/check', ['uses' => 'CardController@check']);
 Route::post('comments/{comment}/check', ['uses' => 'CommentController@check']);
 
+Route::get('attachments/{attachment}', ['uses' => 'AttachmentController@show']);
+Route::get('attachments/{attachment}/thumb', ['uses' => 'AttachmentController@thumb']);
+
 // Auth::routes();
 // Authentication Routes...
 Route::get('login', ['uses' => 'Auth\LoginController@showLoginForm', 'name' => 'login']);

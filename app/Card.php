@@ -74,6 +74,14 @@ class Card extends Model
       $array['is'][] = 'complete';
     }
 
+    $array['has'] = [];
+    if ($this->attachments->count() > 0) {
+      $array['has'][] = 'attachments';
+    }
+    if ($this->comments->count() > 0) {
+      $array['has'][] = 'comments';
+    }
+
     return $array;
   }
 
@@ -143,6 +151,33 @@ class Card extends Model
   public function followers()
   {
     return $this->morphMany(Follower::class, 'source');
+  }
+
+  /**
+   * Any attachments tied to this card
+   *
+   * @return Relation
+   */
+  public function attachments()
+  {
+    return $this->morphMany(Attachment::class, 'source');
+  }
+
+  /**
+   * Set the attachments based on an array of proxy objects. These
+   * will typically come from a Request::file().
+   *
+   * @param array $attachments
+   */
+  public function setAttachmentsAttribute(array $attachments)
+  {
+    foreach (array_filter($attachments) as $file) {
+      $attachment = new Attachment;
+      $attachment->user = app('request')->user();
+      $attachment->type = 'image';
+      $attachment->link = $file->store('attachments');
+      $this->attachments()->save($attachment);
+    }
   }
 
   public function allAttachments()

@@ -2,23 +2,27 @@
 
 {% block content %}
 <div class="card-detail box-shadow" box="2" spacing="2">
-  <form action="{{ stack.uri }}/cards" method="post">
+  <form action="{{ stack.uri }}/cards" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
-    <div spacing>
+    <div spacing="2">
       <p><input type="text" name="card[title]" class="card-detail__title" placeholder="Title..."></p>
-      <p><textarea name="card[description]" placeholder="Description..."></textarea></p>
-      <p>
+      <div class="user-input">
+        <textarea name="card[description]" class="invisible-textarea" box placeholder="Description..."></textarea>
+        <p box><input type="file" name="card[attachment][]"></p>
+      </div>
+      <div spacing="0.25">
+        <p><label class="label">Assignee</label></p>
         <ul>
           {% for user in project.users %}
-            <li>
+            <li class="inline-pills checkbox-pill">
               <input type="checkbox" name="card[assignee_id][]" id="assigned-{{ user.id }}" value="{{ user.id }}">
               <label for="assigned-{{ user.id }}">{{ user.name }}</label>
             </li>
           {% endfor %}
         </ul>
-      </p>
+      </div>
+      <button class="button">Add card</button>
     </div>
-    <button>Save</button>
   </form>
 </div>
 {% endblock %}
