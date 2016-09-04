@@ -52,8 +52,12 @@ hr {
 
 .page {
   margin-top: 30px;
-  margin-left: 20px;
-  margin-right: 20px; }
+  margin-left: 10px;
+  margin-right: 10px; }
+  @media (min-width: 701px) {
+    .page {
+      margin-left: 20px;
+      margin-right: 20px; } }
 
 .box-shadow {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }
