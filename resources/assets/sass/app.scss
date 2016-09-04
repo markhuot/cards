@@ -84,6 +84,14 @@ $spacingMultipliers: (
   }
 }
 
+.page-alt {
+  @include media('>700px') {
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
 .box-shadow {
   box-shadow: 0 1px 1px rgba(0,0,0,0.2);
 }
@@ -386,17 +394,32 @@ $spacingMultipliers: (
   }
 }
 
+.layout-split-2--detail {
+  & > .column {
+    float: left;
+  }
+
+  & > .column:nth-child(1) {
+    @include media('>700px') {
+      width: 70%;
+      max-width: 900px;
+    }
+  }
+
+  & > .column:nth-child(2) {
+    @include media('>700px') {
+      width: 30%;
+    }
+  }
+}
+
 .card-detail {
   background: #fff;
   border-radius: 1px;
-  max-width: 900px;
 
   @include media('>900px') {
-    margin-left: auto;
-    margin-right: auto;
     padding-left: 40px;
     padding-right: 40px;
-    margin-top: 30px;
   }
 
   &__title {

@@ -1,120 +1,137 @@
 {% extends "app" %}
 
 {% block content %}
-<div class="card-detail box-shadow" box="2" spacing="4">
-  <div spacing="2">
-    <div spacing="0.25">
-      <h1 class="card-detail__title">
-        <span>{{ card.title }}</span>
-      </h1>
-      <p class="meta">By
-        <strong>{{ card.user.name }}</strong>
-        on
-        <strong>{{ card.created_at.toDayDateTimeString }}</strong>
-        {% if card.assignees.count %}
-          &rarr;&nbsp;Assigned&nbsp;to&nbsp;<strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong>
+<div class="layout-split-2--detail page-alt">
+  <div class="column">
+    <div class="card-detail box-shadow" box="2" spacing="4">
+      <div spacing="2">
+        <div spacing="0.25">
+          <h1 class="card-detail__title">
+            <span>{{ card.title }}</span>
+          </h1>
+          {#
+          <p class="meta">By
+            <strong>{{ card.user.name }}</strong>
+            on
+            <strong>{{ card.created_at.toDayDateTimeString }}</strong>
+            {% if card.assignees.count %}
+              &rarr;&nbsp;Assigned&nbsp;to&nbsp;<strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong>
+            {% endif %}
+            {% if card.tags.count %}
+              &#x2691;&nbsp;Tagged&nbsp;<strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p>
+            {% endif %}
+          </p>
+          #}
+        </div>
+        <div class="card-detail__description longform" data-id="{{ card.id }}">
+          {{ card.description|markdown }}
+        </div>
+      </div>
+      {% if card.comments.count %}
+        <hr>
+        <ul spacing="3">
+          {% for comment in card.comments %}
+            <li class="comment-detail" id="comment{{ comment.id }}" spacing data-id="{{ comment.id }}">
+              <div spacing="0.25">
+                <div class="byline">{{ comment.user.name }}</div>
+                <div class="meta">
+                  Posted <strong><a href="#comment{{ comment.id }}">{{ comment.created_at.diffForHumans }}</a></strong>
+                  {% if comment.meta %}
+                    <ul class="comment-meta meta">
+                      {% for change in comment.meta %}
+                        <li class="comment-meta__item">
+                          {{ change.label }}
+                          {% for added in change.added %}
+                            <strong class="comment-meta__added">+{{ added.label }}</strong>
+                          {% endfor %}
+                          {% for removed in change.removed %}
+                            <span class="comment-meta__removed">-{{ removed.label }}</span>
+                          {% endfor %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="longform">
+                {{ comment.content|markdown }}
+              </div>
+              {% if comment.attachments.count %}
+                <div>
+                  {% for attachment in comment.attachments %}
+                    <a href="{{ attachment.uri }}"><img src="{{ attachment.uri }}/thumb?s=32"></a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      <hr>
+      <form action="{{ card.uri }}/comments" method="post" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        <input type="hidden" name="card[complete]" value="{{ card.complete ? 1 : 0 }}">
+        {% if errors.count > 0 %}
+          {{ dump(errors) }}
         {% endif %}
-        {% if card.tags.count %}
-          &#x2691;&nbsp;<strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p>
-        {% endif %}
-      </p>
-    </div>
-    <div class="card-detail__description longform" data-id="{{ card.id }}">
-      {{ card.description|markdown }}
+        <div spacing="2">
+          <div spacing>
+            <div class="user-input">
+              <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a comment..." box></textarea>
+              <p box><input class="comment-form__upload" type="file" name="comment[attachment][]"></p>
+            </div>
+            <div>
+              <input type="checkbox" id="show-card-edit" class="show-card-edit visually-hidden">
+              <p class="card-prompt"><label for="show-card-edit" class="text-button">Edit card details&hellip;</label></p>
+              <div class="card-edit" spacing>
+                <div spacing="0.25">
+                  <p><label class="label">Stack</label></p>
+                  <ul class="stack-chooser clearfix">
+                    {% for stack in card.stack.project.stacks %}
+                      <li class="stack-chooser__item checkbox-pill"><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}> <label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div spacing="0.25">
+                  <p><label class="label">Assignee</label></p>
+                  <ul>
+                    {% for user in card.stack.project.users %}
+                      <li class="inline-pills checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div spacing="0.25">
+                  <p><label for="tags" class="label">Tags</label></p>
+                  <p><input type="text" name="card[tags]" value="{{ card.tag_string }}" box class="user-input">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div spacing>
+            <p class="clearfix">
+              <button class="button" class="comment-form__submit">Leave comment</button>
+              {% if card.complete %}
+                <button class="button plain" class="comment-form__submit" name="card[complete]" value="0">Re-open card</button>
+              {% else %}
+                <button class="button plain" class="comment-form__submit" name="card[complete]" value="1">Complete card</button>
+              {% endif %}
+            </p>
+            <p class="meta">A notification will be sent to {{ card.followers.pluck('user.name').implode(', ') }}</p>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-  {% if card.comments.count %}
-    <hr>
-    <ul spacing="3">
-      {% for comment in card.comments %}
-        <li class="comment-detail" id="comment{{ comment.id }}" spacing data-id="{{ comment.id }}">
-          <div spacing="0.25">
-            <div class="byline">{{ comment.user.name }}</div>
-            <div class="meta">
-              Posted <strong><a href="#comment{{ comment.id }}">{{ comment.created_at.diffForHumans }}</a></strong>
-              {% if comment.meta %}
-                <ul class="comment-meta meta">
-                  {% for change in comment.meta %}
-                    <li class="comment-meta__item">
-                      {{ change.label }}
-                      {% for added in change.added %}
-                        <strong class="comment-meta__added">+{{ added.label }}</strong>
-                      {% endfor %}
-                      {% for removed in change.removed %}
-                        <span class="comment-meta__removed">-{{ removed.label }}</span>
-                      {% endfor %}
-                    </li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-            </div>
-          </div>
-          <div class="longform">
-            {{ comment.content|markdown }}
-          </div>
-          {% if comment.attachments.count %}
-            <div>
-              {% for attachment in comment.attachments %}
-                <a href="{{ attachment.uri }}"><img src="{{ attachment.uri }}/thumb?s=32"></a>
-              {% endfor %}
-            </div>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-  <hr>
-  <form action="{{ card.uri }}/comments" method="post" enctype="multipart/form-data">
-    {{ csrf_field() }}
-    <input type="hidden" name="card[complete]" value="{{ card.complete ? 1 : 0 }}">
-    {% if errors.count > 0 %}
-      {{ dump(errors) }}
-    {% endif %}
-    <div spacing="2">
-      <div spacing>
-        <div class="user-input">
-          <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a comment..." box></textarea>
-          <p box><input class="comment-form__upload" type="file" name="comment[attachment][]"></p>
-        </div>
-        <div>
-          <input type="checkbox" id="show-card-edit" class="show-card-edit visually-hidden">
-          <p class="card-prompt"><label for="show-card-edit" class="text-button">Edit card details&hellip;</label></p>
-          <div class="card-edit" spacing>
-            <div spacing="0.25">
-              <p><label class="label">Stack</label></p>
-              <ul class="stack-chooser clearfix">
-                {% for stack in card.stack.project.stacks %}
-                  <li class="stack-chooser__item checkbox-pill"><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}> <label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div spacing="0.25">
-              <p><label class="label">Assignee</label></p>
-              <ul>
-                {% for user in card.stack.project.users %}
-                  <li class="inline-pills checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div spacing="0.25">
-              <p><label for="tags" class="label">Tags</label></p>
-              <p><input type="text" name="card[tags]" value="{{ card.tag_string }}" box class="user-input">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div spacing>
-        <p class="clearfix">
-          <button class="button" class="comment-form__submit">Leave comment</button>
-          {% if card.complete %}
-            <button class="button plain" class="comment-form__submit" name="card[complete]" value="0">Re-open card</button>
-          {% else %}
-            <button class="button plain" class="comment-form__submit" name="card[complete]" value="1">Complete card</button>
-          {% endif %}
-        </p>
-        <p class="meta">A notification will be sent to {{ card.followers.pluck('user.name').implode(', ') }}</p>
-      </div>
+  <div class="column">
+    <div spacing box>
+      <p class="meta">By <strong>{{ card.user.name }}</strong> on <strong>{{ card.created_at.toDayDateTimeString }}</strong></p>
+      {% if card.assignees.count %}
+        <p class="meta">&rarr;&nbsp;Assigned&nbsp;to&nbsp;<strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong></p>
+      {% endif %}
+      {% if card.tags.count %}
+        <p class="meta">&#x2691;&nbsp;Tagged&nbsp;<strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p></p>
+      {% endif %}
     </div>
-  </form>
+  </div>
 </div>
 {% endblock %}
