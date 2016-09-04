@@ -12,7 +12,10 @@
         on
         <strong>{{ card.created_at.toDayDateTimeString }}</strong>
         {% if card.assignees.count %}
-          &rarr; Assigned to <strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong>
+          &rarr;&nbsp;Assigned&nbsp;to&nbsp;<strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong>
+        {% endif %}
+        {% if card.tags.count %}
+          &#x2691;&nbsp;<strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p>
         {% endif %}
       </p>
     </div>

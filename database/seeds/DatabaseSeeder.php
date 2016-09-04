@@ -231,7 +231,7 @@ class DatabaseSeeder extends Seeder
     $card->tag_string = 'ux';
 
     $card = new Card;
-    $card->stack_id = $backlog->getKey();
+    $card->stack_id = $inProgress->getKey();
     $card->user_id = $user->getKey();
     $card->title = 'Arbitrary card details';
     $card->description = "I'd like to add card estimates or story points, but it seems overly specific. Maybe, instead, add a settings screen where you can ask for any number of additional fields on a card. Could be integer, boolean, or text fields… maybe some day enhanced fields like star ratings and chat logs.";

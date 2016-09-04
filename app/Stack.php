@@ -60,6 +60,7 @@ class Stack extends Model
       "body" => [
         "query" => [
           "query_string" => [
+            "default_operator" => "AND",
             "query" => 'stack_id:'.$this->id.' AND ('.$q.')',
           ],
         ],
