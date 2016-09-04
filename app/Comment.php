@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Attachment;
 use App\User;
 use App\Stack;
+use App\Tag;
 
 class Comment extends Model
 {
@@ -137,6 +138,11 @@ class Comment extends Model
           $change['label'] = 'Stack';
           $change['added'] = [Stack::find($change['added'])];
           $change['removed'] = [Stack::find($change['removed'])];
+          break;
+        case 'tags':
+          $change['label'] = 'Tag';
+          $change['added'] = Tag::find($change['added']);
+          $change['removed'] = Tag::find($change['removed']);
           break;
       }
     }

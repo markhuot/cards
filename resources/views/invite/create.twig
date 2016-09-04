@@ -1,5 +1,7 @@
 {% extends "app" %}
 
+{% set showBackButton = true %}
+
 {% block content %}
 <div class="card-detail box-shadow" box="2" spacing="4">
   <div spacing>
@@ -15,7 +17,7 @@
     <div spacing="2">
       <div spacing="0.25">
         <p><label class="label" for="invite-email">Email</label></p>
-        <p><input class="create-invite__email" id="invite-email" type="text" name="invite[email]" placeholder="liz@lizlemon.com" box /></p>
+        <p><input class="user-input" box id="invite-email" type="text" name="invite[email]" placeholder="liz@lizlemon.com" box /></p>
       </div>
       <p><button class="button">Go</button></p>
     </div>

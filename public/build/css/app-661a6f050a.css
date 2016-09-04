@@ -116,12 +116,20 @@ hr {
   .stack__header {
     font-weight: 600;
     font-size: 16px;
-    height: 20px; }
+    height: 20px;
+    margin-left: 10px;
+    margin-right: 10px; }
     .stack__header small {
       float: right; }
+    @media (min-width: 701px) {
+      .stack__header {
+        margin-left: 10px;
+        margin-right: 10px; } }
   @media (max-width: 699px) {
     .stack.empty {
-      display: none; } }
+      display: none; }
+    .stack.first-visible:not(:first-child) {
+      margin-top: 0; } }
 
 .create-form {
   background: rgba(0, 0, 0, 0.05);
@@ -154,6 +162,15 @@ hr {
     top: 5px;
     right: 5px;
     border-radius: 5px; }
+  .card.complete {
+    color: #ccc; }
+    .card.complete .card__title {
+      text-decoration: line-through; }
+    .card.complete .card__description,
+    .card.complete .meta strong {
+      color: inherit; }
+    .card.complete .progress__bar {
+      background-color: #ccc; }
   .card.dragging {
     box-shadow: none;
     opacity: 0.5; }
@@ -295,6 +312,11 @@ hr {
   border-bottom: 1px dashed #ccc; }
 
 .user-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  box-shadow: none;
   background: rgba(255, 248, 232, 0.5);
   border: 1px solid #ccc;
   font-size: 16px;
@@ -403,10 +425,17 @@ hr {
   border: none;
   padding: 10px 15px;
   background: #32a942;
-  border-radius: 1px;
+  border-radius: 2px;
   font-size: 16px;
   color: #fff;
   font-weight: 300; }
+  .button:hover {
+    text-decoration: underline; }
+  .button.plain {
+    background: #eee;
+    color: #999;
+    font-size: 14px;
+    padding: 11px 10px; }
 
 .progress {
   background: transparent;
@@ -448,9 +477,5 @@ hr {
     text-align: center; }
   .stack-chooser__item:last-child:after {
     display: none; }
-
-.create-invite__email {
-  font-size: 24px;
-  font-weight: 300; }
 
 /*# sourceMappingURL=app.css.map */

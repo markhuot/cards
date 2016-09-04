@@ -20,12 +20,6 @@
       {{ card.description|markdown }}
     </div>
   </div>
-  {#<hr>
-  <ul class="card-detail__meta" spacing>
-    <li>Assigned: {{ card.assignees.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</li>
-    <li>Followers: {{ card.followers.link('user.name', 'user.uri').wrap('strong').implode(', ')|raw }}</li>
-    <li>Stack: <strong>{{ card.stack.name }}</strong></li>
-  </ul>#}
   {% if card.comments.count %}
     <hr>
     <ul spacing="3">
@@ -68,8 +62,9 @@
     </ul>
   {% endif %}
   <hr>
-  <form action="/cards/{{ card.id }}/comments" method="post" enctype="multipart/form-data">
+  <form action="{{ card.uri }}/comments" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
+    <input type="hidden" name="card[complete]" value="{{ card.complete ? 1 : 0 }}">
     {% if errors.count > 0 %}
       {{ dump(errors) }}
     {% endif %}
@@ -109,6 +104,11 @@
       <div spacing>
         <p class="clearfix">
           <button class="button" class="comment-form__submit">Leave comment</button>
+          {% if card.complete %}
+            <button class="button plain" class="comment-form__submit" name="card[complete]" value="0">Re-open card</button>
+          {% else %}
+            <button class="button plain" class="comment-form__submit" name="card[complete]" value="1">Complete card</button>
+          {% endif %}
         </p>
         <p class="meta">A notification will be sent to {{ card.followers.pluck('user.name').implode(', ') }}</p>
       </div>

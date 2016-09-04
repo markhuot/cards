@@ -168,15 +168,26 @@ $spacingMultipliers: (
     font-weight: 600;
     font-size: 16px;
     height: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 
     small {
       float: right;
+    }
+
+    @include media('>700px') {
+      margin-left: 10px;
+      margin-right: 10px;
     }
   }
 
   @include media('<700px') {
     &.empty {
       display: none;
+    }
+
+    &.first-visible:not(:first-child) {
+      margin-top: 0;
     }
   }
 }
@@ -221,6 +232,23 @@ $spacingMultipliers: (
     top: $size;
     right: $size;
     border-radius: $size;
+  }
+
+  &.complete {
+    color: #ccc;
+
+    .card__title {
+      text-decoration: line-through;
+    }
+
+    .card__description,
+    .meta strong {
+      color: inherit;
+    }
+
+    .progress__bar {
+      background-color: #ccc;
+    }
   }
 
   &.dragging {
@@ -413,6 +441,9 @@ $spacingMultipliers: (
 }
 
 .user-input {
+  appearance: none;
+  border: none;
+  box-shadow: none;
   background: rgba(255, 248, 232, 0.5);
   border: 1px solid #ccc;
   font-size: 16px;
@@ -569,10 +600,21 @@ $spacingMultipliers: (
   border: none;
   padding: 10px 15px;
   background: $green;
-  border-radius: 1px;
+  border-radius: 2px;
   font-size: 16px;
   color: #fff;
   font-weight: 300;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &.plain {
+    background: #eee;
+    color: #999;
+    font-size: 14px;
+    padding: 11px 10px;
+  }
 }
 
 .progress {
@@ -624,12 +666,5 @@ $spacingMultipliers: (
     &:last-child:after {
       display: none;
     }
-  }
-}
-
-.create-invite {
-  &__email {
-    font-size: 24px;
-    font-weight: 300;
   }
 }

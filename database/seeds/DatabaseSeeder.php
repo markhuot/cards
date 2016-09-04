@@ -19,16 +19,36 @@ class DatabaseSeeder extends Seeder
   {
     // $this->call(UsersTableSeeder::class);
 
+    $project = new Project;
+    $project->name = 'Project Manhattan';
+    $project->save();
+
+    $user = new User;
+    $user->name = 'Liz Lemon';
+    $user->email = 'liz@tgs.com';
+    $user->password = Hash::make('password');
+    $user->save();
+    $project->users()->attach($user);
+
+    $user = new User;
+    $user->name = 'Tracy Morgan';
+    $user->email = 'tracy@tgs.com';
+    $user->password = Hash::make('password');
+    $user->save();
+    $project->users()->attach($user);
+
+    $user = new User;
+    $user->name = 'Jack Donaghy';
+    $user->email = 'jack@nbcuniversal.com';
+    $user->password = Hash::make('password');
+    $user->save();
+    $project->users()->attach($user);
+
     $user = new User;
     $user->name = 'Mark Huot';
     $user->email = 'mark@markhuot.com';
     $user->password = Hash::make('password');
     $user->save();
-
-    $project = new Project;
-    $project->name = 'Project Manhattan';
-    $project->save();
-
     $project->users()->attach($user);
 
     $backlog = new Stack;
@@ -56,12 +76,15 @@ class DatabaseSeeder extends Seeder
     $complete->save();
 
     $card = new Card;
-    $card->stack_id = $backlog->getKey();
+    $card->stack_id = $complete->getKey();
     $card->user_id = $user->getKey();
     $card->title = 'Cards need a completion state';
     $card->description = "There needs to be a way to close cards so years of history doesn't clutter the UI.\n\n- [ ] add a `complete` boolean to the Card model\n- [ ] hide `complete` cards from the ui, unless filtered\n\nOptionally,\n\n- [ ] specify Stacks that should automatically open or close a Card when moved";
+    $card->complete = true;
     $card->order = 0;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'ux';
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -70,6 +93,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "For long workflows a user may not be interested in _every_ Stack. The ability to minimize stacks would allow a user to optimize the view for their use case.";
     $card->order = 0;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'ui';
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -78,6 +103,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "This could be most helpful to move and create new cards on other devices without reloading.";
     $card->order = 0;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'javascript';
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -86,6 +113,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "Clicking a stack header should show just the cards in that stack at full width. This could be a nice way to work through a project backlog.";
     $card->order = 0;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'ui';
 
     $comment = new Comment;
     $comment->source_type = get_class($card);
@@ -101,6 +130,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "The current language does not help the user know what to do once invited.";
     $card->order = 1;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'copy ui';
 
     $card = new Card;
     $card->stack_id = $complete->getKey();
@@ -109,6 +140,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "Cards should be able to drag/drop across stacks.";
     $card->order = 1;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'javascript ui';
 
     $card = new Card;
     $card->stack_id = $inProgress->getKey();
@@ -117,6 +150,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "Comments should keep track of what changed about a card with each save.\n\n- [x] add `comments.meta` field\n- [ ] store json of the change\n- [ ] add a `CommentMetaRenderer` class that prints a string version of the change";
     $card->order = 1;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'ux function';
 
     $card->assignees()->sync([$user->getKey()]);
 
@@ -145,6 +180,13 @@ class DatabaseSeeder extends Seeder
     $comment->source_type = get_class($card);
     $comment->source_id = $card->getKey();
     $comment->user_id = $user->getKey();
+    $comment->content = "This has a block quote,\r\n\r\n> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n\r\nWee, that was a fun quote!";
+    $comment->save();
+
+    $comment = new Comment;
+    $comment->source_type = get_class($card);
+    $comment->source_id = $card->getKey();
+    $comment->user_id = $user->getKey();
     $comment->content = "What about numbered lists?\n\n1. this is something that goes first\n2.Then a second thing\n3. finally a third thing\n\nAnd then some closing text.";
     $comment->save();
 
@@ -155,6 +197,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "Cards should be easily identified by a numeric id.";
     $card->order = 1;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'ux';
 
     $card = new Card;
     $card->stack_id = $releasePlanning->getKey();
@@ -163,6 +207,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "Currently it's just a `pre` with nothing else. Some syntax coloring would be nice.";
     $card->order = 1;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'wishlist';
 
     $card = new Card;
     $card->stack_id = $complete->getKey();
@@ -171,6 +217,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "Currently the app doesn't use _any_ Javascript. It may be worth adding some to ease the comment leaving experience.";
     $card->order = 1;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'javascript';
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -179,6 +227,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "There's no way to sort or see cards that have been recently updated.\n\n- [ ] new \"activity\" UI";
     $card->order = 1;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'ux';
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -187,6 +237,8 @@ class DatabaseSeeder extends Seeder
     $card->description = "I'd like to add card estimates or story points, but it seems overly specific. Maybe, instead, add a settings screen where you can ask for any number of additional fields on a card. Could be integer, boolean, or text fields… maybe some day enhanced fields like star ratings and chat logs.";
     $card->order = 1;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'ux';
 
     $card = new Card;
     $card->stack_id = $complete->getKey();
@@ -195,5 +247,7 @@ class DatabaseSeeder extends Seeder
     $card->description = "Currently dragging a card uses the actual card element, causing a jump in content. A proxy element should be used so a drag does not cause a reflow of content.";
     $card->order = 1;
     $card->save();
+    $user->follow($card);
+    $card->tag_string = 'javascript ui';
   }
 }

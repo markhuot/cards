@@ -21,6 +21,7 @@ class Card extends Model
     'title',
     'description',
     'asignee_id',
+    'complete',
   ];
 
   protected static function boot()
@@ -37,7 +38,7 @@ class Card extends Model
       }
     });
 
-    static::saving(function($model) {
+    static::saved(function($model) {
       $model->saveToSearchIndex();
     });
   }
@@ -67,6 +68,11 @@ class Card extends Model
     $array['stack_id'] = $this->stack->id;
     $array['assignee'] = $this->assignees->pluck('name');
     $array['tag'] = $this->tags->pluck('name');
+
+    $array['is'] = [];
+    if ($this->complete) {
+      $array['is'][] = 'complete';
+    }
 
     return $array;
   }
@@ -98,11 +104,14 @@ class Card extends Model
 
   public function setTagStringAttribute($value)
   {
-    $tags = collect(preg_split('/\s+/', $value))->map(function ($tagName) {
-      return Tag::firstOrCreate(['name' => $tagName]);
-    });
+    $tagIds = collect(array_filter(preg_split('/\s+/', $value)))->map(function ($tagName) {
+      return Tag::firstOrCreate(['name' => $tagName])->getKey();
+    })->all();
 
-    $this->tags()->sync($tags->pluck('id')->all());
+    $this->auditSyncing('tags', $tagIds);
+    $this->tags()->sync($tagIds);
+    $this->load('tags');
+    $this->saveToSearchIndex();
   }
 
   public function assignees()

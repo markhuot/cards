@@ -42,10 +42,15 @@ class Stack extends Model
     return $this->hasMany(Card::class)->orderBy('order', 'asc');
   }
 
+  public function openCards()
+  {
+    return $this->hasMany(Card::class)->where('complete', '=', false)->orderBy('order', 'asc');
+  }
+
   public function search($q)
   {
     if (!$q) {
-      return $this->cards;
+      return $this->openCards;
     }
 
     $elasticsearch = resolve(Search::class);

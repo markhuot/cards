@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="card-detail box-shadow" box="2" spacing="2">
-  <form action="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards" method="post">
+  <form action="{{ stack.uri }}/cards" method="post">
     {{ csrf_field() }}
     <div spacing>
       <p><input type="text" name="card[title]" class="card-detail__title" placeholder="Title..."></p>

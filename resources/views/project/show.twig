@@ -1,18 +1,24 @@
 {% extends "app" %}
 
+{% set firstVisible = true %}
+
 {% block content %}
 <div class="page stacks" spacing="4">
   {% for stack in project.stacks %}
     {% set cards = stack.search(q) %}
-    <div class="stack {{ cards.count == 0 ? 'empty' }}" spacing="2" data-stack-id="{{ stack.id }}">
+    {% set isFirstVisible = cards.count > 0 and firstVisible == true %}
+    {% if isFirstVisible %}
+      {% set firstVisible = false %}
+    {% endif %}
+    <div class="stack {{ cards.count == 0 ? 'empty' }} {{ isFirstVisible ? 'first-visible' }}" spacing="2" data-stack-id="{{ stack.id }}">
       <h1 class="stack__header">
         {{ stack.name }} <span class="meta">({{ cards.count }})</span>
-        <small class="meta"><a href="/projects/{{ project.id }}/stacks/{{ stack.id }}/cards/create">Add card</a></small>
+        <small class="meta"><a href="{{ stack.uri }}/cards/create">Add card</a></small>
       </h1>
       <ul class="card-stack" spacing>
         {% for card in cards %}
           <li>
-            <a class="card {{ card.hot ? 'hot' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
+            <a class="card {{ card.hot ? 'hot' }} {{ card.complete ? 'complete' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
               <div spacing>
                 <p class="card__title">{{ card.title }}</p>
                 {% if card.description %}<p class="card__description">{{ card.description[0:75]|trim }}{{ card.description|length > 75 ? '&hellip;' }}</p>{% endif %}
