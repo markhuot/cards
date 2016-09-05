@@ -492,7 +492,12 @@ $spacingMultipliers: (
   width: 100%;
   background: none;
   line-height: 1.5;
-  border-bottom: 1px dashed #ccc;
+  // border-bottom: 1px dashed #ccc;
+}
+
+.file-input {
+  border: 2px dashed #eee;
+  margin: 10px;
 }
 
 .user-input {

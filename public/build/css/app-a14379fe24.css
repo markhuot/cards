@@ -340,8 +340,11 @@ hr {
   height: 10em;
   width: 100%;
   background: none;
-  line-height: 1.5;
-  border-bottom: 1px dashed #ccc; }
+  line-height: 1.5; }
+
+.file-input {
+  border: 2px dashed #eee;
+  margin: 10px; }
 
 .user-input {
   -webkit-appearance: none;
