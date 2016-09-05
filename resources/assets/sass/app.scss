@@ -416,22 +416,28 @@ $spacingMultipliers: (
 }
 
 .layout-split-2--meta {
+  $first-col: 0.35;
+
   & > .column:nth-child(1) {
     @include media('>700px') {
-      width: 30%;
+      width: percentage($first-col);
       max-width: 900px;
     }
   }
 
   & > .column:nth-child(2) {
     @include media('>700px') {
-      width: 70%;
+      width: percentage(1 - $first-col);
     }
   }
 }
 
 .text-align-right {
   text-align: right;
+}
+
+.box-r-10 {
+  padding-right: 10px;
 }
 
 .card-detail {
@@ -446,6 +452,11 @@ $spacingMultipliers: (
   &__title {
     font-weight: 500;
     font-size: 24px;
+  }
+
+  &__sub-head {
+    font-weight: 500;
+    font-size: 18px;
   }
 }
 

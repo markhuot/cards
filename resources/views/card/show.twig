@@ -4,25 +4,10 @@
 <div class="layout-split-2--detail page-alt">
   <div class="column">
     <div class="card-detail box-shadow" box="2" spacing="4">
-      <div spacing="0.25">
-        <div spacing="0.25">
-          <h1 class="card-detail__title">
-            <span>{{ card.title }}</span>
-          </h1>
-          {#
-          <p class="meta">By
-            <strong>{{ card.user.name }}</strong>
-            on
-            <strong>{{ card.created_at.toDayDateTimeString }}</strong>
-            {% if card.assignees.count %}
-              &rarr;&nbsp;Assigned&nbsp;to&nbsp;<strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong>
-            {% endif %}
-            {% if card.tags.count %}
-              &#x2691;&nbsp;Tagged&nbsp;<strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p>
-            {% endif %}
-          </p>
-          #}
-        </div>
+      <div spacing>
+        <h1 class="card-detail__title">
+          <span>{{ card.title }}</span>
+        </h1>
         <div class="card-detail__description longform" data-id="{{ card.id }}">
           {{ card.description|markdown }}
         </div>
@@ -122,18 +107,44 @@
       </form>
     </div>
   </div>
-  <div class="column">
-    <div spacing="0.25" box>
-      <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">By </span><span class="column"><strong>{{ card.user.name }}</strong></span></p>
-      <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">Created </span><span class="column"><strong>{{ card.created_at.toDayDateTimeString }}</strong></span></p>
-      <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">Time since </span><span class="column"><strong>{{ card.created_at.diffForHumans }}</strong></span></p>
+  <div class="column" box="2" spacing="2">
+    <h2 class="card-detail__sub-head">Details</h2>
+    <ul spacing>
+      <li class="meta clearfix layout-split-2--meta">
+        <span class="column box-r-10 text-align-right">Id </span>
+        <span class="column">#<strong>{{ card.local_id }}</strong></span>
+      </li>
+      <li class="meta clearfix layout-split-2--meta">
+        <span class="column box-r-10 text-align-right">By </span>
+        <span class="column"><strong>{{ card.user.name }}</strong></span>
+      </li>
+      <li class="meta clearfix layout-split-2--meta">
+        <span class="column box-r-10 text-align-right">Created </span>
+        <span class="column"><strong>{{ card.created_at.toDayDateTimeString }}</strong></span>
+      </li>
+      <li class="meta clearfix layout-split-2--meta">
+        <span class="column box-r-10 text-align-right">Time since </span>
+        <span class="column"><strong>{{ card.created_at.diffForHumans }}</strong></span>
+      </li>
+      {% if card.countAllTasks > 0 %}
+        <li class="meta clearfix layout-split-2--meta">
+          <span class="column box-r-10 text-align-right">Completed </span>
+          <span class="column"><strong>{{ (card.percentAllTasksComplete * 100)|number_format }}%</strong></span>
+        </li>
+      {% endif %}
       {% if card.assignees.count %}
-        <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">&rarr; Assigned to </span><span class="column"><strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong></span></p>
+        <li class="meta clearfix layout-split-2--meta">
+          <span class="column box-r-10 text-align-right">&rarr; Assigned to </span>
+          <span class="column"><strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong></span>
+        </li>
       {% endif %}
       {% if card.tags.count %}
-        <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">&#x2691; Tagged </span><span class="column"><strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p></span></p>
+        <li class="meta clearfix layout-split-2--meta">
+          <span class="column box-r-10 text-align-right">&#x2691; Tagged </span>
+          <span class="column"><strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p></span>
+        </li>
       {% endif %}
-    </div>
+    </ul>
   </div>
 </div>
 {% endblock %}

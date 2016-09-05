@@ -288,15 +288,18 @@ hr {
 
 @media (min-width: 701px) {
   .layout-split-2--meta > .column:nth-child(1) {
-    width: 30%;
+    width: 35%;
     max-width: 900px; } }
 
 @media (min-width: 701px) {
   .layout-split-2--meta > .column:nth-child(2) {
-    width: 70%; } }
+    width: 65%; } }
 
 .text-align-right {
   text-align: right; }
+
+.box-r-10 {
+  padding-right: 10px; }
 
 .card-detail {
   background: #fff;
@@ -308,6 +311,9 @@ hr {
   .card-detail__title {
     font-weight: 500;
     font-size: 24px; }
+  .card-detail__sub-head {
+    font-weight: 500;
+    font-size: 18px; }
 
 .meta {
   font-size: 14px;
