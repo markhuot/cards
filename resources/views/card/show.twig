@@ -123,13 +123,15 @@
     </div>
   </div>
   <div class="column">
-    <div spacing box>
-      <p class="meta">By <strong>{{ card.user.name }}</strong> on <strong>{{ card.created_at.toDayDateTimeString }}</strong></p>
+    <div spacing="0.25" box>
+      <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">By </span><span class="column"><strong>{{ card.user.name }}</strong></span></p>
+      <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">Created </span><span class="column"><strong>{{ card.created_at.toDayDateTimeString }}</strong></span></p>
+      <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">Time since </span><span class="column"><strong>{{ card.created_at.diffForHumans }}</strong></span></p>
       {% if card.assignees.count %}
-        <p class="meta">&rarr;&nbsp;Assigned&nbsp;to&nbsp;<strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong></p>
+        <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">&rarr; Assigned to </span><span class="column"><strong>{{ card.assignees.link('label', 'user.uri').wrap('strong').implode(', ')|raw }}</strong></span></p>
       {% endif %}
       {% if card.tags.count %}
-        <p class="meta">&#x2691;&nbsp;Tagged&nbsp;<strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p></p>
+        <p class="meta clearfix layout-split-2--meta"><span class="column text-align-right">&#x2691; Tagged </span><span class="column"><strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p></span></p>
       {% endif %}
     </div>
   </div>

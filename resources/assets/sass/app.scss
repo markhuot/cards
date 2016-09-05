@@ -394,11 +394,13 @@ $spacingMultipliers: (
   }
 }
 
-.layout-split-2--detail {
+[class*="layout-split-2"] {
   & > .column {
     float: left;
   }
+}
 
+.layout-split-2--detail {
   & > .column:nth-child(1) {
     @include media('>700px') {
       width: 70%;
@@ -411,6 +413,25 @@ $spacingMultipliers: (
       width: 30%;
     }
   }
+}
+
+.layout-split-2--meta {
+  & > .column:nth-child(1) {
+    @include media('>700px') {
+      width: 30%;
+      max-width: 900px;
+    }
+  }
+
+  & > .column:nth-child(2) {
+    @include media('>700px') {
+      width: 70%;
+    }
+  }
+}
+
+.text-align-right {
+  text-align: right;
 }
 
 .card-detail {
