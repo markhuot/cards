@@ -13,7 +13,6 @@
         </div>
       </div>
       {% if card.comments.count %}
-        <hr>
         <ul spacing="3">
           {% for comment in card.comments %}
             <li class="comment-detail" id="comment{{ comment.id }}" spacing data-id="{{ comment.id }}">
@@ -52,7 +51,6 @@
           {% endfor %}
         </ul>
       {% endif %}
-      <hr>
       <form action="{{ card.uri }}/comments" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="card[complete]" value="{{ card.complete ? 1 : 0 }}">
@@ -63,13 +61,13 @@
           <div spacing>
             <div class="user-input">
               <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a comment..." box></textarea>
-              <p class="file-input" box><input class="comment-form__upload" type="file" name="comment[attachment][]"></p>
+              <p class="file-input" box><input class="comment-form__upload" type="file" name="comment[attachment][]" multiple></p>
             </div>
-            <div>
+            <div class="box-shadow" box>
               <input type="checkbox" id="show-card-edit" class="show-card-edit visually-hidden">
               <p class="card-prompt"><label for="show-card-edit" class="text-button">Edit card details&hellip;</label></p>
               <div class="card-edit" spacing>
-                <div spacing="0.25">
+                <div spacing="0.5">
                   <p><label class="label">Stack</label></p>
                   <ul class="stack-chooser clearfix">
                     {% for stack in card.stack.project.stacks %}
@@ -77,7 +75,7 @@
                     {% endfor %}
                   </ul>
                 </div>
-                <div spacing="0.25">
+                <div spacing="0.5">
                   <p><label class="label">Assignee</label></p>
                   <ul>
                     {% for user in card.stack.project.users %}
@@ -85,9 +83,9 @@
                     {% endfor %}
                   </ul>
                 </div>
-                <div spacing="0.25">
+                <div spacing="0.5">
                   <p><label for="tags" class="label">Tags</label></p>
-                  <p><input type="text" name="card[tags]" value="{{ card.tag_string }}" box class="user-input">
+                  <p><input type="text" name="card[tags]" value="{{ card.tag_string }}" box="0.5" class="user-input clear">
                 </div>
               </div>
             </div>

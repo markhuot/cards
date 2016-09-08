@@ -51,10 +51,16 @@ class ProjectController extends Controller
       }
     }
 
+    // This is a little risky, but I know that only routes for stacks, tags,
+    // and milestones point here so I'm not too concerned about someone
+    // throwing some bogus segment here that gets calleda against
+    // $project-> further down.
+    $method = $request->segment(3, 'stacks');
 
     return view('project.show')
       ->with('q', $request->q)
       ->with('project', $project)
+      ->with('stacks', $project->{$method})
     ;
   }
 

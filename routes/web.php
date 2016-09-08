@@ -19,6 +19,7 @@ Route::get('projects', ['uses' => 'ProjectController@index']);
 Route::post('projects', ['uses' => 'ProjectController@store']);
 Route::get('projects/join/{invite}', ['uses' => 'InviteController@join']);
 Route::get('projects/{project}', ['uses' => 'ProjectController@show']);
+Route::get('projects/{project}/tags', ['uses' => 'ProjectController@show']);
 Route::post('projects/{project}/stacks', ['uses' => 'StackController@store']);
 Route::get('projects/{project}/stacks/{stack}/cards/create', ['uses' => 'CardController@create']);
 Route::post('projects/{project}/stacks/{stack}/cards', ['uses' => 'CardController@store']);

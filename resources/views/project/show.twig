@@ -3,55 +3,58 @@
 {% set firstVisible = true %}
 
 {% block content %}
-<div class="page stacks" spacing="4">
-  {% for stack in project.stacks %}
-    {% set cards = stack.search(q) %}
-    {% set isFirstVisible = cards.count > 0 and firstVisible == true %}
-    {% if isFirstVisible %}
-      {% set firstVisible = false %}
-    {% endif %}
-    <div class="stack {{ cards.count == 0 ? 'empty' }} {{ isFirstVisible ? 'first-visible' }}" spacing="2" data-stack-id="{{ stack.id }}">
-      <h1 class="stack__header">
-        {{ stack.name }} <span class="meta">({{ cards.count }})</span>
-        <small class="meta"><a href="{{ stack.uri }}/cards/create">Add card</a></small>
-      </h1>
-      <ul class="card-stack" spacing>
-        {% for card in cards %}
-          <li>
-            <a class="card {{ card.hot ? 'hot' }} {{ card.complete ? 'complete' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
-              <div spacing>
-                <p class="card__title">{{ card.title }}</p>
-                {% if card.description %}<p class="card__description">{{ card.description[0:75]|trim }}{{ card.description|length > 75 ? '&hellip;' }}</p>{% endif %}
-                {% for attachment in card.allAttachments() %}
-                  <img src="{{ attachment.uri }}/thumb?s=32">
-                {% endfor %}
-                <div class="card__meta meta clearfix">
-                  <p class="card__local-id">#<strong>{{ card.local_id }}</strong></p>
-                  {% if card.assignees.count %}<p class="card__assignees">&rarr;&nbsp;<strong>{{ card.assignees.pluck('label').implode(', ') }}</strong></p>{% endif %}
-                  {% if card.tags.count %}<p class="card__tags">&#x2691;&nbsp;<strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p>{% endif %}
-                  {#<p class="card__comments">{{ card.comments.count }}</p>#}
+<div class="page" spacing="2">
+  <p class="filter meta">Sort by <a href="{{ project.uri }}">Stack</a>, <a href="{{ project.uri }}/tags">Tags</a>, or <a href="{{ project.uri }}/milestones">Milestones</a></p>
+  <div class="stacks" spacing="4">
+    {% for stack in stacks %}
+      {% set cards = stack.search(q) %}
+      {% set isFirstVisible = cards.count > 0 and firstVisible == true %}
+      {% if isFirstVisible %}
+        {% set firstVisible = false %}
+      {% endif %}
+      <div class="stack {{ cards.count == 0 ? 'empty' }} {{ isFirstVisible ? 'first-visible' }}" spacing="2" data-stack-id="{{ stack.id }}">
+        <h1 class="stack__header">
+          {{ stack.name }} <span class="meta">({{ cards.count }})</span>
+          <small class="meta"><a href="{{ stack.uri }}/cards/create">Add card</a></small>
+        </h1>
+        <ul class="card-stack" spacing>
+          {% for card in cards %}
+            <li>
+              <a class="card {{ card.hot ? 'hot' }} {{ card.complete ? 'complete' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
+                <div spacing>
+                  <p class="card__title">{{ card.title }}</p>
+                  {% if card.description %}<p class="card__description">{{ card.description[0:75]|trim }}{{ card.description|length > 75 ? '&hellip;' }}</p>{% endif %}
+                  {% for attachment in card.allAttachments() %}
+                    <img src="{{ attachment.uri }}/thumb?s=32">
+                  {% endfor %}
+                  <div class="card__meta meta clearfix">
+                    <p class="card__local-id">#<strong>{{ card.local_id }}</strong></p>
+                    {% if card.assignees.count %}<p class="card__assignees">&rarr;&nbsp;<strong>{{ card.assignees.pluck('label').implode(', ') }}</strong></p>{% endif %}
+                    {% if card.tags.count %}<p class="card__tags">&#x2691;&nbsp;<strong>{{ card.tags.pluck('label').implode(', ') }}</strong></p>{% endif %}
+                    {#<p class="card__comments">{{ card.comments.count }}</p>#}
+                  </div>
                 </div>
-              </div>
-              {% if card.countAllTasks > 0 %}
-                <p class="progress"><span class="progress__bar" style="width: {{ card.percentAllTasksComplete*100 }}%">{{ card.percentAllTasksComplete }}</span></p>
-              {% endif %}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  {% endfor %}
-  <form class="stack" action="/projects/{{ project.id }}/stacks" method="post">
-    {{ csrf_field() }}
-    <div spacing="2">
-      <h1 class="stack__header">
-        <label for="new-stack-name">Add a new stack&hellip;</label>
-      </h1>
-      <div spacing box class="create-form">
-        <p><input id="new-stack-name" class="create-form__input user-input" type="text" name="stack[name]" placeholder="Stack name..." box /></p>
-        <p><button class="button">Save Stack</button></p>
+                {% if card.countAllTasks > 0 %}
+                  <p class="progress"><span class="progress__bar" style="width: {{ card.percentAllTasksComplete*100 }}%">{{ card.percentAllTasksComplete }}</span></p>
+                {% endif %}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
       </div>
-    </div>
-  </form>
+    {% endfor %}
+    <form class="stack" action="/projects/{{ project.id }}/stacks" method="post">
+      {{ csrf_field() }}
+      <div spacing="2">
+        <h1 class="stack__header">
+          <label for="new-stack-name">Add a new stack&hellip;</label>
+        </h1>
+        <div spacing box class="create-form">
+          <p><input id="new-stack-name" class="create-form__input user-input" type="text" name="stack[name]" placeholder="Stack name..." box /></p>
+          <p><button class="button">Save Stack</button></p>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

@@ -215,3 +215,125 @@ document.body.addEventListener('click', function (event) {
     'value': event.target.checked ? 1 : 0
   });
 });
+
+/** ========================== **/
+
+// <div>
+//   <div contenteditable="plaintext-only" class="user-input" box data-autocomplete-input="test">{% spaceless %}
+//     {% for user in card.assignees %}
+//       &nbsp;<span contenteditable="false">
+//         <span class="foo">{{ user.name }}</span>
+//         <input type="hidden" name="card[assignee_id][]" value="{{ user.id }}">
+//       </span>&nbsp;
+//     {% endfor %}
+//   {% endspaceless %}<br></div>
+//   <ul class="autocomplete" data-autocomplete-options="test">
+//     {% for user in card.stack.project.users if user.id not in card.assignees.pluck('id').toArray() %}
+//       <li data-autocomplete-option="{{ user.id }}">
+//         {{ user.name }}
+//         {% spaceless %}
+//         <script type="text/html" data-autocomplete-label>
+//           <span class="foo">{{ user.name }}</span>
+//           <input type="hidden" name="card[assignee_id][]" value="{{ user.id }}">
+//         </script>
+//         {% endspaceless %}
+//       </li>
+//     {% endfor %}
+//   </ul>
+// </div>
+
+// document.body.addEventListener('focusin', function (event) {
+//   var el = event.target;
+//
+//   if (!el.dataset.autocompleteInput) {
+//     return;
+//   }
+//
+//   var key = el.dataset.autocompleteInput;
+//   var dropDown = document.querySelectorAll('[data-autocomplete-options="'+key+'"]');
+//   if (dropDown.length) {
+//     dropDown[0].classList.add('active');
+//   }
+// });
+//
+// document.body.addEventListener('focusout', function (event) {
+//   var el = event.target;
+//
+//   if (!el.dataset.autocompleteInput) {
+//     return;
+//   }
+//
+//   var key = el.dataset.autocompleteInput;
+//   var dropDown = document.querySelectorAll('[data-autocomplete-options="'+key+'"]');
+//   if (dropDown.length) {
+//     dropDown[0].classList.remove('active');
+//   }
+// });
+//
+// document.body.addEventListener('keydown', function (event) {
+//   var el = event.target;
+//   if (!el.dataset.autocompleteInput) {
+//     return;
+//   }
+//
+//   var selectedIndex = false;
+//   var pleaseSelectIndex = false;
+//   var options = document.querySelectorAll('[data-autocomplete-option]');
+//   for (var i=0, len=options.length; i<len; i++) {
+//     if (options[i].classList.contains('active')) {
+//       selectedIndex = i;
+//     }
+//   }
+//
+//   // if (selectedIndex === false && (event.keyCode == 39 /*right*/ || event.keyCode == 40 /*down*/)) {
+//   if (selectedIndex === false && (event.keyCode == 40 /*down*/)) {
+//     pleaseSelectIndex = 0;
+//   }
+//   // else if (selectedIndex >= 0 && selectedIndex < options.length-1 && (event.keyCode == 39 /*right*/ || event.keyCode == 40 /*down*/)) {
+//   else if (selectedIndex >= 0 && selectedIndex < options.length-1 && (event.keyCode == 40 /*down*/)) {
+//     pleaseSelectIndex = selectedIndex+1;
+//   }
+//   // else if (selectedIndex == options.length-1 && (event.keyCode == 39 /*right*/ || event.keyCode == 40 /*down*/)) {
+//   else if (selectedIndex == options.length-1 && (event.keyCode == 40 /*down*/)) {
+//     pleaseSelectIndex = 0;
+//   }
+//   // if (selectedIndex === false && (event.keyCode == 37 /*left*/ || event.keyCode == 38 /*up*/)) {
+//   if (selectedIndex === false && (event.keyCode == 38 /*up*/)) {
+//     pleaseSelectIndex = options.length-1;
+//   }
+//   // else if (selectedIndex > 0 && (event.keyCode == 37 /*left*/ || event.keyCode == 38 /*up*/)) {
+//   else if (selectedIndex > 0 && (event.keyCode == 38 /*up*/)) {
+//     pleaseSelectIndex = selectedIndex-1;
+//   }
+//   // else if (selectedIndex === 0 && (event.keyCode == 37 /*left*/ || event.keyCode == 38 /*up*/)) {
+//   else if (selectedIndex === 0 && (event.keyCode == 38 /*up*/)) {
+//     pleaseSelectIndex = options.length-1;
+//   }
+//
+//   if (selectedIndex !== false && pleaseSelectIndex !== false) {
+//     options[selectedIndex].classList.remove('active');
+//   }
+//
+//   if (pleaseSelectIndex !== false) {
+//     options[pleaseSelectIndex].classList.add('active');
+//     event.preventDefault();
+//   }
+//
+//   if (event.keyCode == 13 /*return*/) {
+//     // @todo Firefox may want this `span` to be a `button` so you can't edit the text within
+//     var label = options[selectedIndex].querySelector('[data-autocomplete-label]');
+//
+//     var option = document.createElement('span');
+//     option.contentEditable = false;
+//     option.innerHTML = label.innerHTML + '&nbsp;';
+//     el.appendChild(option);
+//
+//     var breaks = el.querySelectorAll('br');
+//     for (var i=0, len=breaks.length; i<len; i++) {
+//       breaks[i].parentNode.removeChild(breaks[i]);
+//     }
+//     var br = document.createElement('br');
+//     el.appendChild(br);
+//     event.preventDefault();
+//   }
+// });

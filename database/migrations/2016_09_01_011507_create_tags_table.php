@@ -23,6 +23,7 @@ class CreateTagsTable extends Migration
     // elasticsearch or solr...
     Schema::create('tags', function (Blueprint $table) {
       $table->increments('id');
+      $table->integer('project_id')->unsigned();
       $table->string('name');
       $table->timestamps();
     });

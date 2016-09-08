@@ -112,8 +112,13 @@ class Card extends Model
 
   public function setTagStringAttribute($value)
   {
-    $tagIds = collect(array_filter(preg_split('/\s+/', $value)))->map(function ($tagName) {
-      return Tag::firstOrCreate(['name' => $tagName])->getKey();
+    $projectId = $this->stack->project->getKey();
+
+    $tagIds = collect(array_filter(preg_split('/\s+/', $value)))->map(function ($tagName) use ($projectId) {
+      return Tag::firstOrCreate([
+        'name' => $tagName,
+        'project_id' => $projectId
+      ])->getKey();
     })->all();
 
     $this->auditSyncing('tags', $tagIds);

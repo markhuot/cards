@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use App\Stack;
 use App\User;
+use App\Tag;
 
 class Project extends Model
 {
@@ -29,6 +30,11 @@ class Project extends Model
   public function cards()
   {
     return Card::whereIn('stack_id', $this->stacks->pluck('id'));
+  }
+
+  public function tags()
+  {
+    return $this->hasMany(Tag::class)->orderBy('name', 'asc');
   }
 
 }
