@@ -8,6 +8,7 @@
     "bootstrap-sass": "^3.3.7",
     "gulp": "^3.9.1",
     "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^2.0.0",
     "include-media": "^1.4.8",
     "jquery": "^3.1.0",
     "laravel-elixir": "^6.0.0-9",
