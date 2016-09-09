@@ -15,7 +15,7 @@
   <form class="create-invite" action="/projects/{{ project.id }}/invite" method="post">
     {{ csrf_field() }}
     <div spacing="2">
-      <div spacing="0.25">
+      <div spacing=".25">
         <p><label class="label" for="invite-email">Email</label></p>
         <p><input class="user-input" box id="invite-email" type="text" name="invite[email]" placeholder="liz@lizlemon.com" box /></p>
       </div>

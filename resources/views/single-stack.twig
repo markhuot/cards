@@ -1,0 +1,22 @@
+{% extends "app" %}
+
+{% block content %}
+<div class="layout-split-2--detail page-alt">
+  <div class="column" spacing="2">
+    <h1 class="alpha">{{ stack.label }}</h1>
+    <ul class="card-stack" data-stack-attributes='{{ stackAttributes|default('')|raw }}' spacing>
+      {% for card in stack.search(q) %}
+        <li>
+          {% include "card/_card" with {
+            "card": card,
+            "useShortStyle": true
+          } only %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="column">
+    {% block sidebar %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

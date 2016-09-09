@@ -8,8 +8,12 @@
   {% if project %}
     <div class="project-header box-shadow">
       <h1 class="project-header__title">
-        <form action="{{ project.uri }}" method="get" class="project-header__form">
-          {% if q or showBackButton %}<a class="project-header__back" href="{{ project.uri }}" title="Back" box="2">&lsaquo;</a>{% endif %}
+        <form action="{{ searchUri|default(project.uri) }}" method="get" class="project-header__form">
+          {% if q or showBackButton %}
+            <a class="project-header__back" href="{{ backButtonUrl|default(project.uri) }}" title="Back" box="2">
+              &lsaquo;
+            </a>
+          {% endif %}
           <input name="q" placeholder="{{ project.name }}" value="{{ q }}" box="2" autocomplete="off">
           <button class="button visually-hidden">Go</button>
         </form>

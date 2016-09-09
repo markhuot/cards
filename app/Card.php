@@ -85,6 +85,11 @@ class Card extends Model
     return $array;
   }
 
+  public function getLabelAttribute()
+  {
+    return $this->title;
+  }
+
   public function stack()
   {
     return $this->belongsTo(Stack::class);
@@ -151,6 +156,8 @@ class Card extends Model
   {
     $this->auditSyncing('assignees', $userIds);
     $this->assignees()->sync($userIds);
+    $this->load('assignees');
+    $this->saveToSearchIndex();
   }
 
   public function followers()

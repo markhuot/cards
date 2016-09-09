@@ -25,6 +25,7 @@ class CreateTagsTable extends Migration
       $table->increments('id');
       $table->integer('project_id')->unsigned();
       $table->string('name');
+      $table->string('color')->nullable();
       $table->timestamps();
     });
 

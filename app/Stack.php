@@ -24,7 +24,7 @@ class Stack extends Model
 
   public function getUriAttribute()
   {
-    return '/projects/' . $this->project->getKey().'/stacks/'.$this->getKey();
+    return '/stacks/'.$this->getKey();
   }
 
   public function getLabelAttribute()
@@ -40,6 +40,11 @@ class Stack extends Model
   public function cards()
   {
     return $this->hasMany(Card::class)->orderBy('order', 'asc');
+  }
+
+  public function getSearchKey()
+  {
+    return 'stack_id';
   }
 
   public function openCards()

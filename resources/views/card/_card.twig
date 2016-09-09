@@ -1,0 +1,29 @@
+<a class="card {{ card.hot ? 'hot' }} {{ card.complete ? 'complete' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
+  <div spacing>
+    {% if useShortStyle|default(false) %}<div class="short">{% endif %}
+      <p class="card__title">{{ card.title }}</p>
+      {% if card.description %}<p class="card__description">{{ card.description[0:75]|trim }}{{ card.description|length > 75 ? '&hellip;' }}</p>{% endif %}
+    {% if useShortStyle|default(false) %}</div>{% endif %}
+
+    {% for attachment in card.allAttachments() %}
+      <img src="{{ attachment.uri }}/thumb?s=32">
+    {% endfor %}
+    <div class="card__meta meta clearfix">
+      <p class="card__local-id">#<strong>{{ card.local_id }}</strong></p>
+      {% if card.assignees.count %}<p class="card__assignees">&rarr;&nbsp;<strong>{{ card.assignees.pluck('label').implode(', ') }}</strong></p>{% endif %}
+      {% if card.tags.count %}
+        {% spaceless %}
+          <p class="card__tags">&#x2691;&nbsp;
+            {% for tag in card.tags %}
+              <strong style="color: {{ tag.color|default('inherit') }};">{{ tag.label }}</strong>{% if not loop.last %},{% endif %}
+            {% endfor %}
+          </p>
+        {% endspaceless %}
+      {% endif %}
+      {#<p class="card__comments">{{ card.comments.count }}</p>#}
+    </div>
+  </div>
+  {% if card.countAllTasks > 0 %}
+    <p class="progress"><span class="progress__bar" style="width: {{ card.percentAllTasksComplete*100 }}%">{{ card.percentAllTasksComplete }}</span></p>
+  {% endif %}
+</a>

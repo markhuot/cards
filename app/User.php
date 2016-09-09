@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Project;
+use Elasticsearch\Client as Search;
 
 class User extends Authenticatable
 {
@@ -49,6 +50,18 @@ class User extends Authenticatable
     public function projects()
     {
       return $this->belongsToMany(Project::class);
+    }
+
+    public function unfollow($source)
+    {
+      $follower = Follower::where([
+        'source_type' => get_class($source),
+        'source_id' => $source->id,
+        'user_id' => $this->id,
+      ])->firstOrFail();
+      $follower->delete();
+
+      return $this;
     }
 
     public function follow($source)
@@ -104,4 +117,39 @@ class User extends Authenticatable
       $index = collect(array_map('ord', preg_split('//', $this->name)))->sum() % count($colors);
       return $colors[$index];
     }
+
+    public function cards()
+    {
+      return $this->morphedByMany(Card::class, 'assignee')->orderBy('order', 'asc');
+    }
+
+    public function getSearchKey()
+    {
+      return 'assignee_id';
+    }
+
+    public function search($q)
+    {
+    if (!$q) {
+      return $this->cards;
+    }
+
+    $elasticsearch = resolve(Search::class);
+    $result = $elasticsearch->search([
+      "index" => "cards",
+      "type" => "card",
+      "body" => [
+        "query" => [
+          "query_string" => [
+            "default_operator" => "AND",
+            "query" => 'assignee:'.$this->name.' AND ('.$q.')',
+          ],
+        ],
+      ],
+    ]);
+
+    $ids = array_pluck($result['hits']['hits'], '_source.id');
+
+    return Card::find($ids);
+  }
 }

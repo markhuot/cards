@@ -7,6 +7,7 @@ use App\Project;
 use App\Stack;
 use App\Card;
 use App\Comment;
+use App\Tag;
 
 class DatabaseSeeder extends Seeder
 {
@@ -249,5 +250,9 @@ class DatabaseSeeder extends Seeder
     $card->save();
     $user->follow($card);
     $card->tag_string = 'javascript ui';
+
+    $tag = Tag::where('name', '=', 'javascript')->first();
+    $tag->color = 'ffcc3f';
+    $tag->save();
   }
 }

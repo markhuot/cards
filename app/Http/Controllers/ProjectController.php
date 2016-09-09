@@ -51,7 +51,7 @@ class ProjectController extends Controller
       }
     }
 
-    // This is a little risky, but I know that only routes for stacks, tags,
+    // This is a little risky, but I know that only routes for stacks, tags, users
     // and milestones point here so I'm not too concerned about someone
     // throwing some bogus segment here that gets calleda against
     // $project-> further down.
@@ -61,6 +61,8 @@ class ProjectController extends Controller
       ->with('q', $request->q)
       ->with('project', $project)
       ->with('stacks', $project->{$method})
+      ->with('method', $method)
+      ->with('searchUri', '/'.$request->path())
     ;
   }
 

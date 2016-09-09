@@ -159,6 +159,8 @@ $spacingMultipliers: (
 }
 
 .stacks {
+  margin-top: 60px;
+
   @include media('>700px') {
     white-space: nowrap;
   }
@@ -170,7 +172,7 @@ $spacingMultipliers: (
   vertical-align: top;
 
   @include media('>700px') {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 130px);
     width: 300px;
     margin: 0 20px 0 0;
   }
@@ -218,6 +220,11 @@ $spacingMultipliers: (
   &__description {
     font-size: 14px;
     color: #666;
+  }
+
+  .short .card__title,
+  .short .card__description {
+    display: inline;
   }
 
   &:hover, &:focus {
@@ -271,7 +278,7 @@ $spacingMultipliers: (
   padding-bottom: 10px;
 
   @include media('>700px') {
-    max-height: calc(100vh - 140px);
+    max-height: calc(100vh - 170px);
     overflow: auto;
   }
 }
@@ -447,17 +454,17 @@ $spacingMultipliers: (
   padding-right: 10px;
 }
 
+.alpha {
+  font-weight: 500;
+  font-size: 24px;
+}
+
 .card-detail {
   background: #fff;
 
   @include media('>900px') {
     padding-left: 40px;
     padding-right: 40px;
-  }
-
-  &__title {
-    font-weight: 500;
-    font-size: 24px;
   }
 
   &__sub-head {
@@ -743,6 +750,27 @@ $spacingMultipliers: (
 }
 
 .filter {
-  margin-left: 10px;
-  margin-right: 10px;
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  right: 20px;
+
+  @include media('>700px') {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &.active {
+      color: #444;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  }
 }

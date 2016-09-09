@@ -24,12 +24,17 @@ class Tag extends Model
 
   public function getUriAttribute()
   {
-    return '/projects/'.$this->project->id.'?tag:'.$this->name;
+    return '/tags/'.$this->id;
   }
+
+    public function getSearchKey()
+    {
+      return 'tag_id';
+    }
 
   public function cards()
   {
-    return $this->belongsToMany(Card::class);
+    return $this->belongsToMany(Card::class)->orderBy('order', 'asc');
   }
 
   public function search($q)

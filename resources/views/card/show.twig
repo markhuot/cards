@@ -5,7 +5,7 @@
   <div class="column">
     <div class="card-detail box-shadow" box="2" spacing="4">
       <div spacing>
-        <h1 class="card-detail__title">
+        <h1 class="alpha">
           <span>{{ card.title }}</span>
         </h1>
         <div class="card-detail__description longform" data-id="{{ card.id }}">
@@ -16,7 +16,7 @@
         <ul spacing="3">
           {% for comment in card.comments %}
             <li class="comment-detail" id="comment{{ comment.id }}" spacing data-id="{{ comment.id }}">
-              <div spacing="0.25">
+              <div spacing=".25">
                 <div class="byline">{{ comment.user.name }}</div>
                 <div class="meta">
                   Posted <strong><a href="#comment{{ comment.id }}">{{ comment.created_at.diffForHumans }}</a></strong>
@@ -67,7 +67,7 @@
               <input type="checkbox" id="show-card-edit" class="show-card-edit visually-hidden">
               <p class="card-prompt"><label for="show-card-edit" class="text-button">Edit card details&hellip;</label></p>
               <div class="card-edit" spacing>
-                <div spacing="0.5">
+                <div spacing=".5">
                   <p><label class="label">Stack</label></p>
                   <ul class="stack-chooser clearfix">
                     {% for stack in card.stack.project.stacks %}
@@ -75,7 +75,7 @@
                     {% endfor %}
                   </ul>
                 </div>
-                <div spacing="0.5">
+                <div spacing=".5">
                   <p><label class="label">Assignee</label></p>
                   <ul>
                     {% for user in card.stack.project.users %}
@@ -83,7 +83,7 @@
                     {% endfor %}
                   </ul>
                 </div>
-                <div spacing="0.5">
+                <div spacing=".5">
                   <p><label for="tags" class="label">Tags</label></p>
                   <p><input type="text" name="card[tags]" value="{{ card.tag_string }}" box="0.5" class="user-input clear">
                 </div>
@@ -99,7 +99,16 @@
                 <button class="button plain" class="comment-form__submit" name="card[complete]" value="1">Complete card</button>
               {% endif %}
             </p>
-            <p class="meta">A notification will be sent to {{ card.followers.pluck('user.name').implode(', ') }}</p>
+            <p class="meta">
+              {% if card.followers.count > 0 %}
+                A notification will be sent to {{ card.followers.pluck('user.name').implode(', ') }}.
+              {% endif %}
+              {% if card.followers.pluck('user.id').contains(me.id) %}
+                <a href="{{ card.uri }}/unfollow">Unfollow this card</a>
+              {% else %}
+                <a href="{{ card.uri }}/follow">Follow this card for instant notifications</a>
+              {% endif %}
+            </p>
           </div>
         </div>
       </form>

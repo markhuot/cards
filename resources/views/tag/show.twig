@@ -1,0 +1,23 @@
+{% extends "single-stack" %}
+
+{% set showBackButton = true %}
+{% set backButtonUrl = project.uri ~ '/tags' %}
+{% set stack = tag %}
+{% set stackAttributes = '{"tag_id": ' ~ tag.id ~ '}' %}
+
+{% block sidebar %}
+<div box="2">
+  <form action="/tags/{{ tag.id }}" method="post">
+    {{ csrf_field() }}
+    <input type="hidden" name="_method" value="put">
+    <div class="create-form" box="2" spacing="2">
+      <h2 class="card-detail__sub-head">Settings</h2>
+      <div spacing=".25">
+        <p><label class="label" for="tag-color">Tag color</label></p>
+        <p><input id="tag-color" class="user-input" box type="text" name="tag[color]" value="{{ tag.color }}" placeholder="ff33cc"></p>
+      </div>
+      <button class="button">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

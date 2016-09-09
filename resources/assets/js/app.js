@@ -54,6 +54,7 @@ var dragging = false;
 var proxy = false;
 var cards = [];
 var stacks = [];
+var sourceStack = false;
 var targetStack = false;
 var targetIndex = false;
 
@@ -74,6 +75,7 @@ document.body.addEventListener('mousedown', function (event) {
     proxy.innerHTML = '#<strong>'+card.dataset.localId+'</strong>';
     document.body.appendChild(proxy);
 
+    sourceStack = closest(card, 'card-stack');
     cards = document.querySelectorAll('.card');
     stacks = document.querySelectorAll('.stack');
   }, 100));
@@ -100,10 +102,12 @@ function dragEnd (event) {
       targetStack.appendChild(dragging.parentNode);
     }
 
-    var stack = closest(targetStack, 'stack');
-    data.card.stack_id = stack.dataset.stackId;
+    if (targetStack.dataset.stackAttributes) {
+      data.card.from = JSON.parse(sourceStack.dataset.stackAttributes);
+      data.card.to = JSON.parse(targetStack.dataset.stackAttributes);
+    }
 
-    var stackCards = stack.querySelectorAll('.card');
+    var stackCards = targetStack.querySelectorAll('.card');
     for (var i = 0, len = stackCards.length; i < len; i++) {
       var stackCard = stackCards[i];
       var index = indexOfNode(stackCard.parentNode, true);
@@ -145,7 +149,6 @@ document.body.addEventListener('mousemove', function (event) {
         if (mouseY > card.offsetTop - cardStack.scrollTop + (card.offsetHeight / 2)) {
           index += 1;
         }
-        console.debug(card.dataset.cardId, index);
         insertPlaceholder(cardStack, index);
         foundPosition = true;
         break;

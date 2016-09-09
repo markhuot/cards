@@ -22,4 +22,12 @@ class StackController extends Controller
     return redirect($project->uri);
   }
 
+  public function show(Stack $stack)
+  {
+    return view('stack.show')
+      ->with('stack', $stack)
+      ->with('project', $stack->project)
+    ;
+  }
+
 }
