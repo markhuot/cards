@@ -6,6 +6,7 @@ use App\Project;
 use App\Stack;
 use App\Card;
 use App\Tag;
+use App\User;
 
 class CardController extends Controller
 {
@@ -92,6 +93,11 @@ class CardController extends Controller
       $card->touch();
       $card->load('assignees');
       $card->saveToSearchIndex();
+
+      User::find($sourceAssigneeId)->touch();
+      $card->assignees->each(function ($user) {
+        $user->touch();
+      });
     }
 
     foreach ($request->input('stack') as $req) {

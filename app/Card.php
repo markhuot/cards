@@ -120,19 +120,34 @@ class Card extends Model
     return $this->tags->pluck('name')->implode(' ');
   }
 
-  public function setTagStringAttribute($value)
+  public function setTagsByString(string $tagString)
   {
     $projectId = $this->stack->project->getKey();
 
-    $tagIds = collect(array_filter(preg_split('/\s+/', $value)))->map(function ($tagName) use ($projectId) {
+    // collect the tags, creating new ones where necessary
+    $tags = collect(array_filter(preg_split('/\s+/', $tagString)))->map(function ($tagName) use ($projectId) {
       return Tag::firstOrCreate([
         'name' => $tagName,
         'project_id' => $projectId
-      ])->getKey();
-    })->all();
+      ]);
+    });
 
-    $this->auditSyncing('tags', $tagIds);
-    $this->tags()->sync($tagIds);
+    // keep an audit log of what's changing
+    $this->auditSyncing('tags', $tags->pluck('id')->all());
+
+    // touch each of the tags that is changing
+    $attaching = $tags->diff($this->tags);
+    $detaching = $this->tags->diff($tags);
+    $attaching->merge($detaching)->each(function ($tag) {
+      $tag->touch();
+    });
+    
+    // save the changes to our pivot table
+    $this->tags()->sync($tags->pluck('id')->all());
+
+    // refresh our relationship and save it to the search index
+    // @TODO probably don't need to `load` here since we have all the tags above. I wonder
+    // if, instead, we can just assign `$this->tags = $tags`
     $this->load('tags');
     $this->saveToSearchIndex();
   }
@@ -157,10 +172,25 @@ class Card extends Model
     $this->attributes['stack_id'] = $stack->id;
   }
 
-  public function setAssigneeIdAttribute(array $userIds)
+  public function setAssigneesById(array $assigneeIds)
   {
-    $this->auditSyncing('assignees', $userIds);
-    $this->assignees()->sync($userIds);
+    // save an audit log of the change
+    $this->auditSyncing('assignees', $assigneeIds);
+
+    // grab the desired list of user objects
+    $users = User::find($assigneeIds);
+
+    // touch each of the users that is changing
+    $attaching = $users->diff($this->assignees);
+    $detaching = $this->assignees->diff($users);
+    $attaching->merge($detaching)->each(function ($user) {
+      $user->touch();
+    });
+
+    // store the assignees
+    $this->assignees()->sync($assigneeIds);
+
+    // load the relationship and save it to the search index
     $this->load('assignees');
     $this->saveToSearchIndex();
   }

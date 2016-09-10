@@ -15,10 +15,11 @@ class CommentController extends Controller
   public function store(StoreCardComment $request, Card $card)
   {
     $card->complete = $request->input('card.complete');
-    $card->assignee_id = $request->input('card.assignee_id', []);
     $card->stack_id = $request->input('card.stack_id');
-    $card->tag_string = $request->input('card.tags');
     $card->save();
+
+    $card->setTagsByString($request->input('card.tags'));
+    $card->setAssigneesById($request->input('card.assignee_id', []));
 
     $card->load('stack');
     $card->stack->touch();

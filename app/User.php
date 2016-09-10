@@ -132,6 +132,11 @@ class User extends Authenticatable
       return 'assignee_id';
     }
 
+    public function getCacheKeyAttribute()
+    {
+      return 'user-'.$this->id.'-'.$this->updated_at->timestamp;
+    }
+
     public function search($q)
     {
     if (!$q) {
