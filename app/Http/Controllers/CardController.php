@@ -5,6 +5,7 @@ use App\Http\Requests;
 use App\Project;
 use App\Stack;
 use App\Card;
+use App\Tag;
 
 class CardController extends Controller
 {
@@ -74,6 +75,9 @@ class CardController extends Controller
       $card->touch();
       $card->load('tags');
       $card->saveToSearchIndex();
+
+      Tag::find($sourceTagId)->touch();
+      Tag::find($targetTagId)->touch();
     }
 
     $targetAssigneeId = $request->input('card.to.assignee_id');

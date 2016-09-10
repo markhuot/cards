@@ -18,6 +18,11 @@ class Tag extends Model
     return $this->name;
   }
 
+  public function getCacheKeyAttribute()
+  {
+    return 'tag-'.$this->id.'-'.$this->updated_at->timestamp;
+  }
+
   public function project()
   {
     return $this->belongsTo(Project::class);

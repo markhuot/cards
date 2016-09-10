@@ -100,6 +100,16 @@ class DatabaseSeeder extends Seeder
     $card = new Card;
     $card->stack_id = $backlog->getKey();
     $card->user_id = $user->getKey();
+    $card->title = 'Dynamic dates';
+    $card->description = "Now that caching is implemented all dates need to use real times and convert to timesince with Javascript";
+    $card->order = 0;
+    $card->save();
+    $user->follow($card);
+    $card->tag_string = 'javascript';
+
+    $card = new Card;
+    $card->stack_id = $backlog->getKey();
+    $card->user_id = $user->getKey();
     $card->title = 'Javascript notifications';
     $card->description = "This could be most helpful to move and create new cards on other devices without reloading.";
     $card->order = 0;
