@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 0;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'ux';
+    $card->setTagsByString('ux');
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -95,7 +95,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 0;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'ui';
+    $card->setTagsByString('ui');
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -105,7 +105,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 0;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'javascript';
+    $card->setTagsByString('javascript');
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -115,7 +115,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 0;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'javascript';
+    $card->setTagsByString('javascript');
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -125,7 +125,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 0;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'ui';
+    $card->setTagsByString('ui');
 
     $comment = new Comment;
     $comment->source_type = get_class($card);
@@ -142,7 +142,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'copy ui';
+    $card->setTagsByString('copy ui');
 
     $card = new Card;
     $card->stack_id = $complete->getKey();
@@ -152,7 +152,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'javascript ui';
+    $card->setTagsByString('javascript ui');
 
     $card = new Card;
     $card->stack_id = $inProgress->getKey();
@@ -162,7 +162,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'ux function';
+    $card->setTagsByString('ux function');
 
     $card->assignees()->sync([$user->getKey()]);
 
@@ -209,7 +209,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'ux';
+    $card->setTagsByString('ux');
 
     $card = new Card;
     $card->stack_id = $releasePlanning->getKey();
@@ -219,7 +219,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'wishlist';
+    $card->setTagsByString('wishlist');
 
     $card = new Card;
     $card->stack_id = $complete->getKey();
@@ -229,7 +229,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'javascript';
+    $card->setTagsByString('javascript');
 
     $card = new Card;
     $card->stack_id = $backlog->getKey();
@@ -239,7 +239,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'ux';
+    $card->setTagsByString('ux');
 
     $card = new Card;
     $card->stack_id = $inProgress->getKey();
@@ -249,7 +249,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'ux';
+    $card->setTagsByString('ux');
 
     $card = new Card;
     $card->stack_id = $complete->getKey();
@@ -259,7 +259,7 @@ class DatabaseSeeder extends Seeder
     $card->order = 1;
     $card->save();
     $user->follow($card);
-    $card->tag_string = 'javascript ui';
+    $card->setTagsByString('javascript ui');
 
     $tag = Tag::where('name', '=', 'javascript')->first();
     $tag->color = 'ffcc3f';
