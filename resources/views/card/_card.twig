@@ -1,4 +1,5 @@
 <a class="card {{ card.hot ? 'hot' }} {{ card.complete ? 'complete' }} box-shadow" box href="{{ card.uri }}" data-card-id="{{ card.id }}" data-local-id="{{ card.local_id }}">
+  {% cache card.cacheKey %}
   <div spacing>
     {% if useShortStyle|default(false) %}<div class="short">{% endif %}
       <p class="card__title">{{ card.title }}</p>
@@ -26,4 +27,5 @@
   {% if card.countAllTasks > 0 %}
     <p class="progress"><span class="progress__bar" style="width: {{ card.percentAllTasksComplete*100 }}%">{{ card.percentAllTasksComplete }}</span></p>
   {% endif %}
+  {% endcache %}
 </a>

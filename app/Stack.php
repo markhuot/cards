@@ -82,6 +82,11 @@ class Stack extends Model
     return $this->cards->count();
   }
 
+  public function getCacheKeyAttribute()
+  {
+    return 'stack-'.$this->id.'-'.$this->updated_at->timestamp;
+  }
+
   public function size()
   {
     $max = $this->project->stacks->pluck('cards_count')->max();

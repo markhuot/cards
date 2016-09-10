@@ -1,7 +1,5 @@
 {% extends "app" %}
 
-{% set firstVisible = true %}
-
 {% block content %}
 <div class="page">
   <div class="filter">
@@ -14,24 +12,22 @@
   </div>
   <div class="stacks" spacing="4">
     {% for stack in stacks %}
-      {% set cards = stack.search(q) %}
-      {% set isFirstVisible = cards.count > 0 and firstVisible == true %}
-      {% if isFirstVisible %}
-        {% set firstVisible = false %}
-      {% endif %}
-      <div class="stack {{ cards.count == 0 ? 'empty' }} {{ isFirstVisible ? 'first-visible' }}" spacing="2">
-        <h1 class="stack__header">
-          <a href="{{ stack.uri }}">{{ stack.name }} <span class="meta">({{ cards.count }})</span></a>
-          <small class="meta"><a href="{{ stack.uri }}/cards/create">Add card</a></small>
-        </h1>
-        <ul class="card-stack" spacing data-stack-attributes='{"{{ stack.getSearchKey() }}": {{ stack.id }}}'>
-          {% for card in cards %}
-            <li>
-              {% include "card/_card" with {"card": card} only %}
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
+      {% cache stack.cacheKey %}
+        {% set cards = stack.search(q) %}
+        <div class="stack {{ cards.count == 0 ? 'empty' }}" spacing="2">
+          <h1 class="stack__header">
+            <a href="{{ stack.uri }}">{{ stack.name }} <span class="meta">({{ cards.count }})</span></a>
+            <small class="meta"><a href="{{ stack.uri }}/cards/create">Add card</a></small>
+          </h1>
+          <ul class="card-stack" spacing data-stack-attributes='{"{{ stack.getSearchKey() }}": {{ stack.id }}}'>
+            {% for card in cards %}
+              <li>
+                {% include "card/_card" with {"card": card} only %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endcache %}
     {% endfor %}
     <form class="stack" action="/projects/{{ project.id }}/stacks" method="post">
       {{ csrf_field() }}

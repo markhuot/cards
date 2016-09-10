@@ -61,6 +61,8 @@ class User extends Authenticatable
       ])->firstOrFail();
       $follower->delete();
 
+      $source->touch();
+
       return $this;
     }
 
@@ -71,6 +73,8 @@ class User extends Authenticatable
         'source_id' => $source->id,
         'user_id' => $this->id,
       ]);
+
+      $source->touch();
 
       return $this;
     }

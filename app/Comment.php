@@ -39,6 +39,14 @@ class Comment extends Model
   }
 
   /**
+   * A unique key, generated each time the comment updates
+   */
+  public function getCacheKeyAttribute()
+  {
+    return 'comment-'.$this->id.'-'.$this->updated_at->timestamp;
+  }
+
+  /**
    * Set the user_id by an object, instead of forcing the controller
    * to interact with the raw field names.
    *

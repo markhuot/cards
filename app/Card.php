@@ -90,6 +90,11 @@ class Card extends Model
     return $this->title;
   }
 
+  public function getCacheKeyAttribute()
+  {
+    return 'card-'.$this->id.'-'.$this->updated_at->timestamp;
+  }
+
   public function stack()
   {
     return $this->belongsTo(Stack::class);

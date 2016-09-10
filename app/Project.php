@@ -17,6 +17,14 @@ class Project extends Model
     return '/projects/' . $this->getKey();
   }
 
+  /**
+   * A unique key, generated each time the comment updates
+   */
+  public function getCacheKeyAttribute()
+  {
+    return 'project-'.$this->id.'-'.$this->updated_at->timestamp;
+  }
+
   public function stacks()
   {
     return $this->hasMany(Stack::class);

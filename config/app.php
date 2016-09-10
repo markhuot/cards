@@ -184,7 +184,7 @@ return [
         // Must come after TwigBridge because it alters the environment
         App\Providers\ViewServiceProvider::class,
 
-        // Barryvdh\Debugbar\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 

@@ -30,4 +30,6 @@ return [
 
     'compiled' => realpath(storage_path('framework/views')),
 
+    'debug_cache' => env('APP_DEBUG', false),
+
 ];

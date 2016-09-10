@@ -51,9 +51,15 @@ class CardController extends Controller
   public function move(Request $request, Card $card)
   {
     if ($stackId = $request->input('card.to.stack_id')) {
+      // touch the existing stack, to notate the removal
+      $card->stack->touch();
+
+      // Update the stack
       $card->stack_id = $request->input('card.to.stack_id');
-      $card->timestamps = false;
       $card->save();
+
+      // load the new stack, so we have a proper reference
+      $card->load('stack');
     }
 
     $targetTagId = $request->input('card.to.tag_id');
@@ -65,6 +71,7 @@ class CardController extends Controller
       if (!$card->tags->contains($targetTagId)) {
         $card->tags()->attach($targetTagId);
       }
+      $card->touch();
       $card->load('tags');
       $card->saveToSearchIndex();
     }
@@ -78,6 +85,7 @@ class CardController extends Controller
       if (!$card->assignees->contains($targetAssigneeId)) {
         $card->assignees()->attach($targetAssigneeId);
       }
+      $card->touch();
       $card->load('assignees');
       $card->saveToSearchIndex();
     }
@@ -85,8 +93,11 @@ class CardController extends Controller
     foreach ($request->input('stack') as $req) {
       $card = Card::find($req['card_id']);
       $card->order = $req['order'];
-      $card->save(['touch' => false]);
+      $card->timestamps = false;
+      $card->save();
     }
+
+    $card->stack->touch();
 
     return ['ok'];
   }

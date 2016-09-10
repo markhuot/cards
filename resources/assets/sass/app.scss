@@ -193,16 +193,6 @@ $spacingMultipliers: (
       margin-right: 10px;
     }
   }
-
-  @include media('<700px') {
-    &.empty {
-      display: none;
-    }
-
-    &.first-visible:not(:first-child) {
-      margin-top: 0;
-    }
-  }
 }
 
 .create-form {

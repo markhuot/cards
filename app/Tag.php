@@ -10,6 +10,7 @@ class Tag extends Model
 
   protected $fillable = [
     'name',
+    'project_id',
   ];
 
   public function getLabelAttribute()

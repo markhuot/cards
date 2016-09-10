@@ -20,6 +20,9 @@ class CommentController extends Controller
     $card->tag_string = $request->input('card.tags');
     $card->save();
 
+    $card->load('stack');
+    $card->stack->touch();
+
     $comment = new Comment($request->input('comment'));
     $comment->user = $request->user();
     $comment->meta = $card->getAuditHistory();

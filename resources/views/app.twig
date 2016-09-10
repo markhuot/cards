@@ -18,12 +18,14 @@
           <button class="button visually-hidden">Go</button>
         </form>
       </h1>
-      <ul class="user-stack" box="2">
-        {% for user in project.users %}
-          <li><a href="#" class="user-initials" title="{{ user.name }}" style="background: {{ user.color }};">{{ user.initials }}</a></li>
-        {% endfor %}
-        <li><a class="user-initials empty" href="/projects/{{ project.id }}/invite">+</a></li>
-      </ul>
+      {% cache project.cacheKey ~ '-user-stack' %}
+        <ul class="user-stack" box="2">
+          {% for user in project.users %}
+            <li><a href="#" class="user-initials" title="{{ user.name }}" style="background: {{ user.color }};">{{ user.initials }}</a></li>
+          {% endfor %}
+          <li><a class="user-initials empty" href="/projects/{{ project.id }}/invite">+</a></li>
+        </ul>
+      {% endcache %}
     </div>
   {% else %}
     <div class="project-header box-shadow" box="2">
