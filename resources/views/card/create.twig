@@ -1,28 +1,33 @@
 {% extends "app" %}
 
 {% block content %}
-<div class="card-detail box-shadow" box="2" spacing="2">
-  <form action="{{ stack.uri }}/cards" method="post" enctype="multipart/form-data">
-    {{ csrf_field() }}
-    <div spacing="2">
-      <p><input type="text" name="card[title]" class="card-detail__title" placeholder="Title..."></p>
-      <div class="user-input">
-        <textarea name="card[description]" class="invisible-textarea" box placeholder="Description..."></textarea>
-        <p box><input type="file" name="card[attachment][]"></p>
+<div class="layout-split-2--detail page-alt">
+  <div class="column">
+    <div class="card-detail box-shadow" box="2" spacing="4">
+      <div spacing>
+        <h1 class="alpha">Create a new card</h1>
+        <div class="longform">
+          <p>Cards can be used to track just about anything. Use them to track a one task or many. Add attachments for additional context.</p>
+        </div>
       </div>
-      <div spacing=".25">
-        <p><label class="label">Assignee</label></p>
-        <ul>
-          {% for user in project.users %}
-            <li class="inline-pills checkbox-pill">
-              <input type="checkbox" name="card[assignee_id][]" id="assigned-{{ user.id }}" value="{{ user.id }}">
-              <label for="assigned-{{ user.id }}">{{ user.name }}</label>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-      <button class="button">Add card</button>
+      <form action="/cards" method="post" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        <div spacing="2">
+          <p><input type="text" name="card[title]" class="user-input" box placeholder="Name the card..."></p>
+          <div class="user-input">
+            <textarea name="card[description]" class="invisible-textarea" box placeholder="Describe the card..."></textarea>
+            <p class="file-input" box><input type="file" name="card[attachment][]" multiple></p>
+          </div>
+          <div spacing>
+            {% include "card/_settings.twig" %}
+          </div>
+          <button class="button">Add card</button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
+  <div class="column">
+  
+  </div>
 </div>
 {% endblock %}

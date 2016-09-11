@@ -26,6 +26,8 @@ class CreateTagsTable extends Migration
       $table->integer('project_id')->unsigned();
       $table->string('name');
       $table->string('color')->nullable();
+      $table->softDeletes();
+      $table->timestamp('cards_updated_at')->useCurrent();
       $table->timestamps();
     });
 

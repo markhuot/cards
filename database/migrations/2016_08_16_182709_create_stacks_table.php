@@ -19,6 +19,7 @@ class CreateStacksTable extends Migration
       $table->string('name');
       $table->string('color');
       $table->integer('order')->unsigned();
+      $table->timestamp('cards_updated_at')->useCurrent();
       $table->timestamps();
     });
   }

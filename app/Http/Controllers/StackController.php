@@ -15,7 +15,8 @@ class StackController extends Controller
 
   public function store(Project $project, Request $request)
   {
-    $stack = new Stack($request->input('stack'));
+    $stack = new Stack();
+    $stack->name = $request->input('label');
     $stack->order = $project->stacks()->max('order') + 1;
     $project->stacks()->save($stack);
 
@@ -28,6 +29,23 @@ class StackController extends Controller
       ->with('stack', $stack)
       ->with('project', $stack->project)
     ;
+  }
+
+  public function delete(Stack $stack)
+  {
+    $stackId = $stack->id;
+
+    $stack->cards->each(function($card) use ($stackId) {
+      $newStack = $card->stack->project->stacks->where('id', '!=', $stackId)->first();
+      $newStack->touch();
+
+      $card->stack = $newStack;
+      $card->save();
+    });
+
+    $stack->delete();
+
+    return redirect($stack->project->uri);
   }
 
 }

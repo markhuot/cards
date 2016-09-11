@@ -3,24 +3,28 @@
 {% set showBackButton = true %}
 
 {% block content %}
-<div class="card-detail box-shadow" box="2" spacing="4">
-  <div spacing>
-    <h1 class="card-detail__title">
-      <span>Invite a friend</span>
-    </h1>
-    <div class="longform">
-      <p>Enter an email address to invite a user to this project. Users invited to the project will have full access to create and edit cards.</p>
+<div class="layout-split-2--detail page-alt">
+  <div class="column">
+    <div class="card-detail box-shadow" box="2" spacing="4">
+      <div spacing>
+        <h1 class="alpha">Invite a friend</h1>
+        <div class="longform">
+          <p>Enter an email address to invite a user to this project. Users invited to the project will have full access to create and edit cards.</p>
+        </div>
+      </div>
+      <form class="create-invite" action="/projects/{{ project.id }}/invite" method="post">
+        {{ csrf_field() }}
+        <div spacing="2">
+          <div spacing=".25">
+            <p><label class="label" for="invite-email">Email</label></p>
+            <p><input class="user-input" box id="invite-email" type="text" name="invite[email]" placeholder="liz@lizlemon.com" box /></p>
+          </div>
+          <p><button class="button">Go</button></p>
+        </div>
+      </form>
     </div>
   </div>
-  <form class="create-invite" action="/projects/{{ project.id }}/invite" method="post">
-    {{ csrf_field() }}
-    <div spacing="2">
-      <div spacing=".25">
-        <p><label class="label" for="invite-email">Email</label></p>
-        <p><input class="user-input" box id="invite-email" type="text" name="invite[email]" placeholder="liz@lizlemon.com" box /></p>
-      </div>
-      <p><button class="button">Go</button></p>
-    </div>
-  </form>
+  <div class="column">
+  </div>
 </div>
 {% endblock %}

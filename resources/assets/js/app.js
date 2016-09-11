@@ -36,6 +36,19 @@ function serialize (obj, prefix) {
   return str.join('&');
 }
 
+function offset (el) {
+  var top = el.offsetTop;
+  var left = el.offsetLeft;
+
+  while (el.parentNode) {
+    top -= el.scrollTop;
+    left -= el.scrollLeft;
+    el = el.parentNode;
+  }
+
+  return {"top": top, "left": left};
+}
+
 /** send post **/
 function xhrPost(uri, data) {
   var r = new XMLHttpRequest();
@@ -143,10 +156,13 @@ document.body.addEventListener('mousemove', function (event) {
       var card = cards[i];
       var cardStack = closest(card, 'card-stack');
 
-      if (mouseX > card.offsetLeft && mouseX < card.offsetLeft + card.offsetWidth &&
-          mouseY > card.offsetTop - cardStack.scrollTop && mouseY < card.offsetTop - cardStack.scrollTop + card.offsetHeight) {
+      var cardTop = offset(card).top;
+      var cardLeft = offset(card).left;
+
+      if (mouseX > cardLeft && mouseX < cardLeft + card.offsetWidth &&
+          mouseY > cardTop && mouseY < cardTop + card.offsetHeight) {
         var index = indexOfNode(card.parentNode);
-        if (mouseY > card.offsetTop - cardStack.scrollTop + (card.offsetHeight / 2)) {
+        if (mouseY > cardTop + (card.offsetHeight / 2)) {
           index += 1;
         }
         insertPlaceholder(cardStack, index);
@@ -158,9 +174,11 @@ document.body.addEventListener('mousemove', function (event) {
     if (!foundPosition) {
       for (i = 0, len = stacks.length; i < len; i++) {
         var stack = stacks[i];
+        var stackTop = offset(stack).top;
+        var stackLeft = offset(stack).left;
         var cardStack = stack.querySelectorAll('.card-stack')[0];
-        if (mouseX > stack.offsetLeft && mouseX < stack.offsetLeft + stack.offsetWidth &&
-            mouseY > stack.offsetTop && mouseY < stack.offsetTop + stack.offsetHeight &&
+        if (mouseX > stackLeft && mouseX < stackLeft + stack.offsetWidth &&
+            mouseY > stackTop && mouseY < stackTop + stack.offsetHeight &&
             mouseY > cardStack.offsetTop + cardStack.offsetHeight) {
           insertPlaceholder(cardStack, cardStack.querySelectorAll('.card').length);
           foundPosition = true;
@@ -175,6 +193,13 @@ function insertPlaceholder (stack, index) {
   targetStack = stack;
   targetIndex = index;
 
+  var stackLeft = stack.offsetLeft;
+  var tmp = stack;
+  while (tmp.parentNode) {
+    stackLeft -= tmp.scrollLeft;
+    tmp = tmp.parentNode;
+  }
+
   var placeholder = document.getElementById('drag-placeholder');
   if (!placeholder) {
     placeholder = document.createElement('div');
@@ -184,17 +209,17 @@ function insertPlaceholder (stack, index) {
 
   if (stack.children[index]) {
     placeholder.style.top = stack.children[index].offsetTop - stack.scrollTop - 5 /* 5px = .5 of the margin-top */;
-    placeholder.style.left = stack.children[index].offsetLeft;
+    placeholder.style.left = stackLeft;
     placeholder.style.width = stack.children[index].offsetWidth;
   }
   else if (index > 0 && index >= stack.children.length) {
     placeholder.style.top = stack.children[stack.children.length-1].offsetTop - stack.scrollTop + stack.children[stack.children.length-1].offsetHeight + 5 /* 5px = .5 of the margin-top */;
-    placeholder.style.left = stack.children[stack.children.length-1].offsetLeft;
+    placeholder.style.left = stackLeft;
     placeholder.style.width = stack.children[stack.children.length-1].offsetWidth;
   }
   else if (index == 0) {
     placeholder.style.top = stack.offsetTop + stack.offsetHeight;
-    placeholder.style.left = stack.offsetLeft;
+    placeholder.style.left = stackLeft;
     placeholder.style.width = stack.offsetWidth;
   }
 }

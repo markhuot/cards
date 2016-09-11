@@ -27,7 +27,7 @@ class Project extends Model
 
   public function stacks()
   {
-    return $this->hasMany(Stack::class);
+    return $this->hasMany(Stack::class)->orderBy('order', 'asc');
   }
 
   public function users()

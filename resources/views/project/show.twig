@@ -12,7 +12,7 @@
   </div>
   <div class="stacks" spacing="4">
     {% for stack in stacks %}
-      {% cache stack.cacheKey %}
+      {% cache [stack.cacheKey, 'stack'] %}
         {% set cards = stack.search(q) %}
         <div class="stack {{ cards.count == 0 ? 'empty' }}" spacing="2">
           <h1 class="stack__header">
@@ -29,14 +29,14 @@
         </div>
       {% endcache %}
     {% endfor %}
-    <form class="stack" action="/projects/{{ project.id }}/stacks" method="post">
+    <form class="stack" action="{{ project.uri }}/{{ method }}" method="post">
       {{ csrf_field() }}
       <div spacing="2">
         <h1 class="stack__header">
           <label for="new-stack-name">Add a new stack&hellip;</label>
         </h1>
         <div spacing box class="create-form">
-          <p><input id="new-stack-name" class="create-form__input user-input" type="text" name="stack[name]" placeholder="Stack name..." box /></p>
+          <p><input id="new-stack-name" class="create-form__input user-input" type="text" name="label" placeholder="Stack name..." box /></p>
           <p><button class="button">Save Stack</button></p>
         </div>
       </div>

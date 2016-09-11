@@ -16,28 +16,59 @@ class CardController extends Controller
     $this->middleware('auth');
   }
 
-  public function create(Project $project, Stack $stack)
+  public function create(Request $request, $sourceId)
   {
+    $card = new Card;
+
+    switch($request->segment(1)) {
+      case 'stacks':
+        $source = Stack::find($sourceId);
+        $card->stack_id = $sourceId;
+        $backButtonUrl = $source->project->uri;
+        break;
+      case 'tags':
+        $source = Tag::find($sourceId);
+        $card->stack_id = $source->project->stacks->first()->getKey();
+        $card->tags->push($source);
+        $backButtonUrl = $source->project->uri.'/tags';
+        break;
+      case 'users':
+        $source = User::find($sourceId);
+        $card->stack_id = 1;
+        $backButtonUrl = '/tags';
+        break;
+    }
+
     return view('card.create')
-      ->with('project', $project)
-      ->with('stack', $stack)
+      ->with('source', $source)
+      ->with('project', $source->project)
+      ->with('card', $card)
+      ->with('showBackButton', true)
+      ->with('backButtonUrl', $backButtonUrl)
     ;
   }
 
-  public function store(Request $request, Project $project, Stack $stack)
+  public function store(Request $request)
   {
     $card = new Card($request->input('card'));
-    $card->stack = $stack;
+    $card->stack_id = $request->input('card.stack_id');
     $card->user = $request->user();
-    $card->order = $stack->cards()->max('order') + 1;
+    $card->order = $card->stack->cards()->max('order') + 1;
     $card->save();
 
-    $card->assignee_id = $request->input('card.assignee_id', []);
+    $card->setTagsByString($request->input('card.tags'));
+    $card->setAssigneesById($request->input('card.assignee_id', []));
+
     $card->attachments = $request->file('card.attachment', []);
 
     $request->user()->follow($card);
 
-    return redirect($project->uri);
+    $card->stack->touch();
+    $card->tags->each(function ($tag) {
+      $tag->touch();
+    });
+
+    return redirect($card->uri);
   }
 
   public function show(Request $request, Card $card)
@@ -101,13 +132,19 @@ class CardController extends Controller
     }
 
     foreach ($request->input('stack') as $req) {
-      $card = Card::find($req['card_id']);
-      $card->order = $req['order'];
-      $card->timestamps = false;
-      $card->save();
+      $sibling = Card::find($req['card_id']);
+      $sibling->order = $req['order'];
+      $sibling->timestamps = false;
+      $sibling->save();
     }
 
     $card->stack->touch();
+    $card->tags->each(function($tag) {
+      $tag->touch();
+    });
+    $card->assignees->each(function($assignee) {
+      $assignee->touch();
+    });
 
     return ['ok'];
   }

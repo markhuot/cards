@@ -139,18 +139,18 @@ class Comment extends Model
       switch ($change['key']) {
         case 'assignees':
           $change['label'] = 'Assignees';
-          $change['added'] = User::find($change['added']);
-          $change['removed'] = User::find($change['removed']);
+          $change['added'] = User::withTrashed()->find($change['added']);
+          $change['removed'] = User::withTrashed()->find($change['removed']);
           break;
         case 'stack_id':
           $change['label'] = 'Stack';
-          $change['added'] = [Stack::find($change['added'])];
-          $change['removed'] = [Stack::find($change['removed'])];
+          $change['added'] = [Stack::withTrashed()->find($change['added'])];
+          $change['removed'] = [Stack::withTrashed()->find($change['removed'])];
           break;
         case 'tags':
           $change['label'] = 'Tag';
-          $change['added'] = Tag::find($change['added']);
-          $change['removed'] = Tag::find($change['removed']);
+          $change['added'] = Tag::withTrashed()->find($change['added']);
+          $change['removed'] = Tag::withTrashed()->find($change['removed']);
           break;
       }
     }

@@ -3,3 +3,16 @@
 {% set showBackButton = true %}
 {% set backButtonUrl = project.uri %}
 {% set stackAttributes = '{"stack_id": ' ~ stack.id ~ '}' %}
+
+{% block sidebar %}
+<div box="2">
+  <div class="create-form" box="2" spacing="2">
+    <h2 class="card-detail__sub-head">Settings</h2>
+    <form action="{{ stack.uri }}" method="post">
+      {{ csrf_field() }}
+      <input type="hidden" name="_method" value="delete">
+      <button class="text-button warning">Delete &ldquo;{{ stack.name }}&rdquo;</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

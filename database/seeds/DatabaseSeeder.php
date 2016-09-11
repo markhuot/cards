@@ -118,7 +118,7 @@ class DatabaseSeeder extends Seeder
     $card->setTagsByString('javascript');
 
     $card = new Card;
-    $card->stack_id = $backlog->getKey();
+    $card->stack_id = $inProgress->getKey();
     $card->user_id = $user->getKey();
     $card->title = 'Stack view';
     $card->description = "Clicking a stack header should show just the cards in that stack at full width. This could be a nice way to work through a project backlog.";

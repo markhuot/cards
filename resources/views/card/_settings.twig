@@ -1,0 +1,24 @@
+{% cache [card.stack.project.cacheKey, card.cacheKey, 'comment-form'] %}
+  <div spacing=".5">
+    <p><label class="label">Stack</label></p>
+    <ul class="stack-chooser clearfix">
+      {% for stack in card.stack.project.stacks %}
+        <li class="stack-chooser__item checkbox-pill"><input type="radio" id="stack-{{ stack.id }}" name="card[stack_id]" value="{{ stack.id }}" {{ card.stack.id == stack.id ? 'checked' }}> <label for="stack-{{ stack.id }}">{{ stack.name }}</label></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div spacing=".5">
+    <p><label class="label">Assignee</label></p>
+    <ul>
+      {% for user in card.stack.project.users %}
+        <li class="inline-pills checkbox-pill"><input type="checkbox" id="assignee-{{ user.id }}" name="card[assignee_id][]" value="{{ user.id }}" {{ user.id in card.assignees.pluck('id').toArray() ? 'checked' }}><label for="assignee-{{ user.id }}">{{ user.name }}</label></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endcache %}
+{% cache [card.cacheKey, 'comment-form-tag-string'] %}
+  <div spacing=".5">
+    <p><label for="tags" class="label">Tags</label></p>
+    <p><input type="text" name="card[tags]" value="{{ card.tag_string }}" box="0.5" class="user-input clear">
+  </div>
+{% endcache %}

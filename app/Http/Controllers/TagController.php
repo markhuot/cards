@@ -3,9 +3,19 @@
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Tag;
+use App\Project;
 
 class TagController extends Controller
 {
+
+  public function store(Request $request, Project $project) {
+    $tag = new Tag();
+    $tag->name = $request->input('label');
+    $tag->project_id = $project->id;
+    $tag->save();
+
+    return redirect($project->uri.'/tags');
+  }
 
   public function show(Tag $tag)
   {
@@ -24,7 +34,25 @@ class TagController extends Controller
 
     $tag->save();
 
+    $tag->cards->each(function ($card) {
+      $card->touch();
+    });
+
     return redirect($tag->uri);
+  }
+
+  public function delete(Tag $tag)
+  {
+    $tag->cards->each(function($card) {
+      $card->touch();
+      $card->stack->touch();
+      $card->tags->each(function ($tag) {
+        $tag->touch();
+      });
+    });
+    $tag->delete();
+
+    return redirect($tag->project->uri.'/tags');
   }
 
 }

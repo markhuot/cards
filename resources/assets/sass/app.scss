@@ -75,17 +75,6 @@ $spacingMultipliers: (
   left: -9999px;
 }
 
-.page {
-  margin-top: 30px;
-  margin-left: 10px;
-  margin-right: 10px;
-
-  @include media('>700px') {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-}
-
 .page-alt {
   @include media('>700px') {
     margin-top: 20px;
@@ -104,7 +93,7 @@ $spacingMultipliers: (
 
   background: #fff;
   position: fixed;
-  width: 100%;
+  width: 100vw;
   height: $header-height;
   z-index: 50;
   display: flex;
@@ -160,21 +149,34 @@ $spacingMultipliers: (
 
 .stacks {
   margin-top: 60px;
+  white-space: nowrap;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  padding-left: 10px;
+  padding-right: 10px;
 
   @include media('>700px') {
-    white-space: nowrap;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }
 
 .stack {
   display: inline-block;
-  width: 100%;
   vertical-align: top;
+  height: calc(100vh - 130px);
+  
+  width: calc(100% - 20px);
+  margin: 0 10px 0 0;
+
+  @include media('>400px') {
+    width: calc(100% - 40px);
+    margin: 0 20px 0 0;
+  }
 
   @include media('>700px') {
-    height: calc(100vh - 130px);
     width: 300px;
-    margin: 0 20px 0 0;
   }
 
   &__header {
@@ -266,11 +268,9 @@ $spacingMultipliers: (
 
 .card-stack {
   padding-bottom: 10px;
-
-  @include media('>700px') {
-    max-height: calc(100vh - 170px);
-    overflow: auto;
-  }
+  max-height: calc(100vh - 170px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #drag-placeholder {
@@ -509,8 +509,8 @@ $spacingMultipliers: (
   box-shadow: none;
   background: rgba(255, 248, 232, 0.5);
   border: 1px solid #ccc;
-  font-size: 16px;
   width: 100%;
+  font-size: 16px;
 
   &.clear {
     background: none;
@@ -654,6 +654,10 @@ $spacingMultipliers: (
 }
 
 .text-button {
+  -webkit-appearance: none; 
+  border: none;
+  border-radius: 0;
+  background: none;
   color: $blue;
   font-size: 14px;
   font-weight: 600;
@@ -661,6 +665,10 @@ $spacingMultipliers: (
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &.warning {
+    color: #c25;
   }
 }
 

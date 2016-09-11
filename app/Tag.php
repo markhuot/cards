@@ -4,9 +4,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Card;
 use App\Project;
 use Elasticsearch\Client as Search;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tag extends Model
 {
+  use SoftDeletes;
 
   protected $fillable = [
     'name',

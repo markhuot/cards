@@ -92,6 +92,10 @@ class Card extends Model
 
   public function getCacheKeyAttribute()
   {
+    if (!$this->exists) {
+      return '__new__'.str_random();
+    }
+
     return 'card-'.$this->id.'-'.$this->updated_at->timestamp;
   }
 
@@ -120,12 +124,17 @@ class Card extends Model
     return $this->tags->pluck('name')->implode(' ');
   }
 
-  public function setTagsByString(string $tagString)
+  public function setTagsByString($tagString)
   {
     $projectId = $this->stack->project->getKey();
 
+    // split our tags across quotes and spaces
+    // thanks http://stackoverflow.com/a/366532
+    preg_match_all('/[^\s"\']+|"([^"]*)"|\'([^\']*)\'/', $tagString, $matches);
+
     // collect the tags, creating new ones where necessary
-    $tags = collect(array_filter(preg_split('/\s+/', $tagString)))->map(function ($tagName) use ($projectId) {
+    $tags = collect(array_filter($matches[0]))->map(function ($tagName) use ($projectId) {
+      $tagName = trim($tagName, '\'"');
       return Tag::firstOrCreate([
         'name' => $tagName,
         'project_id' => $projectId
