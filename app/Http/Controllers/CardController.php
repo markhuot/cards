@@ -53,7 +53,7 @@ class CardController extends Controller
     $card = new Card($request->input('card'));
     $card->stack_id = $request->input('card.stack_id');
     $card->user = $request->user();
-    $card->order = $card->stack->cards()->max('order') + 1;
+    $card->order = $card->stack->cards()->groupBy('cards.id')->max('order') + 1;
     $card->save();
 
     $card->setTagsByString($request->input('card.tags'));

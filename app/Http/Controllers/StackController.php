@@ -17,8 +17,7 @@ class StackController extends Controller
   {
     $stack = new Stack();
     $stack->name = $request->input('label');
-    //$stack->order = $project->stacks()->max('order') + 1;
-    $stack->order = 0;
+    $stack->order = $project->stacks()->groupBy('stacks.id')->max('order') + 1;
     $project->stacks()->save($stack);
 
     return redirect($project->uri);
