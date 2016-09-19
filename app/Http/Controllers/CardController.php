@@ -89,6 +89,7 @@ class CardController extends Controller
 
       // Update the stack
       $card->stack_id = $request->input('card.to.stack_id');
+      $card->timestamps = false;
       $card->save();
 
       // load the new stack, so we have a proper reference
