@@ -67,10 +67,10 @@
               <textarea class="invisible-textarea" name="comment[content]" placeholder="Leave a comment..." box></textarea>
               <p class="file-input" box><input class="comment-form__upload" type="file" name="comment[attachment][]" multiple></p>
             </div>
-            <div class="box-shadow" box>
+            <div class="box-shadow card-proxy" box>
               <input type="checkbox" id="show-card-edit" class="show-card-edit visually-hidden">
               <p class="card-prompt"><label for="show-card-edit" class="text-button">Edit card details&hellip;</label></p>
-              <div class="card-edit" spacing>
+              <div class="card-edit" spacing="2">
                 {% include "card/_settings.twig" %}
               </div>
             </div>

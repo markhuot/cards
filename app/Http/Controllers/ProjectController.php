@@ -63,6 +63,8 @@ class ProjectController extends Controller
       ->with('stacks', $project->{$method})
       ->with('method', $method)
       ->with('searchUri', '/'.$request->path())
+      ->with('showBackButton', true)
+      ->with('backButtonUrl', '/projects')
     ;
   }
 

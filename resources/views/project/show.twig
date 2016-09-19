@@ -5,14 +5,14 @@
   <div class="filter">
     <p class="meta">Group by
       <strong><a {{ method == 'stacks' ? 'class="active"' : '' }} href="{{ project.uri }}{{ q ? '?q=' ~ q : '' }}">Stack</a></strong>,
-      <strong><a {{ method == 'tags' ? 'class="active"' : '' }} href="{{ project.uri }}/tags{{ q ? '?q=' ~ q : '' }}">Tags</a></strong>,
-      <strong><a {{ method == 'users' ? 'class="active"' : '' }} href="{{ project.uri }}/users{{ q ? '?q=' ~ q : '' }}">Users</a></strong>, or
-      <strong><a {{ method == 'milestones' ? 'class="active"' : '' }} href="{{ project.uri }}/milestones{{ q ? '?q=' ~ q : '' }}">Milestones</a></strong>
+      <strong><a {{ method == 'tags' ? 'class="active"' : '' }} href="{{ project.uri }}/tags{{ q ? '?q=' ~ q : '' }}">Tags</a></strong>, or
+      <strong><a {{ method == 'users' ? 'class="active"' : '' }} href="{{ project.uri }}/users{{ q ? '?q=' ~ q : '' }}">Users</a></strong>
+      {# <strong><a {{ method == 'milestones' ? 'class="active"' : '' }} href="{{ project.uri }}/milestones{{ q ? '?q=' ~ q : '' }}">Milestones</a></strong> #}
     </p>
   </div>
   <div class="stacks" spacing="4">
     {% for stack in stacks %}
-      {% cache [stack.cacheKey, 'stack'] %}
+      {% cache [stack.cacheKey, 'stack', q] %}
         {% set cards = stack.search(q) %}
         <div class="stack {{ cards.count == 0 ? 'empty' }}" spacing="2">
           <h1 class="stack__header">

@@ -29,7 +29,7 @@
     </div>
   {% else %}
     <div class="project-header box-shadow" box="2">
-      <h2 class="project-header__title">All projects</h1>
+      <h2 class="project-header__title">{{ pageTitle|default('All projects') }}</h1>
     </div>
   {% endif %}
   <div class="project-header__guard">

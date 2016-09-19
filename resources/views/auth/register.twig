@@ -1,0 +1,86 @@
+{% extends "app" %}
+
+{% set pageTitle = "Cards" %}
+
+{% block content %}
+<div class="layout-split-2--detail page-alt">
+    <div class="column">
+        <div class="card-detail box-shadow" box="2" spacing="4">
+            <div class="alpha">Register</div>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}" spacing="2">
+                    {{ csrf_field() }}
+
+                    <div class="form-group{{ errors.has('name') ? ' has-error' : '' }}" spacing=".5">
+                        <p><label for="name" class="label">Name</label></p>
+
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="user-input" box name="name" value="{{ old('name') }}" autofocus>
+
+                            {% if errors.has('name') %}
+                            <span class="help-block">
+                                    <strong>{{ errors.first('name') }}</strong>
+                                </span>
+                            {%  endif  %}
+                        </div>
+                    </div>
+
+                    <div class="form-group{{ errors.has('email') ? ' has-error' : '' }}" spacing=".5">
+                        <p><label for="email" class="label">E-Mail Address</label></p>
+
+                        <div class="col-md-6">
+                            <input id="email" type="email" class="user-input" box name="email" value="{{ old('email') }}">
+
+                            {% if errors.has('email') %}
+                            <span class="help-block">
+                                    <strong>{{ errors.first('email') }}</strong>
+                                </span>
+                            {%  endif  %}
+                        </div>
+                    </div>
+
+                    <div class="form-group{{ errors.has('password') ? ' has-error' : '' }}" spacing=".5">
+                        <p><label for="password" class="label">Password</label></p>
+
+                        <div class="col-md-6">
+                            <input id="password" type="password" class="user-input" box name="password">
+
+                            {% if errors.has('password') %}
+                            <span class="help-block">
+                                    <strong>{{ errors.first('password') }}</strong>
+                                </span>
+                            {%  endif  %}
+                        </div>
+                    </div>
+
+                    <div class="form-group{{ errors.has('password_confirmation') ? ' has-error' : '' }}" spacing=".5">
+                        <p><label for="password-confirm" class="label">Confirm Password</label></p>
+
+                        <div class="col-md-6">
+                            <input id="password-confirm" type="password" class="user-input" box name="password_confirmation">
+
+                            {% if errors.has('password_confirmation') %}
+                            <span class="help-block">
+                                    <strong>{{ errors.first('password_confirmation') }}</strong>
+                                </span>
+                            {%  endif  %}
+                        </div>
+                    </div>
+
+                    <div class="form-group" spacing=".5">
+                        <div class="col-md-6 col-md-offset-4">
+                            <button type="submit" class="button">
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="column" box="2" spacing>
+        <h2>Already registered?</h2>
+        <p class="longform"><a href="/login">Log in</a> to your existing account.</p>
+    </div>
+</div>
+{% endblock %}

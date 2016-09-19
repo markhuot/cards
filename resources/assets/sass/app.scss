@@ -266,6 +266,10 @@ $spacingMultipliers: (
   }
 }
 
+.card-proxy {
+  border: 1px solid #eee;
+}
+
 .card-stack {
   padding-bottom: 10px;
   max-height: calc(100vh - 170px);
@@ -317,6 +321,7 @@ $spacingMultipliers: (
 .user-stack {
   white-space: nowrap;
   display: none;
+  flex-shrink: 0;
 
   @include media('>700px') {
     display: block;
