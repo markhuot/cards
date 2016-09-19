@@ -83,6 +83,12 @@ $spacingMultipliers: (
   }
 }
 
+.page-alt2 {
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
 .box-shadow {
   box-shadow: 0 1px 1px rgba(0,0,0,0.2);
   border-radius: 2px;
@@ -271,10 +277,12 @@ $spacingMultipliers: (
 }
 
 .card-stack {
-  padding-bottom: 10px;
-  max-height: calc(100vh - 170px);
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  @include media('>700px') {
+    padding-bottom: 10px;
+    max-height: calc(100vh - 170px);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 #drag-placeholder {
@@ -410,6 +418,10 @@ $spacingMultipliers: (
 }
 
 .layout-split-2--detail {
+  & > .column {
+    width: 100%;
+  }
+
   & > .column:nth-child(1) {
     @include media('>700px') {
       width: 70%;
